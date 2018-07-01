@@ -2,6 +2,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Run",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceRoot}",
+            "env": { },
+            "args": ["tetris.gb"],
+            "showLog": true
+        },
+        {
             "name": "Test package",
             "type": "go",
             "request": "launch",

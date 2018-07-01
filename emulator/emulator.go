@@ -1,10 +1,26 @@
 package emulator
 
+import (
+	"io/ioutil"
+	"os"
+)
+
 type Emulator struct {
 	AF Register
 	BC Register
 	DE Register
 	HL Register
+
+	CartridgeMemory [0x200000]uint8
+}
+
+func (e *Emulator) LoadCartridge(filename string) {
+	dat, err := ioutil.ReadFile(filename)
+	if err != nil {
+		os.Exit(1)
+	}
+
+	copy(e.CartridgeMemory[:], dat)
 }
 
 func testBit(n uint8, pos uint) bool {
