@@ -29,6 +29,9 @@ var _ = Describe("Emulator", func() {
 				Expect(emulator.ProgramCounter).To(Equal(uint16(0x100)))
 				// ROM (only one address)
 				Expect(emulator.ROM[0xFF19]).To(Equal(uint8(0xBF)))
+				// ROM/RAM bank counter
+				Expect(emulator.CurrentROMBank).To(Equal(uint16(1)))
+				Expect(emulator.CurrentRAMBank).To(Equal(uint16(0)))
 			})
 		})
 	})

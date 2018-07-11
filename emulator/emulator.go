@@ -13,8 +13,11 @@ type Emulator struct {
 
 	CartridgeMemory [0x200000]uint8
 	ROM             [0x10000]uint8
+	RAM             [0x8000]uint8
 	ProgramCounter  uint16
 	StackPointer    Register
+	CurrentROMBank  uint16
+	CurrentRAMBank  uint16
 }
 
 func NewEmulator() *Emulator {
@@ -25,6 +28,8 @@ func NewEmulator() *Emulator {
 	e.DE.SetValue(0x00D8)
 	e.HL.SetValue(0x014D)
 	e.StackPointer.SetValue(0xFFFE)
+	e.CurrentROMBank = 1 // Should never be 1, ROM bank 0 is fixed
+	e.CurrentRAMBank = 0
 	e.ROM[0xFF05] = 0x00
 	e.ROM[0xFF06] = 0x00
 	e.ROM[0xFF07] = 0x00
