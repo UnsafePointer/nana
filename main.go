@@ -8,7 +8,6 @@ import (
 
 func main() {
 	gameArg := os.Args[1]
-
-	e := emulator.Emulator{}
+	e := emulator.NewEmulator()
 	e.LoadCartridge(gameArg)
 }
