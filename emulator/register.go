@@ -27,3 +27,8 @@ func (r Register) Value() uint16 {
 	high <<= 8
 	return low | high
 }
+
+func (r *Register) SetValue(value uint16) {
+	r.SetLow(uint8(value))
+	r.SetHigh(uint8((value >> 8)))
+}

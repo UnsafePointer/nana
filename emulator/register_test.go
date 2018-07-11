@@ -16,6 +16,18 @@ var _ = Describe("Register", func() {
 		register = Register{}
 	})
 
+	Describe("setting value", func() {
+		Context("when setting value", func() {
+			BeforeEach(func() {
+				register.SetValue(0xFFEE)
+			})
+
+			It("should contain the right value", func() {
+				Expect(register.Value()).To(Equal(uint16(0xFFEE)))
+			})
+		})
+	})
+
 	Describe("setting bits", func() {
 		Context("when setting low bits", func() {
 			BeforeEach(func() {
