@@ -9,23 +9,23 @@ const MaxCyclesPerSecond = 4194304
 const MaxCyclesPerEmulationCycle = MaxCyclesPerSecond / 60 // Target is 60 FPS
 
 type Emulator struct {
-	AF Register
-	BC Register
-	DE Register
-	HL Register
+	AF Register16Bit
+	BC Register16Bit
+	DE Register16Bit
+	HL Register16Bit
 
 	CartridgeMemory [0x200000]uint8
 	ROM             [0x10000]uint8
 	RAM             [0x8000]uint8
-	ProgramCounter  uint16
-	StackPointer    Register
+	ProgramCounter  Register16Bit
+	StackPointer    Register16Bit
 	CurrentROMBank  uint16
 	CurrentRAMBank  uint16
 }
 
 func NewEmulator() *Emulator {
 	e := new(Emulator)
-	e.ProgramCounter = 0x100
+	e.ProgramCounter.SetValue(0x100)
 	e.AF.SetValue(0x01B0)
 	e.BC.SetValue(0x0013)
 	e.DE.SetValue(0x00D8)
@@ -85,8 +85,8 @@ func (e *Emulator) EmulateSecond() {
 }
 
 func (e *Emulator) executeNextOpcode() int {
-	opCode := e.ReadMemory(e.ProgramCounter)
-	e.ProgramCounter++
+	opCode := e.ReadMemory(e.ProgramCounter.Value())
+	e.ProgramCounter.Increment()
 	cycles := e.ExecuteOpCode(opCode)
 	return cycles
 }

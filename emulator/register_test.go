@@ -7,13 +7,35 @@ import (
 	. "github.com/Ruenzuo/nana/emulator"
 )
 
-var _ = Describe("Register", func() {
+var _ = Describe("Register8Bit", func() {
 	var (
-		register Register
+		register Register8Bit
 	)
 
 	BeforeEach(func() {
-		register = Register{}
+		register = Register8Bit{}
+	})
+
+	Describe("setting value", func() {
+		Context("when setting value", func() {
+			BeforeEach(func() {
+				register.SetValue(0xFF)
+			})
+
+			It("should contain the right value", func() {
+				Expect(register.Value()).To(Equal(uint8(0xFF)))
+			})
+		})
+	})
+})
+
+var _ = Describe("Register16Bit", func() {
+	var (
+		register Register16Bit
+	)
+
+	BeforeEach(func() {
+		register = Register16Bit{}
 	})
 
 	Describe("setting value", func() {

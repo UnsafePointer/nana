@@ -26,7 +26,7 @@ var _ = Describe("Emulator", func() {
 				Expect(emulator.HL.Value()).To(Equal(uint16(0x014D)))
 				// SP & PC
 				Expect(emulator.StackPointer.Value()).To(Equal(uint16(0xFFFE)))
-				Expect(emulator.ProgramCounter).To(Equal(uint16(0x100)))
+				Expect(emulator.ProgramCounter.Value()).To(Equal(uint16(0x100)))
 				// ROM (only one address)
 				Expect(emulator.ROM[0xFF19]).To(Equal(uint8(0xBF)))
 				// ROM/RAM bank counter
