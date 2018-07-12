@@ -11,3 +11,8 @@ func (e Emulator) CPU8BitRegisterLoad(r *Register8Bit, v Register8Bit) int {
 	r.SetValue(v.Value())
 	return 4
 }
+
+func (e *Emulator) CPU8BitRegisterMemoryWrite(address uint16, v Register8Bit) int {
+	e.WriteMemory(address, v.Value())
+	return 8
+}

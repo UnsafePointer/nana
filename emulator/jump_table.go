@@ -121,17 +121,17 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0x6E:
 		return 0
 	case 0x70:
-		return 0
+		return e.CPU8BitRegisterMemoryWrite(e.HL.Value(), e.BC.high)
 	case 0x71:
-		return 0
+		return e.CPU8BitRegisterMemoryWrite(e.HL.Value(), e.BC.low)
 	case 0x72:
-		return 0
+		return e.CPU8BitRegisterMemoryWrite(e.HL.Value(), e.DE.high)
 	case 0x73:
-		return 0
+		return e.CPU8BitRegisterMemoryWrite(e.HL.Value(), e.DE.low)
 	case 0x74:
-		return 0
+		return e.CPU8BitRegisterMemoryWrite(e.HL.Value(), e.HL.high)
 	case 0x75:
-		return 0
+		return e.CPU8BitRegisterMemoryWrite(e.HL.Value(), e.HL.low)
 	case 0x36:
 		return 0
 	}
