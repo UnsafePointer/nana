@@ -10,4 +10,7 @@ func main() {
 	gameArg := os.Args[1]
 	e := emulator.NewEmulator()
 	e.LoadCartridge(gameArg)
+	for true {
+		e.EmulateSecond()
+	}
 }

@@ -5,6 +5,9 @@ import (
 	"os"
 )
 
+const MaxCyclesPerSecond = 4194304
+const MaxCyclesPerEmulationCycle = MaxCyclesPerSecond / 60 // Target is 60 FPS
+
 type Emulator struct {
 	AF Register
 	BC Register
@@ -71,6 +74,21 @@ func (e *Emulator) LoadCartridge(filename string) {
 	}
 
 	copy(e.CartridgeMemory[:], dat)
+}
+
+func (e *Emulator) EmulateSecond() {
+	cyclesThisUpdate := 0
+	for cyclesThisUpdate < MaxCyclesPerEmulationCycle {
+		cycles := e.executeNextOpcode()
+		cyclesThisUpdate += cycles
+	}
+}
+
+func (e *Emulator) executeNextOpcode() int {
+	opCode := e.ReadMemory(e.ProgramCounter)
+	e.ProgramCounter++
+	cycles := e.ExecuteOpCode(opCode)
+	return cycles
 }
 
 func testBit(n uint8, pos uint) bool {
