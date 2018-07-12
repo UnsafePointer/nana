@@ -35,7 +35,7 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0x7D:
 		return e.CPU8BitRegisterLoad(&e.AF.high, e.HL.low)
 	case 0x7E:
-		return 0
+		return e.CPU8BitRegisterMemoryAddressLoad(&e.AF.high, e.HL.Value())
 	case 0x40:
 		return e.CPU8BitRegisterLoad(&e.BC.high, e.BC.high)
 	case 0x41:
@@ -49,7 +49,7 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0x45:
 		return e.CPU8BitRegisterLoad(&e.BC.high, e.HL.low)
 	case 0x46:
-		return 0
+		return e.CPU8BitRegisterMemoryAddressLoad(&e.BC.high, e.HL.Value())
 	case 0x48:
 		return e.CPU8BitRegisterLoad(&e.BC.low, e.BC.high)
 	case 0x49:
@@ -63,7 +63,7 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0x4D:
 		return e.CPU8BitRegisterLoad(&e.BC.low, e.HL.low)
 	case 0x4E:
-		return 0
+		return e.CPU8BitRegisterMemoryAddressLoad(&e.BC.low, e.HL.Value())
 	case 0x50:
 		return e.CPU8BitRegisterLoad(&e.DE.high, e.BC.high)
 	case 0x51:
@@ -77,7 +77,7 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0x55:
 		return e.CPU8BitRegisterLoad(&e.DE.high, e.HL.low)
 	case 0x56:
-		return 0
+		return e.CPU8BitRegisterMemoryAddressLoad(&e.DE.high, e.HL.Value())
 	case 0x58:
 		return e.CPU8BitRegisterLoad(&e.DE.low, e.BC.high)
 	case 0x59:
@@ -91,7 +91,7 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0x5D:
 		return e.CPU8BitRegisterLoad(&e.DE.low, e.HL.low)
 	case 0x5E:
-		return 0
+		return e.CPU8BitRegisterMemoryAddressLoad(&e.DE.low, e.HL.Value())
 	case 0x60:
 		return e.CPU8BitRegisterLoad(&e.HL.high, e.BC.high)
 	case 0x61:
@@ -105,7 +105,7 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0x65:
 		return e.CPU8BitRegisterLoad(&e.HL.high, e.HL.low)
 	case 0x66:
-		return 0
+		return e.CPU8BitRegisterMemoryAddressLoad(&e.HL.high, e.HL.Value())
 	case 0x68:
 		return e.CPU8BitRegisterLoad(&e.HL.low, e.BC.high)
 	case 0x69:
@@ -119,7 +119,7 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0x6D:
 		return e.CPU8BitRegisterLoad(&e.HL.low, e.HL.low)
 	case 0x6E:
-		return 0
+		return e.CPU8BitRegisterMemoryAddressLoad(&e.HL.low, e.HL.Value())
 	case 0x70:
 		return e.CPU8BitRegisterMemoryWrite(e.HL.Value(), e.BC.high)
 	case 0x71:
