@@ -6,3 +6,8 @@ func (e *Emulator) CPU8BitLoad(r *Register8Bit) int {
 	e.ProgramCounter.Increment()
 	return 8
 }
+
+func (e *Emulator) CPURegLoad(r *Register8Bit, v Register8Bit) int {
+	r.SetValue(v.Value())
+	return 4
+}
