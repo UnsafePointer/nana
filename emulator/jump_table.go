@@ -179,6 +179,55 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		e.ProgramCounter.Increment()
 		e.WriteMemory(address, e.AF.high.Value())
 		return 16
+	// LD A,(C)
+	case 0xF2:
+		return e.CPU8BitRegisterMemoryAddressLoad(&e.AF.high, (0xFF00 + uint16(e.BC.low.Value())))
+	// LD (C),A
+	case 0xE2:
+		return e.CPU8BitRegisterMemoryWrite((0xFF00 + uint16(e.BC.low.Value())), e.AF.high)
+	// LD A,(HLD)
+	// LD A,(HL-)
+	// LDD A,(HL)
+	case 0x3A:
+		cycles := e.CPU8BitRegisterMemoryAddressLoad(&e.AF.high, e.HL.Value())
+		e.HL.Decrement()
+		return cycles
+	// LD (HLD),A
+	// LD (HL-),A
+	// LDD (HL),A
+	case 0x32:
+		cycles := e.CPU8BitRegisterMemoryWrite(e.HL.Value(), e.AF.high)
+		e.HL.Decrement()
+		return cycles
+	// LD A,(HLI)
+	// LD A,(HL+)
+	// LDI A,(HL)
+	case 0x2A:
+		cycles := e.CPU8BitRegisterMemoryAddressLoad(&e.AF.high, e.HL.Value())
+		e.HL.Increment()
+		return cycles
+	// LD (HLI),A
+	// LD (HL+),A
+	// LDI (HL),A
+	case 0x22:
+		cycles := e.CPU8BitRegisterMemoryWrite(e.HL.Value(), e.AF.high)
+		e.HL.Increment()
+		return cycles
+	// LDH (n),A
+	case 0xE0:
+		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
+		e.ProgramCounter.Increment()
+		address := 0xFF00 + uint16(value)
+		e.WriteMemory(address, e.AF.high.Value())
+		return 12
+	// LDH A,(n)
+	case 0xF0:
+		addressValue := e.ReadMemory8Bit(e.ProgramCounter.Value())
+		e.ProgramCounter.Increment()
+		address := 0xFF00 + uint16(addressValue)
+		value := e.ReadMemory8Bit(address)
+		e.AF.high.SetValue(value)
+		return 12
 	}
 
 	return 0
