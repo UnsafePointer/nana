@@ -133,7 +133,7 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0x75:
 		return e.CPU8BitRegisterMemoryWrite(e.HL.Value(), e.HL.low)
 	case 0x36:
-		value := e.ReadMemory(e.ProgramCounter.Value())
+		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
 		e.ProgramCounter.Increment()
 		e.WriteMemory(e.HL.Value(), value)
 		return 12

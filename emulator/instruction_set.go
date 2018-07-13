@@ -1,7 +1,7 @@
 package emulator
 
 func (e *Emulator) CPU8BitRegisterMemoryLoad(r *Register8Bit) int {
-	value := e.ReadMemory(e.ProgramCounter.Value())
+	value := e.ReadMemory8Bit(e.ProgramCounter.Value())
 	r.SetValue(value)
 	e.ProgramCounter.Increment()
 	return 8
@@ -18,6 +18,6 @@ func (e *Emulator) CPU8BitRegisterMemoryWrite(address uint16, v Register8Bit) in
 }
 
 func (e Emulator) CPU8BitRegisterMemoryAddressLoad(r *Register8Bit, address uint16) int {
-	r.SetValue(e.ReadMemory(address))
+	r.SetValue(e.ReadMemory8Bit(address))
 	return 8
 }

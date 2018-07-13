@@ -20,7 +20,7 @@ func (e *Emulator) WriteMemory(address uint16, data uint8) {
 	}
 }
 
-func (e Emulator) ReadMemory(address uint16) uint8 {
+func (e Emulator) ReadMemory8Bit(address uint16) uint8 {
 	// Memory map:
 	// 0000-3FFF 16KB ROM Bank 00 (in cartridge, fixed at bank 00)
 	// 4000-7FFF 16KB ROM Bank 01..NN (in cartridge, switchable bank number)
@@ -34,4 +34,11 @@ func (e Emulator) ReadMemory(address uint16) uint8 {
 	}
 
 	return e.ROM[address]
+}
+
+func (e Emulator) ReadMemory16Bit(address uint16) uint16 {
+	high := uint16(e.ReadMemory8Bit(address + 1))
+	high <<= 8
+	low := uint16(e.ReadMemory8Bit(address))
+	return low | high
 }

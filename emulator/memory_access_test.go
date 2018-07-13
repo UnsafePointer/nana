@@ -20,7 +20,7 @@ var _ = Describe("Emulator", func() {
 	Describe("verifying memory access", func() {
 		Context("when writting to ROM", func() {
 			BeforeEach(func() {
-				memoryValue = emulator.ReadMemory(0x0001)
+				memoryValue = emulator.ReadMemory8Bit(0x0001)
 				emulator.WriteMemory(0x0001, 0xFF)
 			})
 
@@ -31,7 +31,7 @@ var _ = Describe("Emulator", func() {
 
 		Context("when writting to restricted section", func() {
 			BeforeEach(func() {
-				memoryValue = emulator.ReadMemory(0xFEA0)
+				memoryValue = emulator.ReadMemory8Bit(0xFEA0)
 				emulator.WriteMemory(0xFEA0, 0xFF)
 			})
 
@@ -58,6 +58,16 @@ var _ = Describe("Emulator", func() {
 
 			It("should write to address", func() {
 				Expect(emulator.ROM[0xFFFF]).To(Equal(uint8(0xFF)))
+			})
+
+			Context("when accessing 16 bits", func() {
+				BeforeEach(func() {
+					emulator.WriteMemory(0xFFFE, 0xFE)
+				})
+
+				It("should retrieve the write value", func() {
+					Expect(emulator.ReadMemory16Bit(0xFFFE)).To(Equal(uint16(0xFFFE)))
+				})
 			})
 		})
 	})

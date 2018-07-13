@@ -85,7 +85,7 @@ func (e *Emulator) EmulateSecond() {
 }
 
 func (e *Emulator) executeNextOpcode() int {
-	opCode := e.ReadMemory(e.ProgramCounter.Value())
+	opCode := e.ReadMemory8Bit(e.ProgramCounter.Value())
 	e.ProgramCounter.Increment()
 	cycles := e.ExecuteOpCode(opCode)
 	return cycles
