@@ -49,3 +49,7 @@ func (r *Register16Bit) SetValue(value uint16) {
 func (r *Register16Bit) Increment() {
 	r.SetValue(r.Value() + 1)
 }
+
+func (r *Register16Bit) Decrement() {
+	r.SetValue(r.Value() - 1)
+}

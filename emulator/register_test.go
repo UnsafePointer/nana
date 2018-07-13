@@ -47,6 +47,26 @@ var _ = Describe("Register16Bit", func() {
 			It("should contain the right value", func() {
 				Expect(register.Value()).To(Equal(uint16(0xFFEE)))
 			})
+
+			Context("when incrementing the value", func() {
+				BeforeEach(func() {
+					register.Increment()
+				})
+
+				It("should contain the right value", func() {
+					Expect(register.Value()).To(Equal(uint16(0xFFEF)))
+				})
+
+				Context("when decrementing the value", func() {
+					BeforeEach(func() {
+						register.Decrement()
+					})
+
+					It("should contain the right value", func() {
+						Expect(register.Value()).To(Equal(uint16(0xFFEE)))
+					})
+				})
+			})
 		})
 	})
 
