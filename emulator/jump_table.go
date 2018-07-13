@@ -154,6 +154,31 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		e.ProgramCounter.Increment()
 		e.AF.high.SetValue(value)
 		return 8
+	// LD n,A
+	case 0x47:
+		return e.CPU8BitRegisterLoad(&e.BC.high, e.AF.high)
+	case 0x4F:
+		return e.CPU8BitRegisterLoad(&e.BC.low, e.AF.high)
+	case 0x57:
+		return e.CPU8BitRegisterLoad(&e.DE.high, e.AF.high)
+	case 0x5F:
+		return e.CPU8BitRegisterLoad(&e.DE.low, e.AF.high)
+	case 0x67:
+		return e.CPU8BitRegisterLoad(&e.HL.high, e.AF.high)
+	case 0x6F:
+		return e.CPU8BitRegisterLoad(&e.HL.low, e.AF.high)
+	case 0x02:
+		return e.CPU8BitRegisterMemoryWrite(e.BC.Value(), e.AF.high)
+	case 0x12:
+		return e.CPU8BitRegisterMemoryWrite(e.DE.Value(), e.AF.high)
+	case 0x77:
+		return e.CPU8BitRegisterMemoryWrite(e.HL.Value(), e.AF.high)
+	case 0xEA:
+		address := e.ReadMemory16Bit(e.ProgramCounter.Value())
+		e.ProgramCounter.Increment()
+		e.ProgramCounter.Increment()
+		e.WriteMemory(address, e.AF.high.Value())
+		return 16
 	}
 
 	return 0
