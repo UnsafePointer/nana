@@ -305,26 +305,19 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	// 8-Bit ALU
 	// ADD A,n
 	case 0x87:
-		e.CPU8BitAdd(&e.AF.High, e.AF.High.Value(), false)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.AF.High.Value(), false)
 	case 0x80:
-		e.CPU8BitAdd(&e.AF.High, e.BC.High.Value(), false)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.BC.High.Value(), false)
 	case 0x81:
-		e.CPU8BitAdd(&e.AF.High, e.BC.Low.Value(), false)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.BC.Low.Value(), false)
 	case 0x82:
-		e.CPU8BitAdd(&e.AF.High, e.DE.High.Value(), false)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.DE.High.Value(), false)
 	case 0x83:
-		e.CPU8BitAdd(&e.AF.High, e.DE.Low.Value(), false)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.DE.Low.Value(), false)
 	case 0x84:
-		e.CPU8BitAdd(&e.AF.High, e.HL.High.Value(), false)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.HL.High.Value(), false)
 	case 0x85:
-		e.CPU8BitAdd(&e.AF.High, e.HL.Low.Value(), false)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.HL.Low.Value(), false)
 	case 0x86:
 		cycles := e.CPU8BitAdd(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), false)
 		cycles += 4 // 8
@@ -337,26 +330,19 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return cycles
 	// ADC A,n
 	case 0x8F:
-		e.CPU8BitAdd(&e.AF.High, e.AF.High.Value(), true)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.AF.High.Value(), true)
 	case 0x88:
-		e.CPU8BitAdd(&e.AF.High, e.BC.High.Value(), true)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.BC.High.Value(), true)
 	case 0x89:
-		e.CPU8BitAdd(&e.AF.High, e.BC.Low.Value(), true)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.BC.Low.Value(), true)
 	case 0x8A:
-		e.CPU8BitAdd(&e.AF.High, e.DE.High.Value(), true)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.DE.High.Value(), true)
 	case 0x8B:
-		e.CPU8BitAdd(&e.AF.High, e.DE.Low.Value(), true)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.DE.Low.Value(), true)
 	case 0x8C:
-		e.CPU8BitAdd(&e.AF.High, e.HL.High.Value(), true)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.HL.High.Value(), true)
 	case 0x8D:
-		e.CPU8BitAdd(&e.AF.High, e.HL.Low.Value(), true)
-		return 4
+		return e.CPU8BitAdd(&e.AF.High, e.HL.Low.Value(), true)
 	case 0x8E:
 		cycles := e.CPU8BitAdd(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), true)
 		cycles += 4 // 8
@@ -369,26 +355,19 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return cycles
 	// SUB A,n
 	case 0x97:
-		e.CPU8BitSub(&e.AF.High, e.AF.High.Value(), false)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.AF.High.Value(), false)
 	case 0x90:
-		e.CPU8BitSub(&e.AF.High, e.BC.High.Value(), false)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.BC.High.Value(), false)
 	case 0x91:
-		e.CPU8BitSub(&e.AF.High, e.BC.Low.Value(), false)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.BC.Low.Value(), false)
 	case 0x92:
-		e.CPU8BitSub(&e.AF.High, e.DE.High.Value(), false)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.DE.High.Value(), false)
 	case 0x93:
-		e.CPU8BitSub(&e.AF.High, e.DE.Low.Value(), false)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.DE.Low.Value(), false)
 	case 0x94:
-		e.CPU8BitSub(&e.AF.High, e.HL.High.Value(), false)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.HL.High.Value(), false)
 	case 0x95:
-		e.CPU8BitSub(&e.AF.High, e.HL.Low.Value(), false)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.HL.Low.Value(), false)
 	case 0x96:
 		cycles := e.CPU8BitSub(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), false)
 		cycles += 4 // 8
@@ -401,26 +380,19 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return cycles
 	// SBC A,n
 	case 0x9F:
-		e.CPU8BitSub(&e.AF.High, e.AF.High.Value(), true)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.AF.High.Value(), true)
 	case 0x98:
-		e.CPU8BitSub(&e.AF.High, e.BC.High.Value(), true)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.BC.High.Value(), true)
 	case 0x99:
-		e.CPU8BitSub(&e.AF.High, e.BC.Low.Value(), true)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.BC.Low.Value(), true)
 	case 0x9A:
-		e.CPU8BitSub(&e.AF.High, e.DE.High.Value(), true)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.DE.High.Value(), true)
 	case 0x9B:
-		e.CPU8BitSub(&e.AF.High, e.DE.Low.Value(), true)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.DE.Low.Value(), true)
 	case 0x9C:
-		e.CPU8BitSub(&e.AF.High, e.HL.High.Value(), true)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.HL.High.Value(), true)
 	case 0x9D:
-		e.CPU8BitSub(&e.AF.High, e.HL.Low.Value(), true)
-		return 4
+		return e.CPU8BitSub(&e.AF.High, e.HL.Low.Value(), true)
 	case 0x9E:
 		cycles := e.CPU8BitSub(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), true)
 		cycles += 4 // 8
