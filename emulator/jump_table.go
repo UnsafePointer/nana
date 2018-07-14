@@ -305,34 +305,66 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	// 8-Bit ALU
 	// ADD A,n
 	case 0x87:
-		e.CPU8BitAdd(&e.AF.High, e.AF.High.Value())
+		e.CPU8BitAdd(&e.AF.High, e.AF.High.Value(), false)
 		return 4
 	case 0x80:
-		e.CPU8BitAdd(&e.AF.High, e.BC.High.Value())
+		e.CPU8BitAdd(&e.AF.High, e.BC.High.Value(), false)
 		return 4
 	case 0x81:
-		e.CPU8BitAdd(&e.AF.High, e.BC.Low.Value())
+		e.CPU8BitAdd(&e.AF.High, e.BC.Low.Value(), false)
 		return 4
 	case 0x82:
-		e.CPU8BitAdd(&e.AF.High, e.DE.High.Value())
+		e.CPU8BitAdd(&e.AF.High, e.DE.High.Value(), false)
 		return 4
 	case 0x83:
-		e.CPU8BitAdd(&e.AF.High, e.DE.Low.Value())
+		e.CPU8BitAdd(&e.AF.High, e.DE.Low.Value(), false)
 		return 4
 	case 0x84:
-		e.CPU8BitAdd(&e.AF.High, e.HL.High.Value())
+		e.CPU8BitAdd(&e.AF.High, e.HL.High.Value(), false)
 		return 4
 	case 0x85:
-		e.CPU8BitAdd(&e.AF.High, e.HL.Low.Value())
+		e.CPU8BitAdd(&e.AF.High, e.HL.Low.Value(), false)
 		return 4
 	case 0x86:
-		cycles := e.CPU8BitAdd(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()))
+		cycles := e.CPU8BitAdd(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), false)
 		cycles += 4 // 8
 		return cycles
 	case 0xC6:
 		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
 		e.ProgramCounter.Increment()
-		cycles := e.CPU8BitAdd(&e.AF.High, value)
+		cycles := e.CPU8BitAdd(&e.AF.High, value, false)
+		cycles += 4 // 8
+		return cycles
+	// ADC A,n
+	case 0x8F:
+		e.CPU8BitAdd(&e.AF.High, e.AF.High.Value(), true)
+		return 4
+	case 0x88:
+		e.CPU8BitAdd(&e.AF.High, e.BC.High.Value(), true)
+		return 4
+	case 0x89:
+		e.CPU8BitAdd(&e.AF.High, e.BC.Low.Value(), true)
+		return 4
+	case 0x8A:
+		e.CPU8BitAdd(&e.AF.High, e.DE.High.Value(), true)
+		return 4
+	case 0x8B:
+		e.CPU8BitAdd(&e.AF.High, e.DE.Low.Value(), true)
+		return 4
+	case 0x8C:
+		e.CPU8BitAdd(&e.AF.High, e.HL.High.Value(), true)
+		return 4
+	case 0x8D:
+		e.CPU8BitAdd(&e.AF.High, e.HL.Low.Value(), true)
+		return 4
+	case 0x8E:
+		cycles := e.CPU8BitAdd(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), true)
+		cycles += 4 // 8
+		return cycles
+	case 0xCE:
+		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
+		e.ProgramCounter.Increment()
+		cycles := e.CPU8BitAdd(&e.AF.High, value, true)
 		cycles += 4 // 8
 		return cycles
 	}

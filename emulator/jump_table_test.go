@@ -21,7 +21,7 @@ var _ = Describe("Emulator", func() {
 			BeforeEach(func() {
 				emulator.AF.SetLow(0x01)
 				emulator.AF.SetHigh(0x02)
-				emulator.CPU8BitAdd(&emulator.AF.High, emulator.AF.Low.Value())
+				emulator.CPU8BitAdd(&emulator.AF.High, emulator.AF.Low.Value(), false)
 			})
 
 			It("should add the values and set the right flags", func() {
@@ -36,7 +36,7 @@ var _ = Describe("Emulator", func() {
 			BeforeEach(func() {
 				emulator.AF.SetLow(0xFF)
 				emulator.AF.SetHigh(0x01)
-				emulator.CPU8BitAdd(&emulator.AF.High, emulator.AF.Low.Value())
+				emulator.CPU8BitAdd(&emulator.AF.High, emulator.AF.Low.Value(), false)
 			})
 
 			It("should add the values and set the right flags", func() {
