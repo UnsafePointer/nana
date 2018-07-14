@@ -34,9 +34,7 @@ func (e *Emulator) CPU8BitAdd(r1 *Register8Bit, addend uint8, useCarry bool) int
 	augend := r1.Value()
 	if useCarry && e.FlagC() {
 		addend++
-		if addend == 0 {
-			panic("TODO: Verify what happens in specification when this overflows. What's the right order?")
-		}
+		testPanic(addend == 0, "TODO: Verify what happens in specification when this overflows. What's the right order?")
 	}
 	result := uint16(augend&0xFF) + uint16(addend&0xFF)
 	r1.SetValue(uint8(result & 0xFF))
