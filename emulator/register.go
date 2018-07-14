@@ -42,7 +42,7 @@ func (r Register16Bit) Value() uint16 {
 }
 
 func (r *Register16Bit) SetValue(value uint16) {
-	r.SetLow(uint8(value))
+	r.SetLow(uint8(value & 0xFF))
 	r.SetHigh(uint8((value >> 8)))
 }
 
