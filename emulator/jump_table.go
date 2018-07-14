@@ -228,6 +228,45 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		value := e.ReadMemory8Bit(address)
 		e.AF.high.SetValue(value)
 		return 12
+	// 16-Bit Loads
+	// LD n,nn
+	case 0x01:
+		return e.CPU16BitRegistryMemoryLoad(&e.BC)
+	case 0x11:
+		return e.CPU16BitRegistryMemoryLoad(&e.DE)
+	case 0x21:
+		return e.CPU16BitRegistryMemoryLoad(&e.HL)
+	case 0x31:
+		return e.CPU16BitRegistryMemoryLoad(&e.StackPointer)
+	// LD SP,HL
+	case 0xF9:
+		e.StackPointer.SetValue(e.HL.Value())
+		return 8
+	// LD HL,SP+n
+	// LDHL SP,n
+	case 0xF8:
+		signedValue := int8(e.ReadMemory8Bit(e.ProgramCounter.Value()))
+		e.ProgramCounter.Increment()
+		e.ClearFlagZ()
+		e.ClearFlagN()
+
+		value := uint32(e.StackPointer.Value()) + uint32(signedValue)
+
+		if value > 0xFFFF {
+			e.SetFlagC()
+		} else {
+			e.ClearFlagC()
+		}
+
+		if (uint32(e.StackPointer.Value())&0xF + value&0xF) > 0xF {
+			e.SetFlagH()
+		} else {
+			e.ClearFlagH()
+		}
+
+		e.HL.SetValue(uint16(0x00FFFF & value))
+
+		return 12
 	}
 
 	return 0

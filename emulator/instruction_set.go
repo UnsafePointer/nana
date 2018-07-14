@@ -21,3 +21,11 @@ func (e Emulator) CPU8BitRegisterMemoryAddressLoad(r *Register8Bit, address uint
 	r.SetValue(e.ReadMemory8Bit(address))
 	return 8
 }
+
+func (e *Emulator) CPU16BitRegistryMemoryLoad(r *Register16Bit) int {
+	value := e.ReadMemory16Bit(e.ProgramCounter.Value())
+	e.ProgramCounter.Increment()
+	e.ProgramCounter.Increment()
+	r.SetValue(value)
+	return 12
+}
