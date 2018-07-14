@@ -302,6 +302,29 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0xE1:
 		e.HL.SetValue(e.PopFromStack())
 		return 12
+	// 8-Bit ALU
+	// ADD A,n
+	case 0x87:
+		e.CPU8BitAdd(&e.AF.High, e.AF.High)
+		return 4
+	case 0x80:
+		e.CPU8BitAdd(&e.AF.High, e.BC.High)
+		return 4
+	case 0x81:
+		e.CPU8BitAdd(&e.AF.High, e.BC.Low)
+		return 4
+	case 0x82:
+		e.CPU8BitAdd(&e.AF.High, e.DE.High)
+		return 4
+	case 0x83:
+		e.CPU8BitAdd(&e.AF.High, e.DE.Low)
+		return 4
+	case 0x84:
+		e.CPU8BitAdd(&e.AF.High, e.HL.High)
+		return 4
+	case 0x85:
+		e.CPU8BitAdd(&e.AF.High, e.HL.Low)
+		return 4
 	}
 
 	return 0

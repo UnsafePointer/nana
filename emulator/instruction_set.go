@@ -29,3 +29,21 @@ func (e *Emulator) CPU16BitRegistryMemoryLoad(r *Register16Bit) int {
 	r.SetValue(value)
 	return 12
 }
+
+func (e *Emulator) CPU8BitAdd(r1 *Register8Bit, r2 Register8Bit) int {
+	augend := r1.Value()
+	addend := r2.Value()
+	result := uint16(augend&0xFF) + uint16(addend&0xFF)
+	r1.SetValue(uint8(result & 0xFF))
+	e.ClearAllFlags()
+	if r1.Value() == 0 {
+		e.SetFlagZ()
+	}
+	if uint8(augend&0xF)+uint8(addend&0xF) > 0xF {
+		e.SetFlagH()
+	}
+	if result > 0xFF {
+		e.SetFlagC()
+	}
+	return 4
+}

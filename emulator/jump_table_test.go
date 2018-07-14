@@ -17,6 +17,36 @@ var _ = Describe("Emulator", func() {
 	})
 
 	Describe("verifying operation codes work", func() {
+		Context("when using 8-Bit ADD", func() {
+			BeforeEach(func() {
+				emulator.AF.SetLow(0x01)
+				emulator.AF.SetHigh(0x02)
+				emulator.CPU8BitAdd(&emulator.AF.High, emulator.AF.Low)
+			})
+
+			It("should add the values and set the right flags", func() {
+				Expect(emulator.AF.High.Value()).To(Equal(uint8(0x03)))
+				Expect(emulator.FlagC()).To(Equal(false))
+				Expect(emulator.FlagH()).To(Equal(false))
+				Expect(emulator.FlagN()).To(Equal(false))
+				Expect(emulator.FlagZ()).To(Equal(false))
+			})
+		})
+		Context("when using 8-Bit ADD", func() {
+			BeforeEach(func() {
+				emulator.AF.SetLow(0xFF)
+				emulator.AF.SetHigh(0x01)
+				emulator.CPU8BitAdd(&emulator.AF.High, emulator.AF.Low)
+			})
+
+			It("should add the values and set the right flags", func() {
+				Expect(emulator.AF.High.Value()).To(Equal(uint8(0x00)))
+				Expect(emulator.FlagC()).To(Equal(true))
+				Expect(emulator.FlagH()).To(Equal(true))
+				Expect(emulator.FlagN()).To(Equal(false))
+				Expect(emulator.FlagZ()).To(Equal(true))
+			})
+		})
 		Context("when values overflow", func() {
 			BeforeEach(func() {
 				emulator.ProgramCounter.SetValue(0x0)

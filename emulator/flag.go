@@ -47,3 +47,10 @@ func (e *Emulator) ClearFlagH() {
 func (e *Emulator) ClearFlagC() {
 	e.AF.SetLow(clearBit(e.AF.Low.Value(), 4))
 }
+
+func (e *Emulator) ClearAllFlags() {
+	e.ClearFlagZ()
+	e.ClearFlagN()
+	e.ClearFlagH()
+	e.ClearFlagC()
+}
