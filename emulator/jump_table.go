@@ -367,6 +367,70 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		cycles := e.CPU8BitAdd(&e.AF.High, value, true)
 		cycles += 4 // 8
 		return cycles
+	// SUB A,n
+	case 0x97:
+		e.CPU8BitSub(&e.AF.High, e.AF.High.Value(), false)
+		return 4
+	case 0x90:
+		e.CPU8BitSub(&e.AF.High, e.BC.High.Value(), false)
+		return 4
+	case 0x91:
+		e.CPU8BitSub(&e.AF.High, e.BC.Low.Value(), false)
+		return 4
+	case 0x92:
+		e.CPU8BitSub(&e.AF.High, e.DE.High.Value(), false)
+		return 4
+	case 0x93:
+		e.CPU8BitSub(&e.AF.High, e.DE.Low.Value(), false)
+		return 4
+	case 0x94:
+		e.CPU8BitSub(&e.AF.High, e.HL.High.Value(), false)
+		return 4
+	case 0x95:
+		e.CPU8BitSub(&e.AF.High, e.HL.Low.Value(), false)
+		return 4
+	case 0x96:
+		cycles := e.CPU8BitSub(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), false)
+		cycles += 4 // 8
+		return cycles
+	case 0xD6:
+		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
+		e.ProgramCounter.Increment()
+		cycles := e.CPU8BitSub(&e.AF.High, value, false)
+		cycles += 4 // 8
+		return cycles
+	// SBC A,n
+	case 0x9F:
+		e.CPU8BitSub(&e.AF.High, e.AF.High.Value(), true)
+		return 4
+	case 0x98:
+		e.CPU8BitSub(&e.AF.High, e.BC.High.Value(), true)
+		return 4
+	case 0x99:
+		e.CPU8BitSub(&e.AF.High, e.BC.Low.Value(), true)
+		return 4
+	case 0x9A:
+		e.CPU8BitSub(&e.AF.High, e.DE.High.Value(), true)
+		return 4
+	case 0x9B:
+		e.CPU8BitSub(&e.AF.High, e.DE.Low.Value(), true)
+		return 4
+	case 0x9C:
+		e.CPU8BitSub(&e.AF.High, e.HL.High.Value(), true)
+		return 4
+	case 0x9D:
+		e.CPU8BitSub(&e.AF.High, e.HL.Low.Value(), true)
+		return 4
+	case 0x9E:
+		cycles := e.CPU8BitSub(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), true)
+		cycles += 4 // 8
+		return cycles
+	case 0xDE:
+		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
+		e.ProgramCounter.Increment()
+		cycles := e.CPU8BitSub(&e.AF.High, value, true)
+		cycles += 4 // 8
+		return cycles
 	}
 
 	return 0

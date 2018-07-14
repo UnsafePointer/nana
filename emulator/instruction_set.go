@@ -50,3 +50,25 @@ func (e *Emulator) CPU8BitAdd(r1 *Register8Bit, addend uint8, useCarry bool) int
 	}
 	return 4
 }
+
+func (e *Emulator) CPU8BitSub(r1 *Register8Bit, minuend uint8, useCarry bool) int {
+	subtrahend := r1.Value()
+	if useCarry && e.FlagC() {
+		minuend++
+		testPanic(minuend == 0, "TODO: Verify what happens in specification when this overflows. What's the right order?")
+	}
+	result := uint16(subtrahend&0xFF) - uint16(minuend&0xFF)
+	r1.SetValue(uint8(result & 0xFF))
+	e.ClearAllFlags()
+	if r1.Value() == 0 {
+		e.SetFlagZ()
+	}
+	e.SetFlagN()
+	if int16(subtrahend&0xF)-int16(minuend&0xF) < 0x0 {
+		e.SetFlagH()
+	}
+	if subtrahend < minuend {
+		e.SetFlagC()
+	}
+	return 4
+}

@@ -47,6 +47,36 @@ var _ = Describe("Emulator", func() {
 				Expect(emulator.FlagZ()).To(Equal(true))
 			})
 		})
+		Context("when using 8-Bit SUB", func() {
+			BeforeEach(func() {
+				emulator.AF.SetLow(0x01)
+				emulator.AF.SetHigh(0x02)
+				emulator.CPU8BitSub(&emulator.AF.High, emulator.AF.Low.Value(), false)
+			})
+
+			It("should add the values and set the right flags", func() {
+				Expect(emulator.AF.High.Value()).To(Equal(uint8(0x01)))
+				Expect(emulator.FlagC()).To(Equal(false))
+				Expect(emulator.FlagH()).To(Equal(false))
+				Expect(emulator.FlagN()).To(Equal(true))
+				Expect(emulator.FlagZ()).To(Equal(false))
+			})
+		})
+		Context("when using 8-Bit SUB", func() {
+			BeforeEach(func() {
+				emulator.AF.SetLow(0xFF)
+				emulator.AF.SetHigh(0x01)
+				emulator.CPU8BitSub(&emulator.AF.High, emulator.AF.Low.Value(), false)
+			})
+
+			It("should add the values and set the right flags", func() {
+				Expect(emulator.AF.High.Value()).To(Equal(uint8(0x02)))
+				Expect(emulator.FlagC()).To(Equal(true))
+				Expect(emulator.FlagH()).To(Equal(true))
+				Expect(emulator.FlagN()).To(Equal(true))
+				Expect(emulator.FlagZ()).To(Equal(false))
+			})
+		})
 		Context("when values overflow", func() {
 			BeforeEach(func() {
 				emulator.ProgramCounter.SetValue(0x0)
