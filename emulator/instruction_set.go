@@ -30,9 +30,8 @@ func (e *Emulator) CPU16BitRegistryMemoryLoad(r *Register16Bit) int {
 	return 12
 }
 
-func (e *Emulator) CPU8BitAdd(r1 *Register8Bit, r2 Register8Bit) int {
+func (e *Emulator) CPU8BitAdd(r1 *Register8Bit, addend uint8) int {
 	augend := r1.Value()
-	addend := r2.Value()
 	result := uint16(augend&0xFF) + uint16(addend&0xFF)
 	r1.SetValue(uint8(result & 0xFF))
 	e.ClearAllFlags()
