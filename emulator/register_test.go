@@ -77,7 +77,7 @@ var _ = Describe("Register16Bit", func() {
 			})
 
 			It("should contain low bits value", func() {
-				Expect(register.Low()).To(Equal(uint8(0xFF)))
+				Expect(register.Low.Value()).To(Equal(uint8(0xFF)))
 			})
 
 			Context("when setting high bits", func() {
@@ -86,7 +86,7 @@ var _ = Describe("Register16Bit", func() {
 				})
 
 				It("should contain high bits value", func() {
-					Expect(register.High()).To(Equal(uint8(0xEE)))
+					Expect(register.High.Value()).To(Equal(uint8(0xEE)))
 				})
 
 				Context("when getting value", func() {

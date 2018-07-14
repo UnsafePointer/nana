@@ -5,8 +5,8 @@ type Register8Bit struct {
 }
 
 type Register16Bit struct {
-	low  Register8Bit
-	high Register8Bit
+	Low  Register8Bit
+	High Register8Bit
 }
 
 func (r Register8Bit) Value() uint8 {
@@ -17,26 +17,18 @@ func (r *Register8Bit) SetValue(value uint8) {
 	r.bits = value
 }
 
-func (r Register16Bit) Low() uint8 {
-	return r.low.bits
-}
-
-func (r Register16Bit) High() uint8 {
-	return r.high.bits
-}
-
 func (r *Register16Bit) SetLow(value uint8) {
-	r.low.SetValue(value)
+	r.Low.SetValue(value)
 }
 
 func (r *Register16Bit) SetHigh(value uint8) {
-	r.high.SetValue(value)
+	r.High.SetValue(value)
 }
 
 func (r Register16Bit) Value() uint16 {
-	low := uint16(r.low.bits)
+	low := uint16(r.Low.bits)
 	low <<= 0
-	high := uint16(r.high.bits)
+	high := uint16(r.High.bits)
 	high <<= 8
 	return low | high
 }
