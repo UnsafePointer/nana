@@ -267,6 +267,41 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		e.HL.SetValue(uint16(0x00FFFF & value))
 
 		return 12
+	// LD (nn),SP
+	case 0x08:
+		value := e.ReadMemory16Bit(e.ProgramCounter.Value())
+		e.ProgramCounter.Increment()
+		e.ProgramCounter.Increment()
+		e.WriteMemory(value, e.StackPointer.Low())
+		value++
+		e.WriteMemory(value, e.StackPointer.High())
+		return 20
+	// PUSH nn
+	case 0xF5:
+		e.PushIntoStack(e.AF.Value())
+		return 16
+	case 0xC5:
+		e.PushIntoStack(e.BC.Value())
+		return 16
+	case 0xD5:
+		e.PushIntoStack(e.DE.Value())
+		return 16
+	case 0xE5:
+		e.PushIntoStack(e.HL.Value())
+		return 16
+	// POP nn
+	case 0xF1:
+		e.AF.SetValue(e.PopFromStack())
+		return 12
+	case 0xC1:
+		e.BC.SetValue(e.PopFromStack())
+		return 12
+	case 0xD1:
+		e.DE.SetValue(e.PopFromStack())
+		return 12
+	case 0xE1:
+		e.HL.SetValue(e.PopFromStack())
+		return 12
 	}
 
 	return 0
