@@ -137,6 +137,21 @@ var _ = Describe("Emulator", func() {
 				Expect(emulator.FlagZ()).To(Equal(false))
 			})
 		})
+		Context("when using 8-Bit INC", func() {
+			BeforeEach(func() {
+				emulator.AF.SetHigh(0x0F)
+				emulator.SetFlagC()
+				emulator.CPU8BitIncrement(&emulator.AF.High)
+			})
+
+			It("should INC the values and set the right flags", func() {
+				Expect(emulator.AF.High.Value()).To(Equal(uint8(0x10)))
+				Expect(emulator.FlagC()).To(Equal(true))
+				Expect(emulator.FlagH()).To(Equal(true))
+				Expect(emulator.FlagN()).To(Equal(false))
+				Expect(emulator.FlagZ()).To(Equal(false))
+			})
+		})
 		Context("when values overflow", func() {
 			BeforeEach(func() {
 				emulator.ProgramCounter.SetValue(0x0)
