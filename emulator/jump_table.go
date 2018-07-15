@@ -627,6 +627,10 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0x76:
 		e.Halted = true
 		return 4
+	// STOP - TODO: Check if anything else is needed to handle this properly
+	case 0x10:
+		e.ProgramCounter.Increment() // 00
+		return 4
 	}
 
 	return 0
