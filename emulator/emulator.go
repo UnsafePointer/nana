@@ -21,6 +21,7 @@ type Emulator struct {
 	StackPointer    Register16Bit
 	CurrentROMBank  uint16
 	CurrentRAMBank  uint16
+	Halted          bool
 }
 
 func NewEmulator() *Emulator {
@@ -33,6 +34,7 @@ func NewEmulator() *Emulator {
 	e.StackPointer.SetValue(0xFFFE)
 	e.CurrentROMBank = 1 // Should never be 1, ROM bank 0 is fixed
 	e.CurrentRAMBank = 0
+	e.Halted = false
 	e.ROM[0xFF05] = 0x00
 	e.ROM[0xFF06] = 0x00
 	e.ROM[0xFF07] = 0x00
@@ -81,14 +83,25 @@ func (e *Emulator) EmulateSecond() {
 	for cyclesThisUpdate < MaxCyclesPerEmulationCycle {
 		cycles := e.executeNextOpcode()
 		cyclesThisUpdate += cycles
+		e.executeInterrupts()
 	}
 }
 
 func (e *Emulator) executeNextOpcode() int {
 	opCode := e.ReadMemory8Bit(e.ProgramCounter.Value())
 	e.ProgramCounter.Increment()
-	cycles := e.ExecuteOpCode(opCode)
+	var cycles int
+	if e.Halted {
+		cycles = 4
+	} else {
+		cycles = e.ExecuteOpCode(opCode)
+	}
 	return cycles
+}
+
+func (e *Emulator) executeInterrupts() {
+	// TODO: move this after the verifications of interrupt enabled/requested
+	e.Halted = false
 }
 
 func testBit(n uint8, pos uint) bool {

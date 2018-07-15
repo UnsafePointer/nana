@@ -623,6 +623,10 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	// NOP
 	case 0x00:
 		return 4
+	// HALT
+	case 0x76:
+		e.Halted = true
+		return 4
 	}
 
 	return 0
