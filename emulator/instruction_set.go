@@ -103,3 +103,19 @@ func (e *Emulator) CPU8BitXor(operand uint8) int {
 	}
 	return 4
 }
+
+func (e *Emulator) CPU8BitCp(operand uint8) int {
+	result := e.AF.High.Value() - operand
+	e.ClearAllFlags()
+	if result == 0x0 {
+		e.SetFlagZ()
+	}
+	e.SetFlagN()
+	if int16(e.AF.High.Value()&0xF)-int16(operand&0xF) < 0x0 {
+		e.SetFlagH()
+	}
+	if e.AF.High.Value() < operand {
+		e.SetFlagC()
+	}
+	return 4
+}
