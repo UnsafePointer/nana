@@ -432,6 +432,42 @@ func (e *Emulator) CPU8BitSLAMemoryAddress(address uint16) int {
 	return 16
 }
 
+func (e *Emulator) CPU8BitRegisterSRA(r *Register8Bit) int {
+	testMSB := testBit(r.Value(), 7)
+	testLSB := testBit(r.Value(), 0)
+	r.SetValue(r.Value() >> 1)
+	e.ClearAllFlags()
+	if testMSB {
+		r.SetValue(setBit(r.Value(), 7))
+	}
+	if testLSB {
+		e.SetFlagC()
+	}
+	if r.Value() == 0x0 {
+		e.SetFlagZ()
+	}
+	return 8
+}
+
+func (e *Emulator) CPU8BitSRAMemoryAddress(address uint16) int {
+	value := e.ReadMemory8Bit(address)
+	testMSB := testBit(value, 7)
+	testLSB := testBit(value, 0)
+	value >>= 1
+	e.ClearAllFlags()
+	if testMSB {
+		value = setBit(value, 7)
+	}
+	if testLSB {
+		e.SetFlagC()
+	}
+	if value == 0x0 {
+		e.SetFlagZ()
+	}
+	e.WriteMemory(address, value)
+	return 16
+}
+
 func (e *Emulator) CPU8BitRegisterSRL(r *Register8Bit) int {
 	test := testBit(r.Value(), 0)
 	r.SetValue(r.Value() >> 1)

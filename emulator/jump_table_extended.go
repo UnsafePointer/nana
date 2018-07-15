@@ -106,22 +106,39 @@ func (e *Emulator) ExecuteExtendedOpCode(opcode uint8) int {
 		return e.CPU8BitRegisterSLA(&e.HL.Low)
 	case 0x26:
 		return e.CPU8BitSLAMemoryAddress(e.HL.Value())
-	// SRL n
+	// SRA n
 	case 0x2F:
-		return e.CPU8BitRegisterSRL(&e.AF.High)
+		return e.CPU8BitRegisterSRA(&e.AF.High)
 	case 0x28:
-		return e.CPU8BitRegisterSRL(&e.BC.High)
+		return e.CPU8BitRegisterSRA(&e.BC.High)
 	case 0x29:
-		return e.CPU8BitRegisterSRL(&e.BC.Low)
+		return e.CPU8BitRegisterSRA(&e.BC.Low)
 	case 0x2A:
-		return e.CPU8BitRegisterSRL(&e.DE.High)
+		return e.CPU8BitRegisterSRA(&e.DE.High)
 	case 0x2B:
-		return e.CPU8BitRegisterSRL(&e.DE.Low)
+		return e.CPU8BitRegisterSRA(&e.DE.Low)
 	case 0x2C:
-		return e.CPU8BitRegisterSRL(&e.HL.High)
+		return e.CPU8BitRegisterSRA(&e.HL.High)
 	case 0x2D:
-		return e.CPU8BitRegisterSRL(&e.HL.Low)
+		return e.CPU8BitRegisterSRA(&e.HL.Low)
 	case 0x2E:
+		return e.CPU8BitSRAMemoryAddress(e.HL.Value())
+	// SRL n
+	case 0x3F:
+		return e.CPU8BitRegisterSRL(&e.AF.High)
+	case 0x38:
+		return e.CPU8BitRegisterSRL(&e.BC.High)
+	case 0x39:
+		return e.CPU8BitRegisterSRL(&e.BC.Low)
+	case 0x3A:
+		return e.CPU8BitRegisterSRL(&e.DE.High)
+	case 0x3B:
+		return e.CPU8BitRegisterSRL(&e.DE.Low)
+	case 0x3C:
+		return e.CPU8BitRegisterSRL(&e.HL.High)
+	case 0x3D:
+		return e.CPU8BitRegisterSRL(&e.HL.Low)
+	case 0x3E:
 		return e.CPU8BitSRLMemoryAddress(e.HL.Value())
 
 	}
