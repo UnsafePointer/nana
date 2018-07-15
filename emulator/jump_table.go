@@ -594,6 +594,7 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		code := e.ReadMemory8Bit(e.ProgramCounter.Value())
 		e.ProgramCounter.Increment()
 		return e.ExecuteExtendedOpCode(code)
+	// Miscellaneous
 	// DDA
 	case 0x27:
 		return e.CPUDDA()

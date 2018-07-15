@@ -2,6 +2,7 @@ package emulator
 
 func (e *Emulator) ExecuteExtendedOpCode(opcode uint8) int {
 	switch opcode {
+	// Miscellaneous
 	// SWAP n
 	case 0x37:
 		return e.CPU8BitRegisterSwap(&e.AF.High)
