@@ -333,3 +333,73 @@ func (e *Emulator) CPU8BitRegisterRR(r *Register8Bit) int {
 	}
 	return 8
 }
+
+func (e *Emulator) CPU8BitRLCMemoryAddress(address uint16) int {
+	value := e.ReadMemory8Bit(address)
+	test := testBit(value, 7)
+	value <<= 1
+	e.ClearAllFlags()
+	if test {
+		e.SetFlagC()
+		value = setBit(value, 0)
+	}
+	if value == 0x0 {
+		e.SetFlagZ()
+	}
+	e.WriteMemory(address, value)
+	return 16
+}
+
+func (e *Emulator) CPU8BitRLMemoryAddress(address uint16) int {
+	value := e.ReadMemory8Bit(address)
+	testCarry := e.FlagC()
+	test := testBit(value, 7)
+	value <<= 1
+	e.ClearAllFlags()
+	if test {
+		e.SetFlagC()
+	}
+	if testCarry {
+		value = setBit(value, 0)
+	}
+	if value == 0x0 {
+		e.SetFlagZ()
+	}
+	e.WriteMemory(address, value)
+	return 16
+}
+
+func (e *Emulator) CPU8BitRRCMemoryAddress(address uint16) int {
+	value := e.ReadMemory8Bit(address)
+	test := testBit(value, 0)
+	value >>= 1
+	e.ClearAllFlags()
+	if test {
+		e.SetFlagC()
+		value = setBit(value, 7)
+	}
+	if value == 0x0 {
+		e.SetFlagZ()
+	}
+	e.WriteMemory(address, value)
+	return 16
+}
+
+func (e *Emulator) CPU8BitRRMemoryAddress(address uint16) int {
+	value := e.ReadMemory8Bit(address)
+	testCarry := e.FlagC()
+	test := testBit(value, 0)
+	value >>= 1
+	e.ClearAllFlags()
+	if test {
+		e.SetFlagC()
+	}
+	if testCarry {
+		value = setBit(value, 7)
+	}
+	if value == 0x0 {
+		e.SetFlagZ()
+	}
+	e.WriteMemory(address, value)
+	return 16
+}
