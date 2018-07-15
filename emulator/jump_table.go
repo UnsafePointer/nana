@@ -640,6 +640,13 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0xFB:
 		e.PendingEnableInterrupts = true
 		return 4
+	// Rotates & Shifts
+	// RLCA
+	case 0x07:
+		return e.CPU8BitRegisterRLC(&e.AF.High)
+	// RLA
+	case 0x17:
+		return e.CPU8BitRegisterRL(&e.AF.High)
 	}
 
 	return 0

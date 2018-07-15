@@ -271,3 +271,34 @@ func (e *Emulator) CPUDDA() int {
 	e.ClearFlagH()
 	return 4
 }
+
+func (e *Emulator) CPU8BitRegisterRLC(r *Register8Bit) int {
+	test := testBit(r.Value(), 7)
+	r.SetValue(r.Value() << 1)
+	e.ClearAllFlags()
+	if test {
+		e.SetFlagC()
+		r.SetValue(setBit(r.Value(), 0))
+	}
+	if r.Value() == 0x0 {
+		e.SetFlagZ()
+	}
+	return 4
+}
+
+func (e *Emulator) CPU8BitRegisterRL(r *Register8Bit) int {
+	testCarry := e.FlagC()
+	test := testBit(r.Value(), 7)
+	r.SetValue(r.Value() << 1)
+	e.ClearAllFlags()
+	if test {
+		e.SetFlagC()
+	}
+	if testCarry {
+		r.SetValue(setBit(r.Value(), 0))
+	}
+	if r.Value() == 0x0 {
+		e.SetFlagZ()
+	}
+	return 4
+}
