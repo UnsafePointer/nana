@@ -355,52 +355,52 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return cycles
 	// SUB A,n
 	case 0x97:
-		return e.CPU8BitSub(&e.AF.High, e.AF.High.Value(), false)
+		return e.CPU8BitSubtract(&e.AF.High, e.AF.High.Value(), false)
 	case 0x90:
-		return e.CPU8BitSub(&e.AF.High, e.BC.High.Value(), false)
+		return e.CPU8BitSubtract(&e.AF.High, e.BC.High.Value(), false)
 	case 0x91:
-		return e.CPU8BitSub(&e.AF.High, e.BC.Low.Value(), false)
+		return e.CPU8BitSubtract(&e.AF.High, e.BC.Low.Value(), false)
 	case 0x92:
-		return e.CPU8BitSub(&e.AF.High, e.DE.High.Value(), false)
+		return e.CPU8BitSubtract(&e.AF.High, e.DE.High.Value(), false)
 	case 0x93:
-		return e.CPU8BitSub(&e.AF.High, e.DE.Low.Value(), false)
+		return e.CPU8BitSubtract(&e.AF.High, e.DE.Low.Value(), false)
 	case 0x94:
-		return e.CPU8BitSub(&e.AF.High, e.HL.High.Value(), false)
+		return e.CPU8BitSubtract(&e.AF.High, e.HL.High.Value(), false)
 	case 0x95:
-		return e.CPU8BitSub(&e.AF.High, e.HL.Low.Value(), false)
+		return e.CPU8BitSubtract(&e.AF.High, e.HL.Low.Value(), false)
 	case 0x96:
-		cycles := e.CPU8BitSub(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), false)
+		cycles := e.CPU8BitSubtract(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), false)
 		cycles += 4 // 8
 		return cycles
 	case 0xD6:
 		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
 		e.ProgramCounter.Increment()
-		cycles := e.CPU8BitSub(&e.AF.High, value, false)
+		cycles := e.CPU8BitSubtract(&e.AF.High, value, false)
 		cycles += 4 // 8
 		return cycles
 	// SBC A,n
 	case 0x9F:
-		return e.CPU8BitSub(&e.AF.High, e.AF.High.Value(), true)
+		return e.CPU8BitSubtract(&e.AF.High, e.AF.High.Value(), true)
 	case 0x98:
-		return e.CPU8BitSub(&e.AF.High, e.BC.High.Value(), true)
+		return e.CPU8BitSubtract(&e.AF.High, e.BC.High.Value(), true)
 	case 0x99:
-		return e.CPU8BitSub(&e.AF.High, e.BC.Low.Value(), true)
+		return e.CPU8BitSubtract(&e.AF.High, e.BC.Low.Value(), true)
 	case 0x9A:
-		return e.CPU8BitSub(&e.AF.High, e.DE.High.Value(), true)
+		return e.CPU8BitSubtract(&e.AF.High, e.DE.High.Value(), true)
 	case 0x9B:
-		return e.CPU8BitSub(&e.AF.High, e.DE.Low.Value(), true)
+		return e.CPU8BitSubtract(&e.AF.High, e.DE.Low.Value(), true)
 	case 0x9C:
-		return e.CPU8BitSub(&e.AF.High, e.HL.High.Value(), true)
+		return e.CPU8BitSubtract(&e.AF.High, e.HL.High.Value(), true)
 	case 0x9D:
-		return e.CPU8BitSub(&e.AF.High, e.HL.Low.Value(), true)
+		return e.CPU8BitSubtract(&e.AF.High, e.HL.Low.Value(), true)
 	case 0x9E:
-		cycles := e.CPU8BitSub(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), true)
+		cycles := e.CPU8BitSubtract(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), true)
 		cycles += 4 // 8
 		return cycles
 	case 0xDE:
 		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
 		e.ProgramCounter.Increment()
-		cycles := e.CPU8BitSub(&e.AF.High, value, true)
+		cycles := e.CPU8BitSubtract(&e.AF.High, value, true)
 		cycles += 4 // 8
 		return cycles
 	// AND n
@@ -483,28 +483,28 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return cycles
 	// CP n
 	case 0xBF:
-		return e.CPU8BitCp(e.AF.High.Value())
+		return e.CPU8BitCompare(e.AF.High.Value())
 	case 0xB8:
-		return e.CPU8BitCp(e.BC.High.Value())
+		return e.CPU8BitCompare(e.BC.High.Value())
 	case 0xB9:
-		return e.CPU8BitCp(e.BC.Low.Value())
+		return e.CPU8BitCompare(e.BC.Low.Value())
 	case 0xBA:
-		return e.CPU8BitCp(e.DE.High.Value())
+		return e.CPU8BitCompare(e.DE.High.Value())
 	case 0xBB:
-		return e.CPU8BitCp(e.DE.Low.Value())
+		return e.CPU8BitCompare(e.DE.Low.Value())
 	case 0xBC:
-		return e.CPU8BitCp(e.HL.High.Value())
+		return e.CPU8BitCompare(e.HL.High.Value())
 	case 0xBD:
-		return e.CPU8BitCp(e.HL.Low.Value())
+		return e.CPU8BitCompare(e.HL.Low.Value())
 	case 0xBE:
 		value := e.ReadMemory8Bit(e.HL.Value())
-		cycles := e.CPU8BitCp(value)
+		cycles := e.CPU8BitCompare(value)
 		cycles += 4
 		return cycles
 	case 0xFE:
 		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
 		e.ProgramCounter.Increment()
-		cycles := e.CPU8BitCp(value)
+		cycles := e.CPU8BitCompare(value)
 		cycles += 4
 		return cycles
 	}

@@ -51,7 +51,7 @@ func (e *Emulator) CPU8BitAdd(r1 *Register8Bit, addend uint8, useCarry bool) int
 	return 4
 }
 
-func (e *Emulator) CPU8BitSub(r1 *Register8Bit, minuend uint8, useCarry bool) int {
+func (e *Emulator) CPU8BitSubtract(r1 *Register8Bit, minuend uint8, useCarry bool) int {
 	subtrahend := r1.Value()
 	if useCarry && e.FlagC() {
 		minuend++
@@ -104,7 +104,7 @@ func (e *Emulator) CPU8BitXor(operand uint8) int {
 	return 4
 }
 
-func (e *Emulator) CPU8BitCp(operand uint8) int {
+func (e *Emulator) CPU8BitCompare(operand uint8) int {
 	result := e.AF.High.Value() - operand
 	e.ClearAllFlags()
 	if result == 0x0 {

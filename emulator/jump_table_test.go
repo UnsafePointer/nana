@@ -51,7 +51,7 @@ var _ = Describe("Emulator", func() {
 			BeforeEach(func() {
 				emulator.AF.SetLow(0x01)
 				emulator.AF.SetHigh(0x02)
-				emulator.CPU8BitSub(&emulator.AF.High, emulator.AF.Low.Value(), false)
+				emulator.CPU8BitSubtract(&emulator.AF.High, emulator.AF.Low.Value(), false)
 			})
 
 			It("should add the values and set the right flags", func() {
@@ -66,7 +66,7 @@ var _ = Describe("Emulator", func() {
 			BeforeEach(func() {
 				emulator.AF.SetLow(0xFF)
 				emulator.AF.SetHigh(0x01)
-				emulator.CPU8BitSub(&emulator.AF.High, emulator.AF.Low.Value(), false)
+				emulator.CPU8BitSubtract(&emulator.AF.High, emulator.AF.Low.Value(), false)
 			})
 
 			It("should add the values and set the right flags", func() {
@@ -126,7 +126,7 @@ var _ = Describe("Emulator", func() {
 			BeforeEach(func() {
 				emulator.AF.SetHigh(0xF1)
 				emulator.BC.SetHigh(0x1F)
-				emulator.CPU8BitCp(emulator.BC.High.Value())
+				emulator.CPU8BitCompare(emulator.BC.High.Value())
 			})
 
 			It("should CP the values and set the right flags", func() {
