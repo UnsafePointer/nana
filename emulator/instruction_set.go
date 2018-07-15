@@ -154,3 +154,38 @@ func (e *Emulator) CPU8BitIncrementMemoryAddress(address uint16) int {
 	}
 	return 12
 }
+
+func (e *Emulator) CPU8BitDecrement(r *Register8Bit) int {
+	previous := r.Value()
+	r.SetValue(r.Value() - 1)
+	if r.Value() == 0x0 {
+		e.SetFlagZ()
+	} else {
+		e.ClearFlagZ()
+	}
+	e.SetFlagN()
+	if previous&0x0F == 0x0 {
+		e.SetFlagH()
+	} else {
+		e.ClearFlagH()
+	}
+	return 4
+}
+
+func (e *Emulator) CPU8BitDecrementMemoryAddress(address uint16) int {
+	previous := e.ReadMemory8Bit(address)
+	current := previous - 1
+	e.WriteMemory(address, current)
+	if current == 0x0 {
+		e.SetFlagZ()
+	} else {
+		e.ClearFlagZ()
+	}
+	e.SetFlagN()
+	if previous&0x0F == 0x0 {
+		e.SetFlagH()
+	} else {
+		e.ClearFlagH()
+	}
+	return 12
+}

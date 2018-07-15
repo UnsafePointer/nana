@@ -524,6 +524,23 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return e.CPU8BitIncrement(&e.HL.Low)
 	case 0x34:
 		return e.CPU8BitIncrementMemoryAddress(e.HL.Value())
+	// DEC n
+	case 0x3D:
+		return e.CPU8BitDecrement(&e.AF.High)
+	case 0x05:
+		return e.CPU8BitDecrement(&e.BC.High)
+	case 0x0D:
+		return e.CPU8BitDecrement(&e.BC.Low)
+	case 0x15:
+		return e.CPU8BitDecrement(&e.DE.High)
+	case 0x1D:
+		return e.CPU8BitDecrement(&e.DE.Low)
+	case 0x25:
+		return e.CPU8BitDecrement(&e.HL.High)
+	case 0x2D:
+		return e.CPU8BitDecrement(&e.HL.Low)
+	case 0x35:
+		return e.CPU8BitDecrementMemoryAddress(e.HL.Value())
 	}
 
 	return 0
