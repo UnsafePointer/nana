@@ -218,3 +218,24 @@ func (e *Emulator) CPU16BitRegisterDecrement(r *Register16Bit) int {
 	r.SetValue(r.Value() - 1)
 	return 8
 }
+
+func (e *Emulator) CPU8BitRegisterSwap(r *Register8Bit) int {
+	result := (r.Value()&0xF0)>>4 | (r.Value()&0x0F)<<4
+	r.SetValue(result)
+	e.ClearAllFlags()
+	if result == 0x0 {
+		e.SetFlagZ()
+	}
+	return 8
+}
+
+func (e *Emulator) CPU8BitSwapMemoryAddress(address uint16) int {
+	value := e.ReadMemory8Bit(address)
+	result := (value&0xF0)>>4 | (value&0x0F)<<4
+	e.WriteMemory(address, result)
+	e.ClearAllFlags()
+	if result == 0x0 {
+		e.SetFlagZ()
+	}
+	return 16
+}

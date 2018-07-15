@@ -592,6 +592,11 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return e.CPU16BitRegisterDecrement(&e.HL)
 	case 0x3B:
 		return e.CPU16BitRegisterDecrement(&e.StackPointer)
+	// Extended Instruction Set
+	case 0xCB:
+		code := e.ReadMemory8Bit(e.ProgramCounter.Value())
+		e.ProgramCounter.Increment()
+		return e.ExecuteExtendedOpCode(code)
 	}
 
 	return 0
