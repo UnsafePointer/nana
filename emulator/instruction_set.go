@@ -72,3 +72,14 @@ func (e *Emulator) CPU8BitSub(r1 *Register8Bit, minuend uint8, useCarry bool) in
 	}
 	return 4
 }
+
+func (e *Emulator) CPU8BitAnd(operand uint8) int {
+	result := e.AF.High.Value() & operand
+	e.AF.SetHigh(result)
+	e.ClearAllFlags()
+	if e.AF.High.Value() == 0x0 {
+		e.SetFlagZ()
+	}
+	e.SetFlagH()
+	return 4
+}
