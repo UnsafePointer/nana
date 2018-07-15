@@ -643,16 +643,24 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	// Rotates & Shifts
 	// RLCA
 	case 0x07:
-		return e.CPU8BitRegisterRLC(&e.AF.High)
+		cycles := e.CPU8BitRegisterRLC(&e.AF.High)
+		cycles -= 4
+		return cycles
 	// RLA
 	case 0x17:
-		return e.CPU8BitRegisterRL(&e.AF.High)
+		cycles := e.CPU8BitRegisterRL(&e.AF.High)
+		cycles -= 4
+		return cycles
 	// RRCA
 	case 0x0F:
-		return e.CPU8BitRegisterRRC(&e.AF.High)
+		cycles := e.CPU8BitRegisterRRC(&e.AF.High)
+		cycles -= 4
+		return cycles
 	// RRA
 	case 0x1F:
-		return e.CPU8BitRegisterRR(&e.AF.High)
+		cycles := e.CPU8BitRegisterRR(&e.AF.High)
+		cycles -= 4
+		return cycles
 	}
 
 	return 0

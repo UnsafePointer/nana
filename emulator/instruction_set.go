@@ -283,7 +283,7 @@ func (e *Emulator) CPU8BitRegisterRLC(r *Register8Bit) int {
 	if r.Value() == 0x0 {
 		e.SetFlagZ()
 	}
-	return 4
+	return 8
 }
 
 func (e *Emulator) CPU8BitRegisterRL(r *Register8Bit) int {
@@ -300,7 +300,7 @@ func (e *Emulator) CPU8BitRegisterRL(r *Register8Bit) int {
 	if r.Value() == 0x0 {
 		e.SetFlagZ()
 	}
-	return 4
+	return 8
 }
 
 func (e *Emulator) CPU8BitRegisterRRC(r *Register8Bit) int {
@@ -314,7 +314,7 @@ func (e *Emulator) CPU8BitRegisterRRC(r *Register8Bit) int {
 	if r.Value() == 0x0 {
 		e.SetFlagZ()
 	}
-	return 4
+	return 8
 }
 
 func (e *Emulator) CPU8BitRegisterRR(r *Register8Bit) int {
@@ -331,5 +331,5 @@ func (e *Emulator) CPU8BitRegisterRR(r *Register8Bit) int {
 	if r.Value() == 0x0 {
 		e.SetFlagZ()
 	}
-	return 4
+	return 8
 }
