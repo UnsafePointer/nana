@@ -167,6 +167,22 @@ var _ = Describe("Emulator", func() {
 				Expect(emulator.FlagZ()).To(Equal(false))
 			})
 		})
+		Context("when using 16-Bit ADD", func() {
+			BeforeEach(func() {
+				emulator.HL.SetValue(0xFFFF)
+				emulator.BC.SetValue(0x0100)
+				emulator.SetFlagZ()
+				emulator.CPU16BitAdd(&emulator.HL, emulator.BC)
+			})
+
+			It("should ADD the values and set the right flags", func() {
+				Expect(emulator.HL.Value()).To(Equal(uint16(0x00FF)))
+				Expect(emulator.FlagC()).To(Equal(true))
+				Expect(emulator.FlagH()).To(Equal(true))
+				Expect(emulator.FlagN()).To(Equal(false))
+				Expect(emulator.FlagZ()).To(Equal(true))
+			})
+		})
 		Context("when values overflow", func() {
 			BeforeEach(func() {
 				emulator.ProgramCounter.SetValue(0x0)

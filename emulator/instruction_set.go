@@ -189,3 +189,22 @@ func (e *Emulator) CPU8BitDecrementMemoryAddress(address uint16) int {
 	}
 	return 12
 }
+
+func (e *Emulator) CPU16BitAdd(r1 *Register16Bit, r2 Register16Bit) int {
+	augend := r1.Value()
+	addend := r2.Value()
+	result := uint32(augend&0xFFFF) + uint32(addend&0xFFFF)
+	r1.SetValue(uint16(result & 0xFFFF))
+	e.ClearFlagN()
+	if result > 0xFFFF {
+		e.SetFlagC()
+	} else {
+		e.ClearFlagC()
+	}
+	if ((augend&0xFF00)&0xF)+((addend>>8)&0xF) != 0 {
+		e.SetFlagH()
+	} else {
+		e.ClearFlagH()
+	}
+	return 8
+}

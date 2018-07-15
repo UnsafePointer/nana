@@ -541,6 +541,16 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return e.CPU8BitDecrement(&e.HL.Low)
 	case 0x35:
 		return e.CPU8BitDecrementMemoryAddress(e.HL.Value())
+	// 16-Bit ALU
+	// ADD HL,n
+	case 0x09:
+		return e.CPU16BitAdd(&e.HL, e.BC)
+	case 0x19:
+		return e.CPU16BitAdd(&e.HL, e.DE)
+	case 0x29:
+		return e.CPU16BitAdd(&e.HL, e.HL)
+	case 0x39:
+		return e.CPU16BitAdd(&e.HL, e.StackPointer)
 	}
 
 	return 0
