@@ -551,6 +551,29 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return e.CPU16BitRegisterAdd(&e.HL, e.HL)
 	case 0x39:
 		return e.CPU16BitRegisterAdd(&e.HL, e.StackPointer)
+	// ADD SP,n
+	case 0xE8:
+		signedValue := int8(e.ReadMemory8Bit(e.ProgramCounter.Value()))
+		e.ProgramCounter.Increment()
+		e.ClearFlagZ()
+		e.ClearFlagN()
+
+		value := uint32(e.StackPointer.Value()) + uint32(signedValue)
+
+		if value > 0xFFFF {
+			e.SetFlagC()
+		} else {
+			e.ClearFlagC()
+		}
+
+		if (uint32(e.StackPointer.Value())&0xF + value&0xF) > 0xF {
+			e.SetFlagH()
+		} else {
+			e.ClearFlagH()
+		}
+
+		e.StackPointer.SetValue(uint16(0x00FFFF & value))
+		return 16
 	}
 
 	return 0
