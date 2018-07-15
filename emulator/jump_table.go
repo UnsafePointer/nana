@@ -2,9 +2,6 @@ package emulator
 
 func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	switch opcode {
-	// no-op
-	case 0x00:
-		return 4
 	// 8-Bit Loads
 	// LD nn,n
 	case 0x06:
@@ -600,6 +597,32 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	// DDA
 	case 0x27:
 		return e.CPUDDA()
+	// CPL
+	case 0x2F:
+		value := e.AF.High.Value()
+		e.AF.High.SetValue(value ^ 0xFF)
+		e.SetFlagN()
+		e.SetFlagH()
+		return 4
+	// CCF
+	case 0x3F:
+		if e.FlagC() {
+			e.ClearFlagC()
+		} else {
+			e.SetFlagC()
+		}
+		e.ClearFlagN()
+		e.ClearFlagH()
+		return 4
+	// SCF
+	case 0x37:
+		e.SetFlagC()
+		e.ClearFlagN()
+		e.ClearFlagH()
+		return 4
+	// NOP
+	case 0x00:
+		return 4
 	}
 
 	return 0
