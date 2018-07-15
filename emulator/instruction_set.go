@@ -239,3 +239,35 @@ func (e *Emulator) CPU8BitSwapMemoryAddress(address uint16) int {
 	}
 	return 16
 }
+
+// There's no much information about this on the Game Boy CPU Manual
+// This implementation is adapted from other emulators.
+func (e *Emulator) CPUDDA() int {
+	value := uint16(e.AF.High.Value())
+	if e.FlagN() {
+		if e.FlagH() {
+			value = (value - 0x06) & 0xFF
+		}
+		if e.FlagC() {
+			value = value - 0x60
+		}
+	} else {
+		if e.FlagH() || ((value & 0x0F) > 9) {
+			value = value + 0x06
+		}
+		if e.FlagC() || value > 0x9F {
+			value = value + 0x60
+		}
+	}
+	if value >= 0x100 {
+		e.SetFlagC()
+	}
+	e.AF.High.SetValue(uint8(value & 0xFF))
+	if e.AF.High.Value() == 0 {
+		e.SetFlagZ()
+	} else {
+		e.ClearFlagZ()
+	}
+	e.ClearFlagH()
+	return 4
+}
