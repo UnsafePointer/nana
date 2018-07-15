@@ -21,7 +21,7 @@ var _ = Describe("Emulator", func() {
 			BeforeEach(func() {
 				emulator.AF.SetLow(0x01)
 				emulator.AF.SetHigh(0x02)
-				emulator.CPU8BitAdd(&emulator.AF.High, emulator.AF.Low.Value(), false)
+				emulator.CPU8BitRegisterAdd(&emulator.AF.High, emulator.AF.Low.Value(), false)
 			})
 
 			It("should add the values and set the right flags", func() {
@@ -36,7 +36,7 @@ var _ = Describe("Emulator", func() {
 			BeforeEach(func() {
 				emulator.AF.SetLow(0xFF)
 				emulator.AF.SetHigh(0x01)
-				emulator.CPU8BitAdd(&emulator.AF.High, emulator.AF.Low.Value(), false)
+				emulator.CPU8BitRegisterAdd(&emulator.AF.High, emulator.AF.Low.Value(), false)
 			})
 
 			It("should add the values and set the right flags", func() {
@@ -51,7 +51,7 @@ var _ = Describe("Emulator", func() {
 			BeforeEach(func() {
 				emulator.AF.SetLow(0x01)
 				emulator.AF.SetHigh(0x02)
-				emulator.CPU8BitSubtract(&emulator.AF.High, emulator.AF.Low.Value(), false)
+				emulator.CPU8BitRegisterSubtract(&emulator.AF.High, emulator.AF.Low.Value(), false)
 			})
 
 			It("should add the values and set the right flags", func() {
@@ -66,7 +66,7 @@ var _ = Describe("Emulator", func() {
 			BeforeEach(func() {
 				emulator.AF.SetLow(0xFF)
 				emulator.AF.SetHigh(0x01)
-				emulator.CPU8BitSubtract(&emulator.AF.High, emulator.AF.Low.Value(), false)
+				emulator.CPU8BitRegisterSubtract(&emulator.AF.High, emulator.AF.Low.Value(), false)
 			})
 
 			It("should add the values and set the right flags", func() {
@@ -141,7 +141,7 @@ var _ = Describe("Emulator", func() {
 			BeforeEach(func() {
 				emulator.AF.SetHigh(0x0F)
 				emulator.SetFlagC()
-				emulator.CPU8BitIncrement(&emulator.AF.High)
+				emulator.CPU8BitRegisterIncrement(&emulator.AF.High)
 			})
 
 			It("should INC the values and set the right flags", func() {
@@ -156,7 +156,7 @@ var _ = Describe("Emulator", func() {
 			BeforeEach(func() {
 				emulator.AF.SetHigh(0x10)
 				emulator.SetFlagC()
-				emulator.CPU8BitDecrement(&emulator.AF.High)
+				emulator.CPU8BitRegisterDecrement(&emulator.AF.High)
 			})
 
 			It("should DEC the values and set the right flags", func() {
@@ -172,7 +172,7 @@ var _ = Describe("Emulator", func() {
 				emulator.HL.SetValue(0xFFFF)
 				emulator.BC.SetValue(0x0100)
 				emulator.SetFlagZ()
-				emulator.CPU16BitAdd(&emulator.HL, emulator.BC)
+				emulator.CPU16BitRegisterAdd(&emulator.HL, emulator.BC)
 			})
 
 			It("should ADD the values and set the right flags", func() {

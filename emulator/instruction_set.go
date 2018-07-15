@@ -22,7 +22,7 @@ func (e Emulator) CPU8BitRegisterMemoryAddressLoad(r *Register8Bit, address uint
 	return 8
 }
 
-func (e *Emulator) CPU16BitRegistryMemoryLoad(r *Register16Bit) int {
+func (e *Emulator) CPU16BitRegisterMemoryLoad(r *Register16Bit) int {
 	value := e.ReadMemory16Bit(e.ProgramCounter.Value())
 	e.ProgramCounter.Increment()
 	e.ProgramCounter.Increment()
@@ -30,7 +30,7 @@ func (e *Emulator) CPU16BitRegistryMemoryLoad(r *Register16Bit) int {
 	return 12
 }
 
-func (e *Emulator) CPU8BitAdd(r1 *Register8Bit, addend uint8, useCarry bool) int {
+func (e *Emulator) CPU8BitRegisterAdd(r1 *Register8Bit, addend uint8, useCarry bool) int {
 	augend := r1.Value()
 	if useCarry && e.FlagC() {
 		addend++
@@ -51,7 +51,7 @@ func (e *Emulator) CPU8BitAdd(r1 *Register8Bit, addend uint8, useCarry bool) int
 	return 4
 }
 
-func (e *Emulator) CPU8BitSubtract(r1 *Register8Bit, minuend uint8, useCarry bool) int {
+func (e *Emulator) CPU8BitRegisterSubtract(r1 *Register8Bit, minuend uint8, useCarry bool) int {
 	subtrahend := r1.Value()
 	if useCarry && e.FlagC() {
 		minuend++
@@ -120,7 +120,7 @@ func (e *Emulator) CPU8BitCompare(operand uint8) int {
 	return 4
 }
 
-func (e *Emulator) CPU8BitIncrement(r *Register8Bit) int {
+func (e *Emulator) CPU8BitRegisterIncrement(r *Register8Bit) int {
 	previous := r.Value()
 	r.SetValue(r.Value() + 1)
 	if r.Value() == 0x0 {
@@ -155,7 +155,7 @@ func (e *Emulator) CPU8BitIncrementMemoryAddress(address uint16) int {
 	return 12
 }
 
-func (e *Emulator) CPU8BitDecrement(r *Register8Bit) int {
+func (e *Emulator) CPU8BitRegisterDecrement(r *Register8Bit) int {
 	previous := r.Value()
 	r.SetValue(r.Value() - 1)
 	if r.Value() == 0x0 {
@@ -190,7 +190,7 @@ func (e *Emulator) CPU8BitDecrementMemoryAddress(address uint16) int {
 	return 12
 }
 
-func (e *Emulator) CPU16BitAdd(r1 *Register16Bit, r2 Register16Bit) int {
+func (e *Emulator) CPU16BitRegisterAdd(r1 *Register16Bit, r2 Register16Bit) int {
 	augend := r1.Value()
 	addend := r2.Value()
 	result := uint32(augend&0xFFFF) + uint32(addend&0xFFFF)

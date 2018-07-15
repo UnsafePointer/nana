@@ -231,13 +231,13 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	// 16-Bit Loads
 	// LD n,nn
 	case 0x01:
-		return e.CPU16BitRegistryMemoryLoad(&e.BC)
+		return e.CPU16BitRegisterMemoryLoad(&e.BC)
 	case 0x11:
-		return e.CPU16BitRegistryMemoryLoad(&e.DE)
+		return e.CPU16BitRegisterMemoryLoad(&e.DE)
 	case 0x21:
-		return e.CPU16BitRegistryMemoryLoad(&e.HL)
+		return e.CPU16BitRegisterMemoryLoad(&e.HL)
 	case 0x31:
-		return e.CPU16BitRegistryMemoryLoad(&e.StackPointer)
+		return e.CPU16BitRegisterMemoryLoad(&e.StackPointer)
 	// LD SP,HL
 	case 0xF9:
 		e.StackPointer.SetValue(e.HL.Value())
@@ -305,102 +305,102 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	// 8-Bit ALU
 	// ADD A,n
 	case 0x87:
-		return e.CPU8BitAdd(&e.AF.High, e.AF.High.Value(), false)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.AF.High.Value(), false)
 	case 0x80:
-		return e.CPU8BitAdd(&e.AF.High, e.BC.High.Value(), false)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.BC.High.Value(), false)
 	case 0x81:
-		return e.CPU8BitAdd(&e.AF.High, e.BC.Low.Value(), false)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.BC.Low.Value(), false)
 	case 0x82:
-		return e.CPU8BitAdd(&e.AF.High, e.DE.High.Value(), false)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.DE.High.Value(), false)
 	case 0x83:
-		return e.CPU8BitAdd(&e.AF.High, e.DE.Low.Value(), false)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.DE.Low.Value(), false)
 	case 0x84:
-		return e.CPU8BitAdd(&e.AF.High, e.HL.High.Value(), false)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.HL.High.Value(), false)
 	case 0x85:
-		return e.CPU8BitAdd(&e.AF.High, e.HL.Low.Value(), false)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.HL.Low.Value(), false)
 	case 0x86:
-		cycles := e.CPU8BitAdd(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), false)
+		cycles := e.CPU8BitRegisterAdd(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), false)
 		cycles += 4 // 8
 		return cycles
 	case 0xC6:
 		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
 		e.ProgramCounter.Increment()
-		cycles := e.CPU8BitAdd(&e.AF.High, value, false)
+		cycles := e.CPU8BitRegisterAdd(&e.AF.High, value, false)
 		cycles += 4 // 8
 		return cycles
 	// ADC A,n
 	case 0x8F:
-		return e.CPU8BitAdd(&e.AF.High, e.AF.High.Value(), true)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.AF.High.Value(), true)
 	case 0x88:
-		return e.CPU8BitAdd(&e.AF.High, e.BC.High.Value(), true)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.BC.High.Value(), true)
 	case 0x89:
-		return e.CPU8BitAdd(&e.AF.High, e.BC.Low.Value(), true)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.BC.Low.Value(), true)
 	case 0x8A:
-		return e.CPU8BitAdd(&e.AF.High, e.DE.High.Value(), true)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.DE.High.Value(), true)
 	case 0x8B:
-		return e.CPU8BitAdd(&e.AF.High, e.DE.Low.Value(), true)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.DE.Low.Value(), true)
 	case 0x8C:
-		return e.CPU8BitAdd(&e.AF.High, e.HL.High.Value(), true)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.HL.High.Value(), true)
 	case 0x8D:
-		return e.CPU8BitAdd(&e.AF.High, e.HL.Low.Value(), true)
+		return e.CPU8BitRegisterAdd(&e.AF.High, e.HL.Low.Value(), true)
 	case 0x8E:
-		cycles := e.CPU8BitAdd(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), true)
+		cycles := e.CPU8BitRegisterAdd(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), true)
 		cycles += 4 // 8
 		return cycles
 	case 0xCE:
 		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
 		e.ProgramCounter.Increment()
-		cycles := e.CPU8BitAdd(&e.AF.High, value, true)
+		cycles := e.CPU8BitRegisterAdd(&e.AF.High, value, true)
 		cycles += 4 // 8
 		return cycles
 	// SUB A,n
 	case 0x97:
-		return e.CPU8BitSubtract(&e.AF.High, e.AF.High.Value(), false)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.AF.High.Value(), false)
 	case 0x90:
-		return e.CPU8BitSubtract(&e.AF.High, e.BC.High.Value(), false)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.BC.High.Value(), false)
 	case 0x91:
-		return e.CPU8BitSubtract(&e.AF.High, e.BC.Low.Value(), false)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.BC.Low.Value(), false)
 	case 0x92:
-		return e.CPU8BitSubtract(&e.AF.High, e.DE.High.Value(), false)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.DE.High.Value(), false)
 	case 0x93:
-		return e.CPU8BitSubtract(&e.AF.High, e.DE.Low.Value(), false)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.DE.Low.Value(), false)
 	case 0x94:
-		return e.CPU8BitSubtract(&e.AF.High, e.HL.High.Value(), false)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.HL.High.Value(), false)
 	case 0x95:
-		return e.CPU8BitSubtract(&e.AF.High, e.HL.Low.Value(), false)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.HL.Low.Value(), false)
 	case 0x96:
-		cycles := e.CPU8BitSubtract(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), false)
+		cycles := e.CPU8BitRegisterSubtract(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), false)
 		cycles += 4 // 8
 		return cycles
 	case 0xD6:
 		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
 		e.ProgramCounter.Increment()
-		cycles := e.CPU8BitSubtract(&e.AF.High, value, false)
+		cycles := e.CPU8BitRegisterSubtract(&e.AF.High, value, false)
 		cycles += 4 // 8
 		return cycles
 	// SBC A,n
 	case 0x9F:
-		return e.CPU8BitSubtract(&e.AF.High, e.AF.High.Value(), true)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.AF.High.Value(), true)
 	case 0x98:
-		return e.CPU8BitSubtract(&e.AF.High, e.BC.High.Value(), true)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.BC.High.Value(), true)
 	case 0x99:
-		return e.CPU8BitSubtract(&e.AF.High, e.BC.Low.Value(), true)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.BC.Low.Value(), true)
 	case 0x9A:
-		return e.CPU8BitSubtract(&e.AF.High, e.DE.High.Value(), true)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.DE.High.Value(), true)
 	case 0x9B:
-		return e.CPU8BitSubtract(&e.AF.High, e.DE.Low.Value(), true)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.DE.Low.Value(), true)
 	case 0x9C:
-		return e.CPU8BitSubtract(&e.AF.High, e.HL.High.Value(), true)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.HL.High.Value(), true)
 	case 0x9D:
-		return e.CPU8BitSubtract(&e.AF.High, e.HL.Low.Value(), true)
+		return e.CPU8BitRegisterSubtract(&e.AF.High, e.HL.Low.Value(), true)
 	case 0x9E:
-		cycles := e.CPU8BitSubtract(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), true)
+		cycles := e.CPU8BitRegisterSubtract(&e.AF.High, e.ReadMemory8Bit(e.HL.Value()), true)
 		cycles += 4 // 8
 		return cycles
 	case 0xDE:
 		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
 		e.ProgramCounter.Increment()
-		cycles := e.CPU8BitSubtract(&e.AF.High, value, true)
+		cycles := e.CPU8BitRegisterSubtract(&e.AF.High, value, true)
 		cycles += 4 // 8
 		return cycles
 	// AND n
@@ -509,48 +509,48 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return cycles
 	// INC n
 	case 0x3C:
-		return e.CPU8BitIncrement(&e.AF.High)
+		return e.CPU8BitRegisterIncrement(&e.AF.High)
 	case 0x04:
-		return e.CPU8BitIncrement(&e.BC.High)
+		return e.CPU8BitRegisterIncrement(&e.BC.High)
 	case 0x0C:
-		return e.CPU8BitIncrement(&e.BC.Low)
+		return e.CPU8BitRegisterIncrement(&e.BC.Low)
 	case 0x14:
-		return e.CPU8BitIncrement(&e.DE.High)
+		return e.CPU8BitRegisterIncrement(&e.DE.High)
 	case 0x1C:
-		return e.CPU8BitIncrement(&e.DE.Low)
+		return e.CPU8BitRegisterIncrement(&e.DE.Low)
 	case 0x24:
-		return e.CPU8BitIncrement(&e.HL.High)
+		return e.CPU8BitRegisterIncrement(&e.HL.High)
 	case 0x2C:
-		return e.CPU8BitIncrement(&e.HL.Low)
+		return e.CPU8BitRegisterIncrement(&e.HL.Low)
 	case 0x34:
 		return e.CPU8BitIncrementMemoryAddress(e.HL.Value())
 	// DEC n
 	case 0x3D:
-		return e.CPU8BitDecrement(&e.AF.High)
+		return e.CPU8BitRegisterDecrement(&e.AF.High)
 	case 0x05:
-		return e.CPU8BitDecrement(&e.BC.High)
+		return e.CPU8BitRegisterDecrement(&e.BC.High)
 	case 0x0D:
-		return e.CPU8BitDecrement(&e.BC.Low)
+		return e.CPU8BitRegisterDecrement(&e.BC.Low)
 	case 0x15:
-		return e.CPU8BitDecrement(&e.DE.High)
+		return e.CPU8BitRegisterDecrement(&e.DE.High)
 	case 0x1D:
-		return e.CPU8BitDecrement(&e.DE.Low)
+		return e.CPU8BitRegisterDecrement(&e.DE.Low)
 	case 0x25:
-		return e.CPU8BitDecrement(&e.HL.High)
+		return e.CPU8BitRegisterDecrement(&e.HL.High)
 	case 0x2D:
-		return e.CPU8BitDecrement(&e.HL.Low)
+		return e.CPU8BitRegisterDecrement(&e.HL.Low)
 	case 0x35:
 		return e.CPU8BitDecrementMemoryAddress(e.HL.Value())
 	// 16-Bit ALU
 	// ADD HL,n
 	case 0x09:
-		return e.CPU16BitAdd(&e.HL, e.BC)
+		return e.CPU16BitRegisterAdd(&e.HL, e.BC)
 	case 0x19:
-		return e.CPU16BitAdd(&e.HL, e.DE)
+		return e.CPU16BitRegisterAdd(&e.HL, e.DE)
 	case 0x29:
-		return e.CPU16BitAdd(&e.HL, e.HL)
+		return e.CPU16BitRegisterAdd(&e.HL, e.HL)
 	case 0x39:
-		return e.CPU16BitAdd(&e.HL, e.StackPointer)
+		return e.CPU16BitRegisterAdd(&e.HL, e.StackPointer)
 	}
 
 	return 0
