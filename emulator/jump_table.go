@@ -631,6 +631,14 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	case 0x10:
 		e.ProgramCounter.Increment() // 00
 		return 4
+	// DI
+	case 0xF3:
+		e.PendingDisableInterrupts = true
+		return 4
+	// EI
+	case 0xFB:
+		e.PendingEnableInterrupts = true
+		return 4
 	}
 
 	return 0

@@ -14,14 +14,17 @@ type Emulator struct {
 	DE Register16Bit
 	HL Register16Bit
 
-	CartridgeMemory [0x200000]uint8
-	ROM             [0x10000]uint8
-	RAM             [0x8000]uint8
-	ProgramCounter  Register16Bit
-	StackPointer    Register16Bit
-	CurrentROMBank  uint16
-	CurrentRAMBank  uint16
-	Halted          bool
+	CartridgeMemory          [0x200000]uint8
+	ROM                      [0x10000]uint8
+	RAM                      [0x8000]uint8
+	ProgramCounter           Register16Bit
+	StackPointer             Register16Bit
+	CurrentROMBank           uint16
+	CurrentRAMBank           uint16
+	Halted                   bool
+	DisableInterrupts        bool
+	PendingDisableInterrupts bool
+	PendingEnableInterrupts  bool
 }
 
 func NewEmulator() *Emulator {
@@ -35,6 +38,9 @@ func NewEmulator() *Emulator {
 	e.CurrentROMBank = 1 // Should never be 1, ROM bank 0 is fixed
 	e.CurrentRAMBank = 0
 	e.Halted = false
+	e.DisableInterrupts = false
+	e.PendingDisableInterrupts = false
+	e.PendingEnableInterrupts = false
 	e.ROM[0xFF05] = 0x00
 	e.ROM[0xFF06] = 0x00
 	e.ROM[0xFF07] = 0x00
@@ -95,6 +101,17 @@ func (e *Emulator) executeNextOpcode() int {
 		cycles = 4
 	} else {
 		cycles = e.ExecuteOpCode(opCode)
+	}
+	// 0xF3: disable interrupts but only after next instruction, so
+	// no immediatly after we return from 0xF3
+	if e.PendingDisableInterrupts && opCode != 0xF3 {
+		e.PendingDisableInterrupts = false
+		e.DisableInterrupts = true
+	}
+	// 0xFB: enable interrupts but only after next instruction
+	if e.PendingEnableInterrupts && opCode != 0xFB {
+		e.PendingEnableInterrupts = false
+		e.DisableInterrupts = false
 	}
 	return cycles
 }
