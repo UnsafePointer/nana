@@ -208,3 +208,13 @@ func (e *Emulator) CPU16BitRegisterAdd(r1 *Register16Bit, r2 Register16Bit) int 
 	}
 	return 8
 }
+
+func (e *Emulator) CPU16BitRegisterIncrement(r *Register16Bit) int {
+	r.SetValue(r.Value() + 1)
+	return 8
+}
+
+func (e *Emulator) CPU16BitRegisterDecrement(r *Register16Bit) int {
+	r.SetValue(r.Value() - 1)
+	return 8
+}

@@ -574,6 +574,24 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 
 		e.StackPointer.SetValue(uint16(0x00FFFF & value))
 		return 16
+	// INC nn
+	case 0x03:
+		return e.CPU16BitRegisterIncrement(&e.BC)
+	case 0x13:
+		return e.CPU16BitRegisterIncrement(&e.DE)
+	case 0x23:
+		return e.CPU16BitRegisterIncrement(&e.HL)
+	case 0x33:
+		return e.CPU16BitRegisterIncrement(&e.StackPointer)
+	// DEC nn
+	case 0x0B:
+		return e.CPU16BitRegisterDecrement(&e.BC)
+	case 0x1B:
+		return e.CPU16BitRegisterDecrement(&e.DE)
+	case 0x2B:
+		return e.CPU16BitRegisterDecrement(&e.HL)
+	case 0x3B:
+		return e.CPU16BitRegisterDecrement(&e.StackPointer)
 	}
 
 	return 0
