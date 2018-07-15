@@ -429,6 +429,32 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		cycles := e.CPU8BitAnd(value)
 		cycles += 4
 		return cycles
+	// OR n
+	case 0xB7:
+		return e.CPU8BitOr(e.AF.High.Value())
+	case 0xB0:
+		return e.CPU8BitOr(e.BC.High.Value())
+	case 0xB1:
+		return e.CPU8BitOr(e.BC.Low.Value())
+	case 0xB2:
+		return e.CPU8BitOr(e.DE.High.Value())
+	case 0xB3:
+		return e.CPU8BitOr(e.DE.Low.Value())
+	case 0xB4:
+		return e.CPU8BitOr(e.HL.High.Value())
+	case 0xB5:
+		return e.CPU8BitOr(e.HL.Low.Value())
+	case 0xB6:
+		value := e.ReadMemory8Bit(e.HL.Value())
+		cycles := e.CPU8BitOr(value)
+		cycles += 4
+		return cycles
+	case 0xF6:
+		value := e.ReadMemory8Bit(e.ProgramCounter.Value())
+		e.ProgramCounter.Increment()
+		cycles := e.CPU8BitOr(value)
+		cycles += 4
+		return cycles
 	}
 
 	return 0
