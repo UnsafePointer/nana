@@ -196,6 +196,35 @@ var _ = Describe("Emulator", func() {
 				Expect(emulator.FlagZ()).To(Equal(false))
 			})
 		})
+		Context("when using RRC", func() {
+			BeforeEach(func() {
+				emulator.AF.High.SetValue(0x0F)
+				emulator.CPU8BitRegisterRRC(&emulator.AF.High)
+			})
+
+			It("should rotate the value and set the right flags", func() {
+				Expect(emulator.AF.High.Value()).To(Equal(uint8(0x87)))
+				Expect(emulator.FlagC()).To(Equal(true))
+				Expect(emulator.FlagH()).To(Equal(false))
+				Expect(emulator.FlagN()).To(Equal(false))
+				Expect(emulator.FlagZ()).To(Equal(false))
+			})
+		})
+		Context("when using RR", func() {
+			BeforeEach(func() {
+				emulator.AF.High.SetValue(0x0F)
+				emulator.ClearFlagC()
+				emulator.CPU8BitRegisterRR(&emulator.AF.High)
+			})
+
+			It("should rotate the value and set the right flags", func() {
+				Expect(emulator.AF.High.Value()).To(Equal(uint8(0x07)))
+				Expect(emulator.FlagC()).To(Equal(true))
+				Expect(emulator.FlagH()).To(Equal(false))
+				Expect(emulator.FlagN()).To(Equal(false))
+				Expect(emulator.FlagZ()).To(Equal(false))
+			})
+		})
 		Context("when using 16-Bit ADD", func() {
 			BeforeEach(func() {
 				emulator.HL.SetValue(0xFFFF)

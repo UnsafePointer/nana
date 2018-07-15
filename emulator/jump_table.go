@@ -647,6 +647,12 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	// RLA
 	case 0x17:
 		return e.CPU8BitRegisterRL(&e.AF.High)
+	// RRCA
+	case 0x0F:
+		return e.CPU8BitRegisterRRC(&e.AF.High)
+	// RRA
+	case 0x1F:
+		return e.CPU8BitRegisterRR(&e.AF.High)
 	}
 
 	return 0

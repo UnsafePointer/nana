@@ -302,3 +302,34 @@ func (e *Emulator) CPU8BitRegisterRL(r *Register8Bit) int {
 	}
 	return 4
 }
+
+func (e *Emulator) CPU8BitRegisterRRC(r *Register8Bit) int {
+	test := testBit(r.Value(), 0)
+	r.SetValue(r.Value() >> 1)
+	e.ClearAllFlags()
+	if test {
+		e.SetFlagC()
+		r.SetValue(setBit(r.Value(), 7))
+	}
+	if r.Value() == 0x0 {
+		e.SetFlagZ()
+	}
+	return 4
+}
+
+func (e *Emulator) CPU8BitRegisterRR(r *Register8Bit) int {
+	testCarry := e.FlagC()
+	test := testBit(r.Value(), 0)
+	r.SetValue(r.Value() >> 1)
+	e.ClearAllFlags()
+	if test {
+		e.SetFlagC()
+	}
+	if testCarry {
+		r.SetValue(setBit(r.Value(), 7))
+	}
+	if r.Value() == 0x0 {
+		e.SetFlagZ()
+	}
+	return 4
+}
