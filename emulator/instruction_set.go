@@ -93,3 +93,13 @@ func (e *Emulator) CPU8BitOr(operand uint8) int {
 	}
 	return 4
 }
+
+func (e *Emulator) CPU8BitXor(operand uint8) int {
+	result := e.AF.High.Value() ^ operand
+	e.AF.High.SetValue(result)
+	e.ClearAllFlags()
+	if e.AF.High.Value() == 0x0 {
+		e.SetFlagZ()
+	}
+	return 4
+}

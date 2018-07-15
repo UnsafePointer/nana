@@ -107,6 +107,21 @@ var _ = Describe("Emulator", func() {
 				Expect(emulator.FlagZ()).To(Equal(true))
 			})
 		})
+		Context("when using 8-Bit XOR", func() {
+			BeforeEach(func() {
+				emulator.AF.SetHigh(0xF2)
+				emulator.BC.SetHigh(0xD3)
+				emulator.CPU8BitXor(emulator.BC.High.Value())
+			})
+
+			It("should XOR the values and set the right flags", func() {
+				Expect(emulator.AF.High.Value()).To(Equal(uint8(0x21)))
+				Expect(emulator.FlagC()).To(Equal(false))
+				Expect(emulator.FlagH()).To(Equal(false))
+				Expect(emulator.FlagN()).To(Equal(false))
+				Expect(emulator.FlagZ()).To(Equal(false))
+			})
+		})
 		Context("when values overflow", func() {
 			BeforeEach(func() {
 				emulator.ProgramCounter.SetValue(0x0)
