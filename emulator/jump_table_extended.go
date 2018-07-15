@@ -106,6 +106,24 @@ func (e *Emulator) ExecuteExtendedOpCode(opcode uint8) int {
 		return e.CPU8BitRegisterSLA(&e.HL.Low)
 	case 0x26:
 		return e.CPU8BitSLAMemoryAddress(e.HL.Value())
+	// SRL n
+	case 0x2F:
+		return e.CPU8BitRegisterSRL(&e.AF.High)
+	case 0x28:
+		return e.CPU8BitRegisterSRL(&e.BC.High)
+	case 0x29:
+		return e.CPU8BitRegisterSRL(&e.BC.Low)
+	case 0x2A:
+		return e.CPU8BitRegisterSRL(&e.DE.High)
+	case 0x2B:
+		return e.CPU8BitRegisterSRL(&e.DE.Low)
+	case 0x2C:
+		return e.CPU8BitRegisterSRL(&e.HL.High)
+	case 0x2D:
+		return e.CPU8BitRegisterSRL(&e.HL.Low)
+	case 0x2E:
+		return e.CPU8BitSRLMemoryAddress(e.HL.Value())
+
 	}
 
 	return 0

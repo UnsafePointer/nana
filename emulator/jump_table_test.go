@@ -239,6 +239,20 @@ var _ = Describe("Emulator", func() {
 				Expect(emulator.FlagZ()).To(Equal(false))
 			})
 		})
+		Context("when using SRL", func() {
+			BeforeEach(func() {
+				emulator.AF.High.SetValue(0xFF)
+				emulator.CPU8BitRegisterSRL(&emulator.AF.High)
+			})
+
+			It("should shift the value and set the right flags", func() {
+				Expect(emulator.AF.High.Value()).To(Equal(uint8(0x7F)))
+				Expect(emulator.FlagC()).To(Equal(true))
+				Expect(emulator.FlagH()).To(Equal(false))
+				Expect(emulator.FlagN()).To(Equal(false))
+				Expect(emulator.FlagZ()).To(Equal(false))
+			})
+		})
 		Context("when using 16-Bit ADD", func() {
 			BeforeEach(func() {
 				emulator.HL.SetValue(0xFFFF)
