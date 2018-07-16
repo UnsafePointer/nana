@@ -520,3 +520,16 @@ func (e *Emulator) CPU8BitBitMemoryAddress(address uint16, position uint) int {
 	e.SetFlagH()
 	return 16
 }
+
+func (e *Emulator) CPU8BitRegisterSet(r *Register8Bit, position uint) int {
+	value := setBit(r.Value(), position)
+	r.SetValue(value)
+	return 8
+}
+
+func (e *Emulator) CPU8BitSetMemoryAddress(address uint16, position uint) int {
+	value := e.ReadMemory8Bit(address)
+	value = setBit(value, position)
+	e.WriteMemory(address, value)
+	return 16
+}

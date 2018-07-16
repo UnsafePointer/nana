@@ -277,6 +277,143 @@ func (e *Emulator) ExecuteExtendedOpCode(opcode uint8) int {
 		return e.CPU8BitRegisterBit(&e.HL.Low, 7)
 	case 0x7E:
 		return e.CPU8BitBitMemoryAddress(e.HL.Value(), 7)
+	// SET b,r
+	// b=0
+	case 0xC7:
+		return e.CPU8BitRegisterSet(&e.AF.High, 0)
+	case 0xC0:
+		return e.CPU8BitRegisterSet(&e.BC.High, 0)
+	case 0xC1:
+		return e.CPU8BitRegisterSet(&e.BC.Low, 0)
+	case 0xC2:
+		return e.CPU8BitRegisterSet(&e.DE.High, 0)
+	case 0xC3:
+		return e.CPU8BitRegisterSet(&e.DE.Low, 0)
+	case 0xC4:
+		return e.CPU8BitRegisterSet(&e.HL.High, 0)
+	case 0xC5:
+		return e.CPU8BitRegisterSet(&e.HL.Low, 0)
+	case 0xC6:
+		return e.CPU8BitSetMemoryAddress(e.HL.Value(), 0)
+	// b=1
+	case 0xCF:
+		return e.CPU8BitRegisterSet(&e.AF.High, 1)
+	case 0xC8:
+		return e.CPU8BitRegisterSet(&e.BC.High, 1)
+	case 0xC9:
+		return e.CPU8BitRegisterSet(&e.BC.Low, 1)
+	case 0xCA:
+		return e.CPU8BitRegisterSet(&e.DE.High, 1)
+	case 0xCB:
+		return e.CPU8BitRegisterSet(&e.DE.Low, 1)
+	case 0xCC:
+		return e.CPU8BitRegisterSet(&e.HL.High, 1)
+	case 0xCD:
+		return e.CPU8BitRegisterSet(&e.HL.Low, 1)
+	case 0xCE:
+		return e.CPU8BitSetMemoryAddress(e.HL.Value(), 1)
+	// b=2
+	case 0xD7:
+		return e.CPU8BitRegisterSet(&e.AF.High, 2)
+	case 0xD0:
+		return e.CPU8BitRegisterSet(&e.BC.High, 2)
+	case 0xD1:
+		return e.CPU8BitRegisterSet(&e.BC.Low, 2)
+	case 0xD2:
+		return e.CPU8BitRegisterSet(&e.DE.High, 2)
+	case 0xD3:
+		return e.CPU8BitRegisterSet(&e.DE.Low, 2)
+	case 0xD4:
+		return e.CPU8BitRegisterSet(&e.HL.High, 2)
+	case 0xD5:
+		return e.CPU8BitRegisterSet(&e.HL.Low, 2)
+	case 0xD6:
+		return e.CPU8BitSetMemoryAddress(e.HL.Value(), 2)
+	// b=3
+	case 0xDF:
+		return e.CPU8BitRegisterSet(&e.AF.High, 3)
+	case 0xD8:
+		return e.CPU8BitRegisterSet(&e.BC.High, 3)
+	case 0xD9:
+		return e.CPU8BitRegisterSet(&e.BC.Low, 3)
+	case 0xDA:
+		return e.CPU8BitRegisterSet(&e.DE.High, 3)
+	case 0xDB:
+		return e.CPU8BitRegisterSet(&e.DE.Low, 3)
+	case 0xDC:
+		return e.CPU8BitRegisterSet(&e.HL.High, 3)
+	case 0xDD:
+		return e.CPU8BitRegisterSet(&e.HL.Low, 3)
+	case 0xDE:
+		return e.CPU8BitSetMemoryAddress(e.HL.Value(), 3)
+	// b=4
+	case 0xE7:
+		return e.CPU8BitRegisterSet(&e.AF.High, 4)
+	case 0xE0:
+		return e.CPU8BitRegisterSet(&e.BC.High, 4)
+	case 0xE1:
+		return e.CPU8BitRegisterSet(&e.BC.Low, 4)
+	case 0xE2:
+		return e.CPU8BitRegisterSet(&e.DE.High, 4)
+	case 0xE3:
+		return e.CPU8BitRegisterSet(&e.DE.Low, 4)
+	case 0xE4:
+		return e.CPU8BitRegisterSet(&e.HL.High, 4)
+	case 0xE5:
+		return e.CPU8BitRegisterSet(&e.HL.Low, 4)
+	case 0xE6:
+		return e.CPU8BitSetMemoryAddress(e.HL.Value(), 4)
+	// b=5
+	case 0xEF:
+		return e.CPU8BitRegisterSet(&e.AF.High, 5)
+	case 0xE8:
+		return e.CPU8BitRegisterSet(&e.BC.High, 5)
+	case 0xE9:
+		return e.CPU8BitRegisterSet(&e.BC.Low, 5)
+	case 0xEA:
+		return e.CPU8BitRegisterSet(&e.DE.High, 5)
+	case 0xEB:
+		return e.CPU8BitRegisterSet(&e.DE.Low, 5)
+	case 0xEC:
+		return e.CPU8BitRegisterSet(&e.HL.High, 5)
+	case 0xED:
+		return e.CPU8BitRegisterSet(&e.HL.Low, 5)
+	case 0xEE:
+		return e.CPU8BitSetMemoryAddress(e.HL.Value(), 5)
+	// b=6
+	case 0xF7:
+		return e.CPU8BitRegisterSet(&e.AF.High, 6)
+	case 0xF0:
+		return e.CPU8BitRegisterSet(&e.BC.High, 6)
+	case 0xF1:
+		return e.CPU8BitRegisterSet(&e.BC.Low, 6)
+	case 0xF2:
+		return e.CPU8BitRegisterSet(&e.DE.High, 6)
+	case 0xF3:
+		return e.CPU8BitRegisterSet(&e.DE.Low, 6)
+	case 0xF4:
+		return e.CPU8BitRegisterSet(&e.HL.High, 6)
+	case 0xF5:
+		return e.CPU8BitRegisterSet(&e.HL.Low, 6)
+	case 0xF6:
+		return e.CPU8BitSetMemoryAddress(e.HL.Value(), 6)
+	// b=7
+	case 0xFF:
+		return e.CPU8BitRegisterSet(&e.AF.High, 7)
+	case 0xF8:
+		return e.CPU8BitRegisterSet(&e.BC.High, 7)
+	case 0xF9:
+		return e.CPU8BitRegisterSet(&e.BC.Low, 7)
+	case 0xFA:
+		return e.CPU8BitRegisterSet(&e.DE.High, 7)
+	case 0xFB:
+		return e.CPU8BitRegisterSet(&e.DE.Low, 7)
+	case 0xFC:
+		return e.CPU8BitRegisterSet(&e.HL.High, 7)
+	case 0xFD:
+		return e.CPU8BitRegisterSet(&e.HL.Low, 7)
+	case 0xFE:
+		return e.CPU8BitSetMemoryAddress(e.HL.Value(), 7)
 	}
 
 	return 0
