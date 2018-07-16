@@ -52,5 +52,16 @@ var _ = Describe("Emulator", func() {
 				Expect(emulator.BC.Low.Value()).To(Equal(uint8(0x01)))
 			})
 		})
+		Context("when using RES", func() {
+			BeforeEach(func() {
+				emulator.BC.SetLow(0xFF)
+				emulator.ClearAllFlags()
+				emulator.CPU8BitRegisterReset(&emulator.BC.Low, 0)
+			})
+
+			It("should reset the right bits", func() {
+				Expect(emulator.BC.Low.Value()).To(Equal(uint8(0xFE)))
+			})
+		})
 	})
 })

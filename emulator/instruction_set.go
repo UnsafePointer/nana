@@ -533,3 +533,16 @@ func (e *Emulator) CPU8BitSetMemoryAddress(address uint16, position uint) int {
 	e.WriteMemory(address, value)
 	return 16
 }
+
+func (e *Emulator) CPU8BitRegisterReset(r *Register8Bit, position uint) int {
+	value := clearBit(r.Value(), position)
+	r.SetValue(value)
+	return 8
+}
+
+func (e *Emulator) CPU8BitResetMemoryAddress(address uint16, position uint) int {
+	value := e.ReadMemory8Bit(address)
+	value = clearBit(value, position)
+	e.WriteMemory(address, value)
+	return 16
+}

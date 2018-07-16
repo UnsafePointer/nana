@@ -414,6 +414,143 @@ func (e *Emulator) ExecuteExtendedOpCode(opcode uint8) int {
 		return e.CPU8BitRegisterSet(&e.HL.Low, 7)
 	case 0xFE:
 		return e.CPU8BitSetMemoryAddress(e.HL.Value(), 7)
+	// RES b,r
+	// b=0
+	case 0x87:
+		return e.CPU8BitRegisterReset(&e.AF.High, 0)
+	case 0x80:
+		return e.CPU8BitRegisterReset(&e.BC.High, 0)
+	case 0x81:
+		return e.CPU8BitRegisterReset(&e.BC.Low, 0)
+	case 0x82:
+		return e.CPU8BitRegisterReset(&e.DE.High, 0)
+	case 0x83:
+		return e.CPU8BitRegisterReset(&e.DE.Low, 0)
+	case 0x84:
+		return e.CPU8BitRegisterReset(&e.HL.High, 0)
+	case 0x85:
+		return e.CPU8BitRegisterReset(&e.HL.Low, 0)
+	case 0x86:
+		return e.CPU8BitResetMemoryAddress(e.HL.Value(), 0)
+	// b=1
+	case 0x8F:
+		return e.CPU8BitRegisterReset(&e.AF.High, 1)
+	case 0x88:
+		return e.CPU8BitRegisterReset(&e.BC.High, 1)
+	case 0x89:
+		return e.CPU8BitRegisterReset(&e.BC.Low, 1)
+	case 0x8A:
+		return e.CPU8BitRegisterReset(&e.DE.High, 1)
+	case 0x8B:
+		return e.CPU8BitRegisterReset(&e.DE.Low, 1)
+	case 0x8C:
+		return e.CPU8BitRegisterReset(&e.HL.High, 1)
+	case 0x8D:
+		return e.CPU8BitRegisterReset(&e.HL.Low, 1)
+	case 0x8E:
+		return e.CPU8BitResetMemoryAddress(e.HL.Value(), 1)
+	// b=2
+	case 0x97:
+		return e.CPU8BitRegisterReset(&e.AF.High, 2)
+	case 0x90:
+		return e.CPU8BitRegisterReset(&e.BC.High, 2)
+	case 0x91:
+		return e.CPU8BitRegisterReset(&e.BC.Low, 2)
+	case 0x92:
+		return e.CPU8BitRegisterReset(&e.DE.High, 2)
+	case 0x93:
+		return e.CPU8BitRegisterReset(&e.DE.Low, 2)
+	case 0x94:
+		return e.CPU8BitRegisterReset(&e.HL.High, 2)
+	case 0x95:
+		return e.CPU8BitRegisterReset(&e.HL.Low, 2)
+	case 0x96:
+		return e.CPU8BitResetMemoryAddress(e.HL.Value(), 2)
+	// b=3
+	case 0x9F:
+		return e.CPU8BitRegisterReset(&e.AF.High, 3)
+	case 0x98:
+		return e.CPU8BitRegisterReset(&e.BC.High, 3)
+	case 0x99:
+		return e.CPU8BitRegisterReset(&e.BC.Low, 3)
+	case 0x9A:
+		return e.CPU8BitRegisterReset(&e.DE.High, 3)
+	case 0x9B:
+		return e.CPU8BitRegisterReset(&e.DE.Low, 3)
+	case 0x9C:
+		return e.CPU8BitRegisterReset(&e.HL.High, 3)
+	case 0x9D:
+		return e.CPU8BitRegisterReset(&e.HL.Low, 3)
+	case 0x9E:
+		return e.CPU8BitResetMemoryAddress(e.HL.Value(), 3)
+	// b=4
+	case 0xA7:
+		return e.CPU8BitRegisterReset(&e.AF.High, 4)
+	case 0xA0:
+		return e.CPU8BitRegisterReset(&e.BC.High, 4)
+	case 0xA1:
+		return e.CPU8BitRegisterReset(&e.BC.Low, 4)
+	case 0xA2:
+		return e.CPU8BitRegisterReset(&e.DE.High, 4)
+	case 0xA3:
+		return e.CPU8BitRegisterReset(&e.DE.Low, 4)
+	case 0xA4:
+		return e.CPU8BitRegisterReset(&e.HL.High, 4)
+	case 0xA5:
+		return e.CPU8BitRegisterReset(&e.HL.Low, 4)
+	case 0xA6:
+		return e.CPU8BitResetMemoryAddress(e.HL.Value(), 4)
+	// b=5
+	case 0xA8:
+		return e.CPU8BitRegisterReset(&e.AF.High, 5)
+	case 0xA9:
+		return e.CPU8BitRegisterReset(&e.BC.High, 5)
+	case 0xAA:
+		return e.CPU8BitRegisterReset(&e.BC.Low, 5)
+	case 0xAB:
+		return e.CPU8BitRegisterReset(&e.DE.High, 5)
+	case 0xAC:
+		return e.CPU8BitRegisterReset(&e.DE.Low, 5)
+	case 0xAD:
+		return e.CPU8BitRegisterReset(&e.HL.High, 5)
+	case 0xAE:
+		return e.CPU8BitRegisterReset(&e.HL.Low, 5)
+	case 0xAF:
+		return e.CPU8BitResetMemoryAddress(e.HL.Value(), 5)
+	// b=6
+	case 0xB7:
+		return e.CPU8BitRegisterReset(&e.AF.High, 6)
+	case 0xB0:
+		return e.CPU8BitRegisterReset(&e.BC.High, 6)
+	case 0xB1:
+		return e.CPU8BitRegisterReset(&e.BC.Low, 6)
+	case 0xB2:
+		return e.CPU8BitRegisterReset(&e.DE.High, 6)
+	case 0xB3:
+		return e.CPU8BitRegisterReset(&e.DE.Low, 6)
+	case 0xB4:
+		return e.CPU8BitRegisterReset(&e.HL.High, 6)
+	case 0xB5:
+		return e.CPU8BitRegisterReset(&e.HL.Low, 6)
+	case 0xB6:
+		return e.CPU8BitResetMemoryAddress(e.HL.Value(), 6)
+	// b=7
+	case 0xB8:
+		return e.CPU8BitRegisterReset(&e.AF.High, 7)
+	case 0xB9:
+		return e.CPU8BitRegisterReset(&e.BC.High, 7)
+	case 0xBA:
+		return e.CPU8BitRegisterReset(&e.BC.Low, 7)
+	case 0xBB:
+		return e.CPU8BitRegisterReset(&e.DE.High, 7)
+	case 0xBC:
+		return e.CPU8BitRegisterReset(&e.DE.Low, 7)
+	case 0xBD:
+		return e.CPU8BitRegisterReset(&e.HL.High, 7)
+	case 0xBE:
+		return e.CPU8BitRegisterReset(&e.HL.Low, 7)
+	case 0xBF:
+		return e.CPU8BitResetMemoryAddress(e.HL.Value(), 7)
 	}
 
 	return 0
