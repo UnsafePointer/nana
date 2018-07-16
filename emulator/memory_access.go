@@ -15,6 +15,16 @@ func (e *Emulator) WriteMemory(address uint16, data uint8) {
 		e.WriteMemory(address-0x2000, data)
 	} else if address >= 0xFEA0 && address <= 0xFEFF {
 		return
+	} else if address == dividerRegisterAddress {
+		// Divider register trap
+		e.ROM[address] = 0
+	} else if address == timerControllerAddress {
+		currentClockFrequency := e.ClockFrequency()
+		e.ROM[address] = data
+		newClockFrequency := e.ClockFrequency()
+		if currentClockFrequency != newClockFrequency {
+			e.SetTimerCycleCounter()
+		}
 	} else {
 		e.ROM[address] = data
 	}
