@@ -720,6 +720,21 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return e.CPU8BitRestart(uint16(0x30))
 	case 0xFF:
 		return e.CPU8BitRestart(uint16(0x38))
+	// RET
+	case 0xC9:
+		return e.CPU8BitReturn(true)
+	// RET cc
+	case 0xC0:
+		return e.CPU8BitReturn(e.FlagZ() == false)
+	case 0xC8:
+		return e.CPU8BitReturn(e.FlagZ() == true)
+	case 0xD0:
+		return e.CPU8BitReturn(e.FlagC() == false)
+	case 0xD8:
+		return e.CPU8BitReturn(e.FlagC() == true)
+	// RETI
+	case 0xD9:
+		return e.CPU8BitReturnEnableInterrupts()
 	}
 
 	return 0

@@ -589,3 +589,19 @@ func (e *Emulator) CPU8BitRestart(address uint16) int {
 	e.ProgramCounter.SetValue(address)
 	return 32
 }
+
+func (e *Emulator) CPU8BitReturn(condition bool) int {
+	cycles := 8
+	if !condition {
+		return cycles
+	}
+	address := e.PopFromStack()
+	e.ProgramCounter.SetValue(address)
+	return cycles
+}
+
+func (e *Emulator) CPU8BitReturnEnableInterrupts() int {
+	e.ProgramCounter.SetValue(e.PopFromStack())
+	e.DisableInterrupts = false
+	return 8
+}
