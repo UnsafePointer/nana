@@ -8,7 +8,8 @@ import (
 
 func main() {
 	gameArg := os.Args[1]
-	e := emulator.NewEmulator()
+	_, okDebug := os.LookupEnv("DEBUG")
+	e := emulator.NewEmulator(okDebug)
 	e.LoadCartridge(gameArg)
 	for true {
 		e.EmulateSecond()

@@ -13,7 +13,7 @@ var _ = Describe("Emulator", func() {
 	)
 
 	BeforeEach(func() {
-		emulator = *NewEmulator()
+		emulator = *NewEmulator(false)
 	})
 
 	Describe("verifying the initial values", func() {

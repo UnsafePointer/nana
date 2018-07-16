@@ -7,7 +7,7 @@
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceRoot}",
-            "env": { },
+            "env": { "DEBUG": "TRUE" },
             "args": ["tetris.gb"],
             "showLog": true
         },

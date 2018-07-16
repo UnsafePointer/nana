@@ -1,6 +1,7 @@
 package emulator
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -25,10 +26,13 @@ type Emulator struct {
 	DisableInterrupts        bool
 	PendingDisableInterrupts bool
 	PendingEnableInterrupts  bool
+
+	EnableDebug bool
 }
 
-func NewEmulator() *Emulator {
+func NewEmulator(enableDebug bool) *Emulator {
 	e := new(Emulator)
+	e.EnableDebug = enableDebug
 	e.ProgramCounter.SetValue(0x100)
 	e.AF.SetValue(0x01B0)
 	e.BC.SetValue(0x0013)
@@ -94,6 +98,7 @@ func (e *Emulator) EmulateSecond() {
 }
 
 func (e *Emulator) executeNextOpcode() int {
+	e.LogMessage(fmt.Sprintf("Read memory address: %#X", e.ProgramCounter.Value()))
 	opCode := e.ReadMemory8Bit(e.ProgramCounter.Value())
 	e.ProgramCounter.Increment()
 	var cycles int
@@ -101,6 +106,7 @@ func (e *Emulator) executeNextOpcode() int {
 		cycles = 4
 	} else {
 		cycles = e.ExecuteOpCode(opCode)
+		e.LogMessage(fmt.Sprintf("Execuded operation code: %#X", opCode))
 	}
 	// 0xF3: disable interrupts but only after next instruction, so
 	// no immediatly after we return from 0xF3
