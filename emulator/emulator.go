@@ -99,7 +99,7 @@ func (e *Emulator) EmulateSecond() {
 		cycles := e.executeNextOpcode()
 		cyclesThisUpdate += cycles
 		e.UpdateTimers(cycles)
-		e.executeInterrupts()
+		e.ExecuteInterrupts()
 	}
 }
 
@@ -126,11 +126,6 @@ func (e *Emulator) executeNextOpcode() int {
 		e.DisableInterrupts = false
 	}
 	return cycles
-}
-
-func (e *Emulator) executeInterrupts() {
-	// TODO: move this after the verifications of interrupt enabled/requested
-	e.Halted = false
 }
 
 func testBit(n uint8, pos uint) bool {

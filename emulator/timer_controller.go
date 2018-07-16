@@ -28,7 +28,7 @@ func (e *Emulator) UpdateTimers(cycles int) {
 	if timerCounter == 255 {
 		timerModulator := e.ReadMemory8Bit(timerModulatorAddress)
 		e.WriteMemory(timerCounterAddress, timerModulator)
-		// TODO: RequestInterrupt
+		e.RequestInterrupt(2)
 	} else {
 		e.WriteMemory(timerCounterAddress, timerCounter+1)
 	}
