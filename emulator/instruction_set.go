@@ -572,3 +572,14 @@ func (e *Emulator) CPU8BitJumpAddConditional(condition bool) int {
 	}
 	return 8
 }
+
+func (e *Emulator) CPU8BitCall(condition bool) int {
+	address := e.ReadMemory16Bit(e.ProgramCounter.Value())
+	e.ProgramCounter.Increment()
+	e.ProgramCounter.Increment()
+	if condition {
+		e.PushIntoStack(address)
+	}
+
+	return 12
+}

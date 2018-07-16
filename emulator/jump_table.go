@@ -691,6 +691,18 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return e.CPU8BitJumpAddConditional(e.FlagC() == false)
 	case 0x38:
 		return e.CPU8BitJumpAddConditional(e.FlagC() == true)
+	// CALL nn
+	case 0xCD:
+		return e.CPU8BitCall(true)
+	// CALL cc,nn
+	case 0xC4:
+		return e.CPU8BitCall(e.FlagZ() == false)
+	case 0xCC:
+		return e.CPU8BitCall(e.FlagZ() == true)
+	case 0xD4:
+		return e.CPU8BitCall(e.FlagC() == false)
+	case 0xDC:
+		return e.CPU8BitCall(e.FlagC() == true)
 	}
 
 	return 0
