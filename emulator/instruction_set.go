@@ -546,3 +546,29 @@ func (e *Emulator) CPU8BitResetMemoryAddress(address uint16, position uint) int 
 	e.WriteMemory(address, value)
 	return 16
 }
+
+func (e *Emulator) CPU8BitJump(address uint16) int {
+	e.ProgramCounter.SetValue(address)
+	return 12
+}
+
+func (e *Emulator) CPU8BitJumpConditional(condition bool) int {
+	address := e.ReadMemory16Bit(e.ProgramCounter.Value())
+	e.ProgramCounter.Increment()
+	e.ProgramCounter.Increment()
+	if condition {
+		e.ProgramCounter.SetValue(address)
+	}
+	return 12
+}
+
+func (e *Emulator) CPU8BitJumpAddConditional(condition bool) int {
+	signedValue := int8(e.ReadMemory8Bit(e.ProgramCounter.Value()))
+	e.ProgramCounter.Increment()
+	address := uint32(e.ProgramCounter.Value()) + uint32(signedValue)
+	address &= 0x00FFFF
+	if condition {
+		e.ProgramCounter.SetValue(uint16(address))
+	}
+	return 8
+}

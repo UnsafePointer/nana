@@ -661,6 +661,36 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		cycles := e.CPU8BitRegisterRR(&e.AF.High)
 		cycles -= 4
 		return cycles
+	// JP nn
+	case 0xC3:
+		address := e.ReadMemory16Bit(e.ProgramCounter.Value())
+		return e.CPU8BitJump(address)
+	// JP cc,nn
+	case 0xC2:
+		return e.CPU8BitJumpConditional(e.FlagZ() == false)
+	case 0xCA:
+		return e.CPU8BitJumpConditional(e.FlagZ() == true)
+	case 0xD2:
+		return e.CPU8BitJumpConditional(e.FlagC() == false)
+	case 0xDA:
+		return e.CPU8BitJumpConditional(e.FlagC() == true)
+	// JP (HL)
+	case 0xE9:
+		cycles := e.CPU8BitJump(e.HL.Value())
+		cycles -= 8 // 4
+		return cycles
+	// JR n
+	case 0x18:
+		return e.CPU8BitJumpAddConditional(true)
+	// JR cc,nn
+	case 0x20:
+		return e.CPU8BitJumpAddConditional(e.FlagZ() == false)
+	case 0x28:
+		return e.CPU8BitJumpAddConditional(e.FlagZ() == true)
+	case 0x30:
+		return e.CPU8BitJumpAddConditional(e.FlagC() == false)
+	case 0x38:
+		return e.CPU8BitJumpAddConditional(e.FlagC() == true)
 	}
 
 	return 0
