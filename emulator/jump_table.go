@@ -703,6 +703,23 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 		return e.CPU8BitCall(e.FlagC() == false)
 	case 0xDC:
 		return e.CPU8BitCall(e.FlagC() == true)
+	// RST n
+	case 0xC7:
+		return e.CPU8BitRestart(uint16(0x00))
+	case 0xCF:
+		return e.CPU8BitRestart(uint16(0x08))
+	case 0xD7:
+		return e.CPU8BitRestart(uint16(0x10))
+	case 0xDF:
+		return e.CPU8BitRestart(uint16(0x18))
+	case 0xE7:
+		return e.CPU8BitRestart(uint16(0x20))
+	case 0xEF:
+		return e.CPU8BitRestart(uint16(0x28))
+	case 0xF7:
+		return e.CPU8BitRestart(uint16(0x30))
+	case 0xFF:
+		return e.CPU8BitRestart(uint16(0x38))
 	}
 
 	return 0

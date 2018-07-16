@@ -583,3 +583,9 @@ func (e *Emulator) CPU8BitCall(condition bool) int {
 
 	return 12
 }
+
+func (e *Emulator) CPU8BitRestart(address uint16) int {
+	e.PushIntoStack(e.ProgramCounter.Value())
+	e.ProgramCounter.SetValue(address)
+	return 32
+}
