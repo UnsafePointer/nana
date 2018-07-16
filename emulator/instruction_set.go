@@ -495,3 +495,28 @@ func (e *Emulator) CPU8BitSRLMemoryAddress(address uint16) int {
 	e.WriteMemory(address, value)
 	return 16
 }
+
+func (e *Emulator) CPU8BitRegisterBit(r *Register8Bit, position uint) int {
+	test := testBit(r.Value(), position)
+	if test {
+		e.ClearFlagZ()
+	} else {
+		e.SetFlagZ()
+	}
+	e.ClearFlagN()
+	e.SetFlagH()
+	return 8
+}
+
+func (e *Emulator) CPU8BitBitMemoryAddress(address uint16, position uint) int {
+	value := e.ReadMemory8Bit(address)
+	test := testBit(value, position)
+	if test {
+		e.SetFlagZ()
+	} else {
+		e.ClearFlagZ()
+	}
+	e.ClearFlagN()
+	e.SetFlagH()
+	return 16
+}

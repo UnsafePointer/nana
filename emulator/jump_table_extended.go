@@ -140,7 +140,143 @@ func (e *Emulator) ExecuteExtendedOpCode(opcode uint8) int {
 		return e.CPU8BitRegisterSRL(&e.HL.Low)
 	case 0x3E:
 		return e.CPU8BitSRLMemoryAddress(e.HL.Value())
-
+	// BIT b,r
+	// b=0
+	case 0x47:
+		return e.CPU8BitRegisterBit(&e.AF.High, 0)
+	case 0x40:
+		return e.CPU8BitRegisterBit(&e.BC.High, 0)
+	case 0x41:
+		return e.CPU8BitRegisterBit(&e.BC.Low, 0)
+	case 0x42:
+		return e.CPU8BitRegisterBit(&e.DE.High, 0)
+	case 0x43:
+		return e.CPU8BitRegisterBit(&e.DE.Low, 0)
+	case 0x44:
+		return e.CPU8BitRegisterBit(&e.HL.High, 0)
+	case 0x45:
+		return e.CPU8BitRegisterBit(&e.HL.Low, 0)
+	case 0x46:
+		return e.CPU8BitBitMemoryAddress(e.HL.Value(), 0)
+	// b=1
+	case 0x4F:
+		return e.CPU8BitRegisterBit(&e.AF.High, 1)
+	case 0x48:
+		return e.CPU8BitRegisterBit(&e.BC.High, 1)
+	case 0x49:
+		return e.CPU8BitRegisterBit(&e.BC.Low, 1)
+	case 0x4A:
+		return e.CPU8BitRegisterBit(&e.DE.High, 1)
+	case 0x4B:
+		return e.CPU8BitRegisterBit(&e.DE.Low, 1)
+	case 0x4C:
+		return e.CPU8BitRegisterBit(&e.HL.High, 1)
+	case 0x4D:
+		return e.CPU8BitRegisterBit(&e.HL.Low, 1)
+	case 0x4E:
+		return e.CPU8BitBitMemoryAddress(e.HL.Value(), 1)
+	// b=2
+	case 0x57:
+		return e.CPU8BitRegisterBit(&e.AF.High, 2)
+	case 0x50:
+		return e.CPU8BitRegisterBit(&e.BC.High, 2)
+	case 0x51:
+		return e.CPU8BitRegisterBit(&e.BC.Low, 2)
+	case 0x52:
+		return e.CPU8BitRegisterBit(&e.DE.High, 2)
+	case 0x53:
+		return e.CPU8BitRegisterBit(&e.DE.Low, 2)
+	case 0x54:
+		return e.CPU8BitRegisterBit(&e.HL.High, 2)
+	case 0x55:
+		return e.CPU8BitRegisterBit(&e.HL.Low, 2)
+	case 0x56:
+		return e.CPU8BitBitMemoryAddress(e.HL.Value(), 2)
+	// b=3
+	case 0x5F:
+		return e.CPU8BitRegisterBit(&e.AF.High, 3)
+	case 0x58:
+		return e.CPU8BitRegisterBit(&e.BC.High, 3)
+	case 0x59:
+		return e.CPU8BitRegisterBit(&e.BC.Low, 3)
+	case 0x5A:
+		return e.CPU8BitRegisterBit(&e.DE.High, 3)
+	case 0x5B:
+		return e.CPU8BitRegisterBit(&e.DE.Low, 3)
+	case 0x5C:
+		return e.CPU8BitRegisterBit(&e.HL.High, 3)
+	case 0x5D:
+		return e.CPU8BitRegisterBit(&e.HL.Low, 3)
+	case 0x5E:
+		return e.CPU8BitBitMemoryAddress(e.HL.Value(), 3)
+	// b=4
+	case 0x67:
+		return e.CPU8BitRegisterBit(&e.AF.High, 4)
+	case 0x60:
+		return e.CPU8BitRegisterBit(&e.BC.High, 4)
+	case 0x61:
+		return e.CPU8BitRegisterBit(&e.BC.Low, 4)
+	case 0x62:
+		return e.CPU8BitRegisterBit(&e.DE.High, 4)
+	case 0x63:
+		return e.CPU8BitRegisterBit(&e.DE.Low, 4)
+	case 0x64:
+		return e.CPU8BitRegisterBit(&e.HL.High, 4)
+	case 0x65:
+		return e.CPU8BitRegisterBit(&e.HL.Low, 4)
+	case 0x66:
+		return e.CPU8BitBitMemoryAddress(e.HL.Value(), 4)
+	// b=5
+	case 0x6F:
+		return e.CPU8BitRegisterBit(&e.AF.High, 5)
+	case 0x68:
+		return e.CPU8BitRegisterBit(&e.BC.High, 5)
+	case 0x69:
+		return e.CPU8BitRegisterBit(&e.BC.Low, 5)
+	case 0x6A:
+		return e.CPU8BitRegisterBit(&e.DE.High, 5)
+	case 0x6B:
+		return e.CPU8BitRegisterBit(&e.DE.Low, 5)
+	case 0x6C:
+		return e.CPU8BitRegisterBit(&e.HL.High, 5)
+	case 0x6D:
+		return e.CPU8BitRegisterBit(&e.HL.Low, 5)
+	case 0x6E:
+		return e.CPU8BitBitMemoryAddress(e.HL.Value(), 5)
+	// b=6
+	case 0x77:
+		return e.CPU8BitRegisterBit(&e.AF.High, 6)
+	case 0x70:
+		return e.CPU8BitRegisterBit(&e.BC.High, 6)
+	case 0x71:
+		return e.CPU8BitRegisterBit(&e.BC.Low, 6)
+	case 0x72:
+		return e.CPU8BitRegisterBit(&e.DE.High, 6)
+	case 0x73:
+		return e.CPU8BitRegisterBit(&e.DE.Low, 6)
+	case 0x74:
+		return e.CPU8BitRegisterBit(&e.HL.High, 6)
+	case 0x75:
+		return e.CPU8BitRegisterBit(&e.HL.Low, 6)
+	case 0x76:
+		return e.CPU8BitBitMemoryAddress(e.HL.Value(), 6)
+	// b=7
+	case 0x7F:
+		return e.CPU8BitRegisterBit(&e.AF.High, 7)
+	case 0x78:
+		return e.CPU8BitRegisterBit(&e.BC.High, 7)
+	case 0x79:
+		return e.CPU8BitRegisterBit(&e.BC.Low, 7)
+	case 0x7A:
+		return e.CPU8BitRegisterBit(&e.DE.High, 7)
+	case 0x7B:
+		return e.CPU8BitRegisterBit(&e.DE.Low, 7)
+	case 0x7C:
+		return e.CPU8BitRegisterBit(&e.HL.High, 7)
+	case 0x7D:
+		return e.CPU8BitRegisterBit(&e.HL.Low, 7)
+	case 0x7E:
+		return e.CPU8BitBitMemoryAddress(e.HL.Value(), 7)
 	}
 
 	return 0
