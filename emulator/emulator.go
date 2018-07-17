@@ -30,6 +30,8 @@ type Emulator struct {
 	DividerRegisterCyclesCounter int
 	TimerCyclesCounter           int
 
+	ScanlineRenderCyclesCounter int
+
 	EnableDebug bool
 }
 
@@ -50,6 +52,7 @@ func NewEmulator(enableDebug bool) *Emulator {
 	e.PendingEnableInterrupts = false
 	e.DividerRegisterCyclesCounter = 0
 	e.TimerCyclesCounter = 0
+	e.ScanlineRenderCyclesCounter = 456
 	e.ROM[0xFF05] = 0x00
 	e.ROM[0xFF06] = 0x00
 	e.ROM[0xFF07] = 0x00
@@ -99,6 +102,7 @@ func (e *Emulator) EmulateSecond() {
 		cycles := e.executeNextOpcode()
 		cyclesThisUpdate += cycles
 		e.UpdateTimers(cycles)
+		e.UpdateScreen(cycles)
 		e.ExecuteInterrupts()
 	}
 }

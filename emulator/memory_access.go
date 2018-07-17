@@ -25,6 +25,9 @@ func (e *Emulator) WriteMemory(address uint16, data uint8) {
 		if currentClockFrequency != newClockFrequency {
 			e.SetTimerCycleCounter()
 		}
+	} else if address == currentScanlineRegisterAddress {
+		// Current scanline register trap
+		e.ROM[address] = 0
 	} else {
 		e.ROM[address] = data
 	}
