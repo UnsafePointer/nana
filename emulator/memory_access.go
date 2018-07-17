@@ -2,6 +2,7 @@ package emulator
 
 const ROMBankSize = 0x4000
 const RAMBankSize = 0x2000
+const DMATransferAddress = 0xFF46
 
 func (e *Emulator) WriteMemory(address uint16, data uint8) {
 	// Memory map:
@@ -28,6 +29,8 @@ func (e *Emulator) WriteMemory(address uint16, data uint8) {
 	} else if address == currentScanlineRegisterAddress {
 		// Current scanline register trap
 		e.ROM[address] = 0
+	} else if address == DMATransferAddress {
+		e.DMATransfer(data)
 	} else {
 		e.ROM[address] = data
 	}
