@@ -24,7 +24,17 @@ func (e *Emulator) UpdateScreen(cycles int) {
 	} else if currentScanline > 153 {
 		e.ROM[currentScanlineRegisterAddress] = 0
 	} else if currentScanline < 144 {
-		// TODO: Draw scanline
+		e.DrawScanline()
+	}
+}
+
+func (e *Emulator) DrawScanline() {
+	value := e.ReadMemory8Bit(lcdControllerAddress)
+	if testBit(value, 0) {
+		e.RenderTiles()
+	}
+	if testBit(value, 1) {
+		e.RenderSprites()
 	}
 }
 

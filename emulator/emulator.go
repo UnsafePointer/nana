@@ -31,6 +31,7 @@ type Emulator struct {
 	TimerCyclesCounter           int
 
 	ScanlineRenderCyclesCounter int
+	ScreenData                  [160][144][3]uint8
 
 	EnableDebug bool
 }
@@ -147,4 +148,9 @@ func clearBit(n uint8, pos uint) uint8 {
 	mask := ^(uint8(1) << pos)
 	n &= mask
 	return n
+}
+
+func getBit(n uint8, pos uint) uint8 {
+	mask := uint8(1) << pos
+	return n & mask
 }

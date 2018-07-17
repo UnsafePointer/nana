@@ -1,0 +1,166 @@
+package emulator
+
+// Viewing area/ Background map:
+// 0xFF42: The Y Position of the BACKGROUND where to start drawing the viewing area from
+// 0xFF43: The X Position of the BACKGROUND to start drawing the viewing area from
+// 0xFF4A: The Y Position of the VIEWING AREA to start drawing the window from
+// 0xFF4B: The X Positions -7 of the VIEWING AREA to start drawing the window from
+const viewingAreaPositonYAddress = 0xFF42
+const viewingAreaPositonXAddress = 0xFF43
+const windowPositionYAddress = 0xFF4A
+const windowPositionXAddress = 0xFF4B
+
+func (e *Emulator) RenderTiles() {
+	tileData := uint16(0)
+	backgroundMemory := uint16(0)
+	unsigned := true
+
+	viewingAreaPositonY := e.ReadMemory8Bit(viewingAreaPositonYAddress)
+	viewingAreaPositonX := e.ReadMemory8Bit(viewingAreaPositonXAddress)
+	windowPositionY := e.ReadMemory8Bit(windowPositionYAddress)
+	windowPositioX := e.ReadMemory8Bit(windowPositionXAddress)
+
+	lcdController := e.ReadMemory8Bit(lcdControllerAddress)
+	currentScanline := e.ReadMemory8Bit(currentScanlineRegisterAddress)
+
+	usingWindow := false
+
+	if testBit(lcdController, 5) {
+		if windowPositionY <= currentScanline {
+			usingWindow = true
+		}
+	}
+
+	if testBit(lcdController, 4) {
+		tileData = 0x8000
+	} else {
+		tileData = 0x8800
+		unsigned = false
+	}
+
+	if usingWindow {
+		if testBit(lcdController, 6) {
+			backgroundMemory = 0x9C00
+		} else {
+			backgroundMemory = 0x9800
+		}
+	} else {
+		if testBit(lcdController, 3) {
+			backgroundMemory = 0x9C00
+		} else {
+			backgroundMemory = 0x9800
+		}
+	}
+
+	positionY := uint8(0)
+
+	if usingWindow {
+		positionY = currentScanline - windowPositionY
+	} else {
+		positionY = viewingAreaPositonY + currentScanline
+	}
+
+	tileRow := uint16((positionY / 8) * 32)
+
+	for pixel := uint8(0); pixel < 160; pixel++ {
+		positionX := pixel + viewingAreaPositonX
+
+		if usingWindow {
+			if pixel >= windowPositioX {
+				positionX = pixel - windowPositioX
+			}
+		}
+
+		tileColumn := uint16(positionX / 8)
+		tileAddress := backgroundMemory + tileRow + tileColumn
+
+		tileLocation := tileData
+		if unsigned {
+			tileNumber := uint16(e.ReadMemory8Bit(tileAddress))
+			tileLocation += (tileNumber * 16)
+		} else {
+			tileNumber := int16(e.ReadMemory8Bit(tileAddress))
+			tileLocation += uint16(((tileNumber + 128) * 16))
+		}
+
+		line := positionY % 8
+		line *= 2
+
+		data1 := e.ReadMemory8Bit(tileLocation + uint16(line))
+		data2 := e.ReadMemory8Bit(tileLocation + uint16(line) + 1)
+
+		colorBit := int(positionX) % 8
+		colorBit -= 7
+		colorBit *= -1
+
+		colorValue := getBit(data2, uint(colorBit))
+		colorValue <<= 1
+		colorValue |= getBit(data1, uint(colorBit))
+
+		color := e.GetColor(colorValue, 0xFF47)
+
+		red := uint8(0)
+		green := uint8(0)
+		blue := uint8(0)
+
+		switch color {
+		case 0:
+			red = 255
+			green = 255
+			blue = 255
+			break
+		case 1:
+			red = 0xCC
+			green = 0xCC
+			blue = 0xCC
+			break
+		case 2:
+			red = 0x77
+			green = 0x77
+			blue = 0x77
+			break
+		}
+
+		if currentScanline < 0 || currentScanline > 143 || pixel < 0 || pixel > 159 {
+			continue
+		}
+
+		e.ScreenData[pixel][currentScanline][0] = red
+		e.ScreenData[pixel][currentScanline][1] = green
+		e.ScreenData[pixel][currentScanline][2] = blue
+	}
+}
+
+func (e *Emulator) GetColor(color uint8, address uint16) uint8 {
+	high := uint(0)
+	low := uint(0)
+	palette := e.ReadMemory8Bit(address)
+
+	switch color {
+	case 0:
+		high = 1
+		low = 0
+		break
+	case 1:
+		high = 3
+		low = 2
+		break
+	case 2:
+		high = 5
+		low = 4
+		break
+	case 3:
+		high = 7
+		low = 6
+	}
+
+	result := getBit(palette, high)
+	result <<= 1
+	result |= getBit(palette, low)
+
+	return result
+}
+
+func (e *Emulator) RenderSprites() {
+
+}
