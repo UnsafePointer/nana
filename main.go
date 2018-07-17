@@ -12,8 +12,12 @@ func main() {
 	_, okDebug := os.LookupEnv("DEBUG")
 	e := emulator.NewEmulator(okDebug)
 	e.LoadCartridge(gameArg)
-	ticker := time.NewTicker(1000 * time.Millisecond)
-	for range ticker.C {
-		e.EmulateSecond()
-	}
+	ticker := time.NewTicker(time.Second / 60)
+	go func() {
+		for range ticker.C {
+			e.EmulateFrame()
+		}
+	}()
+	time.Sleep(time.Millisecond * 10000)
+	ticker.Stop()
 }

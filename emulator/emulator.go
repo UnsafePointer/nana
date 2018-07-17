@@ -97,7 +97,7 @@ func (e *Emulator) LoadCartridge(filename string) {
 	copy(e.CartridgeMemory[:], dat)
 }
 
-func (e *Emulator) EmulateSecond() {
+func (e *Emulator) EmulateFrame() {
 	cyclesThisUpdate := 0
 	for cyclesThisUpdate < MaxCyclesPerEmulationCycle {
 		cycles := e.executeNextOpcode()
