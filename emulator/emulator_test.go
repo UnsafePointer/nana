@@ -1,11 +1,21 @@
 package emulator_test
 
 import (
+	"testing"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
 	. "github.com/Ruenzuo/nana/emulator"
 )
+
+func BenchmarkEmulateFrame(b *testing.B) {
+	e := NewEmulator(false)
+	e.LoadCartridge("../tetris.gb")
+	for n := 0; n < b.N; n++ {
+		e.EmulateFrame()
+	}
+}
 
 var _ = Describe("Emulator", func() {
 	var (
