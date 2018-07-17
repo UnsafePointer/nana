@@ -5,7 +5,7 @@ const timerCounterAddress = 0xFF05
 const timerModulatorAddress = 0xFF06
 const timerControllerAddress = 0xFF07
 
-func (e Emulator) IsTimerEnabled() bool {
+func (e *Emulator) IsTimerEnabled() bool {
 	value := e.ReadMemory8Bit(timerControllerAddress)
 	return testBit(value, 2)
 }
@@ -34,7 +34,7 @@ func (e *Emulator) UpdateTimers(cycles int) {
 	}
 }
 
-func (e Emulator) ClockFrequency() uint8 {
+func (e *Emulator) ClockFrequency() uint8 {
 	value := e.ReadMemory8Bit(timerControllerAddress)
 	return value & 0x3
 }

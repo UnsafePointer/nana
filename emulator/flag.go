@@ -1,18 +1,18 @@
 package emulator
 
-func (e Emulator) FlagZ() bool {
+func (e *Emulator) FlagZ() bool {
 	return testBit(e.AF.Low.Value(), 7)
 }
 
-func (e Emulator) FlagN() bool {
+func (e *Emulator) FlagN() bool {
 	return testBit(e.AF.Low.Value(), 6)
 }
 
-func (e Emulator) FlagH() bool {
+func (e *Emulator) FlagH() bool {
 	return testBit(e.AF.Low.Value(), 5)
 }
 
-func (e Emulator) FlagC() bool {
+func (e *Emulator) FlagC() bool {
 	return testBit(e.AF.Low.Value(), 4)
 }
 
