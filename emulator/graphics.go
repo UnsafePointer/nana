@@ -162,5 +162,89 @@ func (e *Emulator) GetColor(color uint8, address uint16) uint8 {
 }
 
 func (e *Emulator) RenderSprites() {
+	lcdController := e.ReadMemory8Bit(lcdControllerAddress)
+	currentScanline := e.ReadMemory8Bit(currentScanlineRegisterAddress)
+	use8x16 := false
+	if testBit(lcdController, 2) {
+		use8x16 = true
+	}
 
+	for sprite := uint16(0); sprite < 40; sprite++ {
+		spriteIndex := sprite * 4
+		positionY := e.ReadMemory8Bit(0xFE00+spriteIndex) - 16
+		positionX := e.ReadMemory8Bit(0xFE00+spriteIndex+1) - 8
+		tileLocation := e.ReadMemory8Bit(0xFE00 + spriteIndex + 2)
+		attributes := e.ReadMemory8Bit(0xFE00 + spriteIndex + 3)
+
+		flipY := testBit(attributes, 6)
+		flipX := testBit(attributes, 5)
+
+		height := uint8(8)
+		if use8x16 {
+			height = 16
+		}
+
+		if currentScanline >= positionY && currentScanline < positionY+height {
+			line := int32(currentScanline - positionY)
+
+			if flipY {
+				line -= int32(height)
+				line *= -1
+			}
+
+			line *= 2
+			dataAddress := int32((0x8000 + (int32(tileLocation) * 16))) + line
+			data1 := e.ReadMemory8Bit(uint16(dataAddress))
+			data2 := e.ReadMemory8Bit(uint16(dataAddress + 1))
+
+			for tilePixel := 7; tilePixel >= 0; tilePixel-- {
+				colorBit := tilePixel
+				if flipX {
+					colorBit -= 7
+					colorBit *= -1
+				}
+
+				colorValue := getBit(data2, uint(colorBit))
+				colorValue <<= 1
+				colorValue |= getBit(data1, uint(colorBit))
+
+				color := e.GetColor(colorValue, 0xFF47)
+
+				red := uint8(0)
+				green := uint8(0)
+				blue := uint8(0)
+
+				switch color {
+				case 0:
+					red = 255
+					green = 255
+					blue = 255
+					break
+				case 1:
+					red = 0xCC
+					green = 0xCC
+					blue = 0xCC
+					break
+				case 2:
+					red = 0x77
+					green = 0x77
+					blue = 0x77
+					break
+				}
+
+				pixelX := 0 - tilePixel
+				pixelX += 7
+
+				pixel := positionX + uint8(pixelX)
+
+				if currentScanline < 0 || currentScanline > 143 || pixel < 0 || pixel > 159 {
+					continue
+				}
+
+				e.ScreenData[pixel][currentScanline][0] = red
+				e.ScreenData[pixel][currentScanline][1] = green
+				e.ScreenData[pixel][currentScanline][2] = blue
+			}
+		}
+	}
 }
