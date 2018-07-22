@@ -100,6 +100,9 @@ func (e *Emulator) LoadCartridge(filename string) {
 	}
 
 	copy(e.CartridgeMemory[:], dat)
+	for i := 0; i < 0x8000; i++ {
+		e.ROM[i] = e.CartridgeMemory[i]
+	}
 }
 
 func (e *Emulator) EmulateFrame() {
