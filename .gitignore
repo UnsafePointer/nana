@@ -27,5 +27,5 @@
 debug
 nana
 nana.log
-tetris.txt
-tetris.gb
+*-dump.txt
+*.gb
