@@ -1,6 +1,7 @@
 package emulator
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -34,10 +35,14 @@ type Emulator struct {
 	ScreenData                  [160][144][3]uint8
 
 	EnableDebug bool
+	LogBuffer   bytes.Buffer
 }
 
 func NewEmulator(enableDebug bool) *Emulator {
 	e := new(Emulator)
+	if enableDebug {
+		e.SetupLogFile()
+	}
 	e.EnableDebug = enableDebug
 	e.ProgramCounter.SetValue(0x100)
 	e.AF.SetValue(0x01B0)

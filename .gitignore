@@ -25,4 +25,7 @@
 # End of https://www.gitignore.io/api/go,visualstudiocode
 
 debug
+nana
+nana.log
+tetris.txt
 tetris.gb
