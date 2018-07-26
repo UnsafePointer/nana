@@ -41,7 +41,7 @@ func main() {
 	_, okDebug := os.LookupEnv("DEBUG")
 	e = emulator.NewEmulator(okDebug)
 	e.LoadCartridge(gameArg)
-	if err := ebiten.Run(update, width, height, scale, "nana"); err != nil {
+	if err := ebiten.Run(update, width, height, scale, fmt.Sprintf("nana - %s", gameArg)); err != nil {
 		panic(err)
 	}
 }
