@@ -10,6 +10,16 @@ import (
 const MaxCyclesPerSecond = 4194304
 const MaxCyclesPerEmulationCycle = MaxCyclesPerSecond / 60 // Target is 60 FPS
 
+type CartridgeType int
+
+const (
+	CartridgeTypeROMOnly CartridgeType = 0
+	CartridgeTypeMBC1    CartridgeType = 1
+	CartridgeTypeMBC2    CartridgeType = 2
+	// CartridgeTypeMBC3 MemoryBankController = 3
+	// CartridgeTypeMBC5 MemoryBankController = 5
+)
+
 type Emulator struct {
 	AF Register16Bit
 	BC Register16Bit
@@ -23,6 +33,8 @@ type Emulator struct {
 	StackPointer             Register16Bit
 	CurrentROMBank           uint16
 	CurrentRAMBank           uint16
+	EnableRAMBank            bool
+	EnableROMBank            bool
 	Halted                   bool
 	DisableInterrupts        bool
 	PendingDisableInterrupts bool
@@ -36,6 +48,8 @@ type Emulator struct {
 
 	EnableDebug bool
 	LogBuffer   bytes.Buffer
+
+	CartridgeType CartridgeType
 }
 
 func NewEmulator(enableDebug bool) *Emulator {
@@ -52,6 +66,8 @@ func NewEmulator(enableDebug bool) *Emulator {
 	e.StackPointer.SetValue(0xFFFE)
 	e.CurrentROMBank = 1 // Should never be 1, ROM bank 0 is fixed
 	e.CurrentRAMBank = 0
+	e.EnableRAMBank = false
+	e.EnableROMBank = false
 	e.Halted = false
 	e.DisableInterrupts = false
 	e.PendingDisableInterrupts = false
@@ -59,6 +75,7 @@ func NewEmulator(enableDebug bool) *Emulator {
 	e.DividerRegisterCyclesCounter = 0
 	e.TimerCyclesCounter = 0
 	e.ScanlineRenderCyclesCounter = 456
+	e.CartridgeType = CartridgeTypeROMOnly
 	e.ROM[0xFF05] = 0x00
 	e.ROM[0xFF06] = 0x00
 	e.ROM[0xFF07] = 0x00
@@ -102,6 +119,20 @@ func (e *Emulator) LoadCartridge(filename string) {
 	copy(e.CartridgeMemory[:], dat)
 	for i := 0; i < 0x8000; i++ {
 		e.ROM[i] = e.CartridgeMemory[i]
+	}
+
+	cartridgeTypeDefinition := e.CartridgeMemory[0x0147]
+	switch cartridgeTypeDefinition {
+	case 1:
+		fallthrough
+	case 2:
+		fallthrough
+	case 3:
+		e.CartridgeType = CartridgeTypeMBC1
+	case 5:
+		fallthrough
+	case 6:
+		e.CartridgeType = CartridgeTypeMBC2
 	}
 }
 
