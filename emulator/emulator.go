@@ -47,16 +47,19 @@ type Emulator struct {
 
 	EnableDebug bool
 	LogBuffer   bytes.Buffer
+	MaxCycles   int
+	TotalCycles int
 
 	CartridgeType CartridgeType
 }
 
-func NewEmulator(enableDebug bool) *Emulator {
+func NewEmulator(enableDebug bool, maxCycles int) *Emulator {
 	e := new(Emulator)
 	if enableDebug {
 		e.SetupLogFile()
 	}
 	e.EnableDebug = enableDebug
+	e.MaxCycles = maxCycles
 	e.ProgramCounter.SetValue(0x100)
 	e.AF.SetValue(0x01B0)
 	e.BC.SetValue(0x0013)
@@ -143,6 +146,12 @@ func (e *Emulator) EmulateFrame() {
 		e.UpdateTimers(cycles)
 		e.UpdateScreen(cycles)
 		e.ExecuteInterrupts()
+		if e.MaxCycles != 0 {
+			e.TotalCycles += cycles
+			if e.TotalCycles >= e.MaxCycles {
+				os.Exit(0)
+			}
+		}
 	}
 }
 

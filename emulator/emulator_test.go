@@ -10,7 +10,7 @@ import (
 )
 
 func BenchmarkEmulateFrame(b *testing.B) {
-	e := NewEmulator(false)
+	e := NewEmulator(false, 0)
 	e.LoadCartridge("../tetris.gb")
 	for n := 0; n < b.N; n++ {
 		e.EmulateFrame()
@@ -23,7 +23,7 @@ var _ = Describe("Emulator", func() {
 	)
 
 	BeforeEach(func() {
-		emulator = *NewEmulator(false)
+		emulator = *NewEmulator(false, 0)
 	})
 
 	Describe("verifying the initial values", func() {

@@ -14,7 +14,7 @@ var _ = Describe("Emulator", func() {
 	)
 
 	BeforeEach(func() {
-		emulator = *NewEmulator(false)
+		emulator = *NewEmulator(false, 0)
 	})
 
 	Describe("verifying memory access", func() {

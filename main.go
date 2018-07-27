@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/Ruenzuo/nana/emulator"
 	"github.com/hajimehoshi/ebiten"
@@ -39,7 +40,16 @@ func update(screen *ebiten.Image) error {
 func main() {
 	gameArg := os.Args[1]
 	_, okDebug := os.LookupEnv("DEBUG")
-	e = emulator.NewEmulator(okDebug)
+	maxCyclesEnv, okMaxCycles := os.LookupEnv("MAX_CYCLES")
+	maxCycles := 0
+	if okMaxCycles {
+		maxCyclesInt, err := strconv.Atoi(maxCyclesEnv)
+		if err != nil {
+			panic(err)
+		}
+		maxCycles = maxCyclesInt
+	}
+	e = emulator.NewEmulator(okDebug, maxCycles)
 	e.LoadCartridge(gameArg)
 	if err := ebiten.Run(update, width, height, scale, fmt.Sprintf("nana - %s", gameArg)); err != nil {
 		panic(err)

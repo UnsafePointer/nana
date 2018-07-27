@@ -13,7 +13,7 @@ var _ = Describe("Emulator", func() {
 	)
 
 	BeforeEach(func() {
-		emulator = *NewEmulator(false)
+		emulator = *NewEmulator(false, 0)
 	})
 
 	Describe("verifying push/pop 16-Bit values into stack", func() {
