@@ -2,6 +2,7 @@ package emulator
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -163,6 +164,7 @@ func (e *Emulator) executeNextOpcode() int {
 		cycles = 4
 	} else {
 		cycles = e.ExecuteOpCode(opCode)
+		e.LogMessage(fmt.Sprintf("OP: %#02x, Cycles: %d", opCode, cycles))
 	}
 	// 0xF3: disable interrupts but only after next instruction, so
 	// no immediatly after we return from 0xF3
