@@ -565,7 +565,7 @@ func (e *Emulator) CPU8BitJumpConditional(condition bool) int {
 func (e *Emulator) CPU8BitJumpAddConditional(condition bool) int {
 	signedValue := int8(e.ReadMemory8Bit(e.ProgramCounter.Value()))
 	e.ProgramCounter.Increment()
-	address := uint32(e.ProgramCounter.Value()) + uint32(signedValue)
+	address := int32(e.ProgramCounter.Value()) + int32(signedValue)
 	address &= 0x00FFFF
 	if condition {
 		e.ProgramCounter.SetValue(uint16(address))
