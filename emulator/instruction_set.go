@@ -34,7 +34,7 @@ func (e *Emulator) CPU8BitRegisterAdd(r1 *Register8Bit, addend uint8, useCarry b
 	augend := r1.Value()
 	if useCarry && e.FlagC() {
 		addend++
-		testPanic(addend == 0, "TODO: Verify what happens in specification when this overflows. What's the right order?")
+		e.testPanic(addend == 0, "TODO: Verify what happens in specification when this overflows. What's the right order?")
 	}
 	result := uint16(augend&0xFF) + uint16(addend&0xFF)
 	r1.SetValue(uint8(result & 0xFF))
@@ -55,7 +55,7 @@ func (e *Emulator) CPU8BitRegisterSubtract(r1 *Register8Bit, minuend uint8, useC
 	subtrahend := r1.Value()
 	if useCarry && e.FlagC() {
 		minuend++
-		testPanic(minuend == 0, "TODO: Verify what happens in specification when this overflows. What's the right order?")
+		e.testPanic(minuend == 0, "TODO: Verify what happens in specification when this overflows. What's the right order?")
 	}
 	result := uint16(subtrahend&0xFF) - uint16(minuend&0xFF)
 	r1.SetValue(uint8(result & 0xFF))

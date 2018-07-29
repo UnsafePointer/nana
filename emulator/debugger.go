@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-func testPanic(shouldPanic bool, message string) {
-	if shouldPanic {
+func (e *Emulator) testPanic(shouldPanic bool, message string) {
+	if shouldPanic && e.EnableTestPanics {
 		panic(message)
 	}
 }

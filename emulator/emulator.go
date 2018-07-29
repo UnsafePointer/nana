@@ -47,6 +47,7 @@ type Emulator struct {
 	ScreenData                  [160][144][3]uint8
 
 	EnableDebug        bool
+	EnableTestPanics   bool
 	LogBuffer          bytes.Buffer
 	MaxCycles          int
 	TotalCycles        int
@@ -55,12 +56,13 @@ type Emulator struct {
 	CartridgeType CartridgeType
 }
 
-func NewEmulator(enableDebug bool, maxCycles int) *Emulator {
+func NewEmulator(enableDebug bool, enableTestPanics bool, maxCycles int) *Emulator {
 	e := new(Emulator)
 	if enableDebug {
 		e.SetupLogFile()
 	}
 	e.EnableDebug = enableDebug
+	e.EnableTestPanics = enableTestPanics
 	e.MaxCycles = maxCycles
 	e.InstructionCounter = make(map[uint8]int)
 	e.ProgramCounter.SetValue(0x100)

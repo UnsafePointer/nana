@@ -40,6 +40,7 @@ func update(screen *ebiten.Image) error {
 func main() {
 	gameArg := os.Args[1]
 	_, okDebug := os.LookupEnv("DEBUG")
+	_, okEnableTestPanics := os.LookupEnv("ENABLE_TEST_PANICS")
 	maxCyclesEnv, okMaxCycles := os.LookupEnv("MAX_CYCLES")
 	maxCycles := 0
 	if okMaxCycles {
@@ -49,7 +50,7 @@ func main() {
 		}
 		maxCycles = maxCyclesInt
 	}
-	e = emulator.NewEmulator(okDebug, maxCycles)
+	e = emulator.NewEmulator(okDebug, okEnableTestPanics, maxCycles)
 	e.LoadCartridge(gameArg)
 	if err := ebiten.Run(update, width, height, scale, fmt.Sprintf("nana - %s", gameArg)); err != nil {
 		panic(err)
