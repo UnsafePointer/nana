@@ -46,10 +46,11 @@ type Emulator struct {
 	ScanlineRenderCyclesCounter int
 	ScreenData                  [160][144][3]uint8
 
-	EnableDebug bool
-	LogBuffer   bytes.Buffer
-	MaxCycles   int
-	TotalCycles int
+	EnableDebug        bool
+	LogBuffer          bytes.Buffer
+	MaxCycles          int
+	TotalCycles        int
+	InstructionCounter map[uint8]int
 
 	CartridgeType CartridgeType
 }
@@ -61,6 +62,7 @@ func NewEmulator(enableDebug bool, maxCycles int) *Emulator {
 	}
 	e.EnableDebug = enableDebug
 	e.MaxCycles = maxCycles
+	e.InstructionCounter = make(map[uint8]int)
 	e.ProgramCounter.SetValue(0x100)
 	e.AF.SetValue(0x01B0)
 	e.BC.SetValue(0x0013)
@@ -158,6 +160,7 @@ func (e *Emulator) EmulateFrame() {
 
 func (e *Emulator) executeNextOpcode() int {
 	opCode := e.ReadMemory8Bit(e.ProgramCounter.Value())
+	e.CountOperationCode(opCode)
 	e.ProgramCounter.Increment()
 	var cycles int
 	if e.Halted {
@@ -178,6 +181,15 @@ func (e *Emulator) executeNextOpcode() int {
 		e.DisableInterrupts = false
 	}
 	return cycles
+}
+
+func (e *Emulator) CountOperationCode(opcode uint8) {
+	count, ok := e.InstructionCounter[opcode]
+	if ok == false {
+		count = 0
+	}
+	count++
+	e.InstructionCounter[opcode] = count
 }
 
 func testBit(n uint8, pos uint) bool {
