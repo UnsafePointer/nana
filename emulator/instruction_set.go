@@ -578,7 +578,8 @@ func (e *Emulator) CPU8BitCall(condition bool) int {
 	e.ProgramCounter.Increment()
 	e.ProgramCounter.Increment()
 	if condition {
-		e.PushIntoStack(address)
+		e.PushIntoStack(e.ProgramCounter.Value())
+		e.ProgramCounter.SetValue(address)
 	}
 
 	return 12
