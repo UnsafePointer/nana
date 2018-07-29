@@ -1,5 +1,9 @@
 package emulator
 
+import (
+	"fmt"
+)
+
 const lcdControllerAddress = 0xFF40
 const lcdStatusRegisterAddress = 0xFF41
 const currentScanlineRegisterAddress = 0xFF44
@@ -18,6 +22,7 @@ func (e *Emulator) UpdateScreen(cycles int) {
 	e.ROM[currentScanlineRegisterAddress]++
 	currentScanline := e.ReadMemory8Bit(currentScanlineRegisterAddress)
 	e.ScanlineRenderCyclesCounter = 456
+	e.LogMessage(fmt.Sprintf("Current scanline: %d", currentScanline))
 
 	if currentScanline == 144 {
 		e.RequestInterrupt(0)
