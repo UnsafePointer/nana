@@ -74,7 +74,7 @@ func NewEmulator(enableDebug bool, maxCycles int) *Emulator {
 	e.EnableRAMBank = false
 	e.EnableROMBank = false
 	e.Halted = false
-	e.DisableInterrupts = false
+	e.DisableInterrupts = true
 	e.PendingDisableInterrupts = false
 	e.PendingEnableInterrupts = false
 	e.DividerRegisterCyclesCounter = 0
