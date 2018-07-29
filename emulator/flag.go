@@ -54,3 +54,30 @@ func (e *Emulator) ClearAllFlags() {
 	e.ClearFlagH()
 	e.ClearFlagC()
 }
+
+func (e *Emulator) DebugFlags() string {
+	var output string
+
+	if e.FlagZ() {
+		output += "1"
+	} else {
+		output += "0"
+	}
+	if e.FlagN() {
+		output += "1"
+	} else {
+		output += "0"
+	}
+	if e.FlagH() {
+		output += "1"
+	} else {
+		output += "0"
+	}
+	if e.FlagC() {
+		output += "1"
+	} else {
+		output += "0"
+	}
+
+	return output
+}
