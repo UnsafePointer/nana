@@ -83,6 +83,7 @@ func NewEmulator(enableDebug bool, enableTestPanics bool, maxCycles int) *Emulat
 	e.TimerCyclesCounter = 0
 	e.ScanlineRenderCyclesCounter = 456
 	e.CartridgeType = CartridgeTypeROMOnly
+	e.ROM[0xFF00] = 0xFF
 	e.ROM[0xFF05] = 0x00
 	e.ROM[0xFF06] = 0x00
 	e.ROM[0xFF07] = 0x00
