@@ -1,10 +1,15 @@
 package emulator
 
+import (
+	"fmt"
+)
+
 const ROMBankSize = 0x4000
 const RAMBankSize = 0x2000
 const DMATransferAddress = 0xFF46
 
 func (e *Emulator) WriteMemory(address uint16, data uint8) {
+	e.LogMessage(fmt.Sprintf("Write: %#04x, Value: %#02x", address, data))
 	// Memory map:
 	// 0000-7FFF ROM
 	// E000-FDFF Same as C000-DDFF (ECHO) (typically not used)

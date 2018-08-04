@@ -171,6 +171,7 @@ func (e *Emulator) executeNextOpcode() int {
 	} else {
 		cycles = e.ExecuteOpCode(opCode)
 		e.LogMessage(fmt.Sprintf("OP: %#02x, Cycles: %02d, Program Counter: %#04x, Flags: %s", opCode, cycles, e.ProgramCounter.Value()-1, e.DebugFlags()))
+		e.LogMessage(fmt.Sprintf("AF: %#04x, BC: %#04x, DE: %#04x, HL: %#04x", e.AF.Value(), e.BC.Value(), e.DE.Value(), e.HL.Value()))
 	}
 	// 0xF3: disable interrupts but only after next instruction, so
 	// no immediatly after we return from 0xF3
