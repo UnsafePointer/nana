@@ -10,6 +10,8 @@ const currentScanlineRegisterAddress = 0xFF44
 const coincidenceFlagAddress = 0xFF45
 
 func (e *Emulator) UpdateScreen(cycles int) {
+	e.updateLCDStatus()
+
 	if !e.IsLCDEnabled() {
 		return
 	}
