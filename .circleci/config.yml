@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: ruenzuo/nana-circle-ci:latest
+    working_directory: /go/src/github.com/Ruenzuo/nana
+    steps:
+      - checkout
+      - run: go get -v -t -d ./...
+      - run: go test -v ./...
