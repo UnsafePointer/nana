@@ -43,6 +43,15 @@ func (e *Emulator) DrawScanline() {
 	if testBit(value, 1) {
 		e.RenderSprites()
 	}
+
+	currentScanline := e.ReadMemory8Bit(currentScanlineRegisterAddress)
+	e.LogMessage(fmt.Sprintf("Scanline: %d", currentScanline))
+	for pixel := 0; pixel < 160; pixel++ {
+		red := e.ScreenData[pixel][currentScanline][0]
+		green := e.ScreenData[pixel][currentScanline][1]
+		blue := e.ScreenData[pixel][currentScanline][2]
+		e.LogMessage(fmt.Sprintf("Position %d, R: %d, G: %d, B: %d", pixel, red, green, blue))
+	}
 }
 
 //
