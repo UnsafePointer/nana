@@ -23,7 +23,7 @@ func (e *Emulator) ExecuteInterrupts() {
 	if interruptRequest > 0 {
 		for bitPosition := uint(0); bitPosition < 8; bitPosition++ {
 			if testBit(interruptRequest, bitPosition) {
-				interruptEnabled := e.ReadMemory8Bit(interruptRequestRegisterAddress)
+				interruptEnabled := e.ReadMemory8Bit(InterruptEnabledRegisterAddress)
 				if testBit(interruptEnabled, bitPosition) {
 					e.executeInterrupt(bitPosition)
 				}
