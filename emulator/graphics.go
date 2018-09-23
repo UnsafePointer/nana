@@ -98,6 +98,7 @@ func (e *Emulator) RenderTiles() {
 		colorValue |= getBit(data1, uint(colorBit))
 
 		color := e.GetColor(colorValue, 0xFF47)
+		e.testPanic(color < 0 || color > 3, "Invalid color")
 
 		red := uint8(0)
 		green := uint8(0)
@@ -209,6 +210,7 @@ func (e *Emulator) RenderSprites() {
 				colorValue |= getBit(data1, uint(colorBit))
 
 				color := e.GetColor(colorValue, 0xFF47)
+				e.testPanic(color < 0 || color > 3, "Invalid color")
 
 				red := uint8(0)
 				green := uint8(0)
