@@ -96,7 +96,7 @@ func main() {
 	}
 	e = emulator.NewEmulator(okDebug, okEnableTestPanics, maxCycles)
 	e.LoadCartridge(gameArg)
-	if err := ebiten.Run(update, width, height, scale, fmt.Sprintf("nana - %s", gameArg)); err != nil {
+	if err := ebiten.Run(update, width, height, scale, fmt.Sprintf("ナナ - %s", gameArg)); err != nil {
 		panic(err)
 	}
 }
