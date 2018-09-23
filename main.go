@@ -13,7 +13,7 @@ import (
 const (
 	width  = 160
 	height = 144
-	scale  = 10
+	scale  = 5
 )
 
 var (
