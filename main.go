@@ -21,6 +21,48 @@ var (
 )
 
 func update(screen *ebiten.Image) error {
+
+	if ebiten.IsKeyPressed(ebiten.KeyA) {
+		e.PressKey(4)
+	} else {
+		e.ReleaseKey(4)
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyS) {
+		e.PressKey(5)
+	} else {
+		e.ReleaseKey(5)
+	}
+	if ebiten.IsKeyPressed(ebiten.KeySpace) {
+		e.PressKey(6)
+	} else {
+		e.ReleaseKey(6)
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyEnter) {
+		e.PressKey(7)
+	} else {
+		e.ReleaseKey(7)
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
+		e.PressKey(1)
+	} else {
+		e.ReleaseKey(1)
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyRight) {
+		e.PressKey(0)
+	} else {
+		e.ReleaseKey(0)
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyUp) {
+		e.PressKey(2)
+	} else {
+		e.ReleaseKey(2)
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyDown) {
+		e.PressKey(3)
+	} else {
+		e.ReleaseKey(3)
+	}
+
 	e.EmulateFrame()
 	pixels := make([]byte, width*height*4)
 	for y := 0; y < height; y++ {

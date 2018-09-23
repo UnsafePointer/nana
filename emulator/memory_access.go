@@ -58,6 +58,8 @@ func (e *Emulator) ReadMemory8Bit(address uint16) uint8 {
 	} else if address >= 0xA000 && address <= 0xBFFF {
 		bankAddress := address - 0xA000
 		return e.RAM[bankAddress+e.CurrentRAMBank*RAMBankSize]
+	} else if address == joypadRegister {
+		return e.GetJoypadState()
 	}
 
 	return e.ROM[address]

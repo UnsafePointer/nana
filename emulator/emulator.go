@@ -46,6 +46,8 @@ type Emulator struct {
 	ScanlineRenderCyclesCounter int
 	ScreenData                  [160][144][3]uint8
 
+	JoypadState uint8
+
 	EnableDebug        bool
 	EnableTestPanics   bool
 	LogBuffer          bytes.Buffer
@@ -82,6 +84,7 @@ func NewEmulator(enableDebug bool, enableTestPanics bool, maxCycles int) *Emulat
 	e.DividerRegisterCyclesCounter = 0
 	e.TimerCyclesCounter = 0
 	e.ScanlineRenderCyclesCounter = 456
+	e.JoypadState = 0xFF
 	e.CartridgeType = CartridgeTypeROMOnly
 	e.ROM[0xFF00] = 0xFF
 	e.ROM[0xFF05] = 0x00
