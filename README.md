@@ -32,7 +32,7 @@ $ nana path/to/rom.gb
 ### Building your own emulator
 
 * Start with 8-bit system
-* Performance matters, profile constantly against other emulators to check how you're doing so far
+* Performance matters, profile constantly against other emulators to check how you're doing so far. You can get some inspiration from [hachiko](https://github.com/Ruenzuo/hachiko)
 * Implement the [full instruction set](./emulator/instruction_set.go) + [jump table](./emulator/jump_table.go) **first**. Then try your work against an [emulation test collection](https://github.com/retrio/gb-test-roms), these are excelent to catch edge cases and implement the bugs the original systems had
 * [Game Boy CPU Manual](http://www.codeslinger.co.uk/pages/projects/gameboy/files/GB.pdf)
 * [Game Boy Programming Manual](https://archive.org/download/GameBoyProgManVer1.1/GameBoyProgManVer1.1.pdf)
