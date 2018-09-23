@@ -219,5 +219,8 @@ func clearBit(n uint8, pos uint) uint8 {
 
 func getBit(n uint8, pos uint) uint8 {
 	mask := uint8(1) << pos
-	return n & mask
+	if n&mask == 0 {
+		return 0
+	}
+	return 1
 }
