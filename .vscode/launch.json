@@ -8,8 +8,8 @@
             "mode": "debug",
             "program": "${workspaceRoot}",
             "env": {
-                "DEBUG": "TRUE",
-                "MAX_CYCLES": "4194304"
+                // "DEBUG": "TRUE",
+                // "MAX_CYCLES": "4194304"
             },
             "args": ["tetris.gb"],
             "showLog": true
