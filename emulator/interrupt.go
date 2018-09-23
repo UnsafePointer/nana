@@ -1,5 +1,7 @@
 package emulator
 
+import "fmt"
+
 const interruptRequestRegisterAddress = 0xFF0F
 const InterruptEnabledRegisterAddress = 0xFFFF
 
@@ -7,12 +9,14 @@ func (e *Emulator) RequestInterrupt(interruptId uint) {
 	value := e.ReadMemory8Bit(interruptRequestRegisterAddress)
 	value = setBit(value, interruptId)
 	e.WriteMemory(interruptRequestRegisterAddress, value)
+	e.LogMessage(fmt.Sprintf("Interrupt requested: %d", interruptId))
 }
 
 func (e *Emulator) ClearRequestInterrupt(interruptId uint) {
 	value := e.ReadMemory8Bit(interruptRequestRegisterAddress)
 	value = clearBit(value, interruptId)
 	e.WriteMemory(interruptRequestRegisterAddress, value)
+	e.LogMessage(fmt.Sprintf("Interrupt cleared: %d", interruptId))
 }
 
 func (e *Emulator) ExecuteInterrupts() {
