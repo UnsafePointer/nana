@@ -157,6 +157,7 @@ func (e *Emulator) EmulateFrame() {
 		e.ExecuteInterrupts()
 		if e.MaxCycles != 0 {
 			e.TotalCycles += cycles
+			e.LogMessage(fmt.Sprintf("Total number of cycles: %d", e.TotalCycles))
 			if e.TotalCycles >= e.MaxCycles {
 				os.Exit(0)
 			}
