@@ -1,4 +1,4 @@
-# Nana (ナナ) [![CircleCI](https://circleci.com/gh/Ruenzuo/nana/tree/master.svg?style=svg&circle-token=2e19174b3ae6327c61879b0ce43544e2eaf28926)](https://circleci.com/gh/Ruenzuo/nana/tree/master)
+# Nana (ナナ) [![CircleCI](https://circleci.com/gh/Ruenzuo/nana/tree/master.svg?style=svg&circle-token=2e19174b3ae6327c61879b0ce43544e2eaf28926)](https://circleci.com/gh/Ruenzuo/nana/tree/master) [![codecov](https://codecov.io/gh/Ruenzuo/nana/branch/master/graph/badge.svg)](https://codecov.io/gh/Ruenzuo/nana)
 
 > “The more my dreams are fulfilled, the quicklier they become realities losing their shine.”
 >
