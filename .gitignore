@@ -29,3 +29,6 @@ nana
 nana.log
 *-dump.txt
 *.gb
+
+# Coverage report file
+coverage.txt
