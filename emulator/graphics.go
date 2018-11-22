@@ -60,7 +60,7 @@ func (e *Emulator) RenderTiles() {
 		positionY = viewingAreaPositonY + currentScanline
 	}
 
-	tileRow := uint16((positionY / 8) * 32)
+	tileRow := uint16(positionY) / 8 * 32
 
 	for pixel := uint8(0); pixel < 160; pixel++ {
 		positionX := pixel + viewingAreaPositonX
