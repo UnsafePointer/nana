@@ -71,7 +71,7 @@ func (e *Emulator) RenderTiles() {
 			}
 		}
 
-		tileColumn := uint16(positionX / 8)
+		tileColumn := uint16(positionX) / 8
 		tileAddress := backgroundMemory + tileRow + tileColumn
 
 		tileLocation := tileData
@@ -80,7 +80,7 @@ func (e *Emulator) RenderTiles() {
 			tileLocation += (tileNumber * 16)
 		} else {
 			tileNumber := int16(e.ReadMemory8Bit(tileAddress))
-			tileLocation += uint16(((tileNumber + 128) * 16))
+			tileLocation += ((uint16(tileNumber) + 128) * 16)
 		}
 
 		line := positionY % 8
@@ -196,7 +196,7 @@ func (e *Emulator) RenderSprites() {
 			line *= 2
 			dataAddress := int32((0x8000 + (int32(tileLocation) * 16))) + line
 			data1 := e.ReadMemory8Bit(uint16(dataAddress))
-			data2 := e.ReadMemory8Bit(uint16(dataAddress + 1))
+			data2 := e.ReadMemory8Bit(uint16(dataAddress) + 1)
 
 			for tilePixel := 7; tilePixel >= 0; tilePixel-- {
 				colorBit := tilePixel
