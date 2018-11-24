@@ -48,22 +48,24 @@ type Emulator struct {
 
 	JoypadState uint8
 
-	EnableDebug        bool
-	EnableTestPanics   bool
-	LogBuffer          bytes.Buffer
-	MaxCycles          int
-	TotalCycles        int
-	InstructionCounter map[uint8]int
+	EnableDebug         bool
+	EnableLCDStateDebug bool
+	EnableTestPanics    bool
+	LogBuffer           bytes.Buffer
+	MaxCycles           int
+	TotalCycles         int
+	InstructionCounter  map[uint8]int
 
 	CartridgeType CartridgeType
 }
 
-func NewEmulator(enableDebug bool, enableTestPanics bool, maxCycles int) *Emulator {
+func NewEmulator(enableDebug bool, enableLCDStateDebug bool, enableTestPanics bool, maxCycles int) *Emulator {
 	e := new(Emulator)
 	if enableDebug {
 		e.SetupLogFile()
 	}
 	e.EnableDebug = enableDebug
+	e.EnableLCDStateDebug = enableLCDStateDebug
 	e.EnableTestPanics = enableTestPanics
 	e.MaxCycles = maxCycles
 	e.InstructionCounter = make(map[uint8]int)

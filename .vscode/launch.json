@@ -9,6 +9,7 @@
             "program": "${workspaceRoot}",
             "env": {
                 // "DEBUG": "TRUE",
+                // "ENABLE_LCD_STATE_DEBUG": "TRUE",
                 // "MAX_CYCLES": "4194304"
             },
             "args": ["tetris.gb"],

@@ -32,7 +32,8 @@ $ nana path/to/rom.gb
 ### Environment variables
 
 * `DEBUG`: enables buffered debug output to nana.log
-* `MAX_CYCLES`: enabled automatic shut down to specific cycle threshold
+* `ENABLE_LCD_STATE_DEBUG`: includes the LCD state in debug output
+* `MAX_CYCLES`: enables automatic shut down to specific cycle threshold
 
 ### Building your own emulator
 
