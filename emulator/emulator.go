@@ -147,6 +147,7 @@ func (e *Emulator) LoadCartridge(filename string) {
 	case 6:
 		e.CartridgeType = CartridgeTypeMBC2
 	}
+	e.LogMessage(fmt.Sprintf("Cartridge type: %d", cartridgeTypeDefinition))
 }
 
 func (e *Emulator) EmulateFrame() {
