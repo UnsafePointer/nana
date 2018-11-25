@@ -131,7 +131,7 @@ func (e *Emulator) ChangeLowROMBank(data uint8) {
 		}
 	} else {
 		test := uint16(data & 31)
-		e.CurrentROMBank &= 244
+		e.CurrentROMBank &= 224
 		e.CurrentROMBank |= test
 		if e.CurrentROMBank == 0 {
 			e.CurrentROMBank++
