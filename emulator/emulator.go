@@ -171,11 +171,12 @@ func (e *Emulator) EmulateFrame() {
 func (e *Emulator) executeNextOpcode() int {
 	opCode := e.ReadMemory8Bit(e.ProgramCounter.Value())
 	e.CountOperationCode(opCode)
-	e.ProgramCounter.Increment()
+
 	var cycles int
 	if e.Halted {
 		cycles = 4
 	} else {
+		e.ProgramCounter.Increment()
 		cycles = e.ExecuteOpCode(opCode)
 		e.LogMessage(fmt.Sprintf("OP: %#02x, Cycles: %02d, Program Counter: %#04x, Flags: %s", opCode, cycles, e.ProgramCounter.Value()-1, e.DebugFlags()))
 		e.LogMessage(fmt.Sprintf("AF: %#04x, BC: %#04x, DE: %#04x, HL: %#04x", e.AF.Value(), e.BC.Value(), e.DE.Value(), e.HL.Value()))
