@@ -24,9 +24,6 @@ func (e *Emulator) UpdateScreen(cycles int) {
 	e.ROM[currentScanlineRegisterAddress]++
 	currentScanline := e.ReadMemory8Bit(currentScanlineRegisterAddress)
 	e.ScanlineRenderCyclesCounter = 456
-	if e.EnableLCDStateDebug {
-		e.LogMessage(fmt.Sprintf("Current scanline: %d", currentScanline))
-	}
 
 	if currentScanline == 144 {
 		e.RequestInterrupt(0)
@@ -46,12 +43,11 @@ func (e *Emulator) DrawScanline() {
 		e.RenderSprites()
 	}
 
-	currentScanline := e.ReadMemory8Bit(currentScanlineRegisterAddress)
-
 	if !e.EnableLCDStateDebug {
 		return
 	}
 
+	currentScanline := e.ReadMemory8Bit(currentScanlineRegisterAddress)
 	e.LogMessage(fmt.Sprintf("Scanline: %d", currentScanline))
 	for pixel := 0; pixel < 160; pixel++ {
 		red := e.ScreenData[pixel][currentScanline][0]
