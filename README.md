@@ -6,7 +6,7 @@
 
 Nana (ナナ) is a [Game Boy](https://en.wikipedia.org/wiki/Game_Boy) emulator written in Go. It's far from feature complete and there are still bugs in what it's implemented but what I got here helped me a lot to understand how computers work at one of their lowest levels, I hope this too helps someone else.
 
-![nana-screenshot.png](nana-screenshot.png)
+![nana.gif](nana.gif)
 
 ### ROM Compatibility list
 
