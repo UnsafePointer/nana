@@ -1,5 +1,9 @@
 package emulator
 
+import (
+	"fmt"
+)
+
 // Viewing area/ Background map:
 // 0xFF42: The Y Position of the BACKGROUND where to start drawing the viewing area from
 // 0xFF43: The X Position of the BACKGROUND to start drawing the viewing area from
@@ -60,7 +64,7 @@ func (e *Emulator) RenderTiles() {
 		positionY = viewingAreaPositonY + currentScanline
 	}
 
-	tileRow := uint16(positionY) / 8 * 32
+	tileRow := uint16(positionY/8) * 32
 
 	for pixel := uint8(0); pixel < 160; pixel++ {
 		positionX := pixel + viewingAreaPositonX
@@ -74,20 +78,24 @@ func (e *Emulator) RenderTiles() {
 		tileColumn := uint16(positionX) / 8
 		tileAddress := backgroundMemory + tileRow + tileColumn
 
-		tileLocation := tileData
+		tileLocation := uint16(tileData)
 		if unsigned {
-			tileNumber := uint16(e.ReadMemory8Bit(tileAddress))
-			tileLocation += (tileNumber * 16)
+			tileNumber := e.ReadMemory8Bit(tileAddress)
+			tileLocation += uint16(tileNumber) * 16
 		} else {
-			tileNumber := int16(e.ReadMemory8Bit(tileAddress))
-			tileLocation += ((uint16(tileNumber) + 128) * 16)
+			tileNumber := int8(e.ReadMemory8Bit(tileAddress))
+			tileLocation += uint16((int16(tileNumber) + 128) * 16)
 		}
 
 		line := positionY % 8
 		line *= 2
 
-		data1 := e.ReadMemory8Bit(tileLocation + uint16(line))
-		data2 := e.ReadMemory8Bit(tileLocation + uint16(line) + 1)
+		address1 := tileLocation + uint16(line)
+		data1 := e.ReadMemory8Bit(address1)
+		address2 := tileLocation + uint16(line) + 1
+		data2 := e.ReadMemory8Bit(address2)
+
+		e.LogMessage(fmt.Sprintf("Background pixel: %d, data1: %#02x (%#04x), data2: %#02x (%#04x)", pixel, data1, address1, data2, address2))
 
 		colorBit := int(positionX) % 8
 		colorBit -= 7
