@@ -512,9 +512,9 @@ func (e *Emulator) CPU8BitBitMemoryAddress(address uint16, position uint) int {
 	value := e.ReadMemory8Bit(address)
 	test := testBit(value, position)
 	if test {
-		e.SetFlagZ()
-	} else {
 		e.ClearFlagZ()
+	} else {
+		e.SetFlagZ()
 	}
 	e.ClearFlagN()
 	e.SetFlagH()
