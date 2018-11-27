@@ -11,7 +11,7 @@ Nana (ナナ) is a [Game Boy](https://en.wikipedia.org/wiki/Game_Boy) emulator w
 ### ROM Compatibility list
 
 - [x] Tetris
-- [ ] The Legend of Zelda: Link's Awakening
+- [x] The Legend of Zelda: Link's Awakening
 
 ### Dependencies
 
