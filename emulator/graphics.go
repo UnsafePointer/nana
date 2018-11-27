@@ -217,7 +217,12 @@ func (e *Emulator) RenderSprites() {
 				colorValue <<= 1
 				colorValue |= getBit(data1, uint(colorBit))
 
-				color := e.GetColor(colorValue, 0xFF47)
+				colorAddress := uint16(0xFF48)
+				if testBit(attributes, 4) {
+					colorAddress = 0xFF49
+				}
+
+				color := e.GetColor(colorValue, colorAddress)
 				e.testPanic(color < 0 || color > 3, "Invalid color")
 
 				if color == 0 {
