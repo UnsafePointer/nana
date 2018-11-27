@@ -220,6 +220,10 @@ func (e *Emulator) RenderSprites() {
 				color := e.GetColor(colorValue, 0xFF47)
 				e.testPanic(color < 0 || color > 3, "Invalid color")
 
+				if color == 0 {
+					continue
+				}
+
 				red := uint8(0)
 				green := uint8(0)
 				blue := uint8(0)
