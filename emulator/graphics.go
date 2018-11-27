@@ -22,7 +22,7 @@ func (e *Emulator) RenderTiles() {
 	viewingAreaPositonY := e.ReadMemory8Bit(viewingAreaPositonYAddress)
 	viewingAreaPositonX := e.ReadMemory8Bit(viewingAreaPositonXAddress)
 	windowPositionY := e.ReadMemory8Bit(windowPositionYAddress)
-	windowPositioX := e.ReadMemory8Bit(windowPositionXAddress)
+	windowPositioX := e.ReadMemory8Bit(windowPositionXAddress) - 7
 
 	lcdController := e.ReadMemory8Bit(lcdControllerAddress)
 	currentScanline := e.ReadMemory8Bit(currentScanlineRegisterAddress)
