@@ -644,7 +644,6 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	// RLCA
 	case 0x07:
 		cycles := e.CPU8BitRegisterRLC(&e.AF.High)
-		cycles -= 4
 		return cycles
 	// RLA
 	case 0x17:
@@ -659,7 +658,6 @@ func (e *Emulator) ExecuteOpCode(opcode uint8) int {
 	// RRA
 	case 0x1F:
 		cycles := e.CPU8BitRegisterRR(&e.AF.High)
-		cycles -= 4
 		return cycles
 	// JP nn
 	case 0xC3:
