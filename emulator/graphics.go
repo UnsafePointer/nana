@@ -251,6 +251,12 @@ func (e *Emulator) RenderSprites() {
 					continue
 				}
 
+				if testBit(attributes, 7) {
+					if e.ScreenData[pixel][currentScanline][0] != 255 || e.ScreenData[pixel][currentScanline][1] != 255 || e.ScreenData[pixel][currentScanline][2] != 255 {
+						continue
+					}
+				}
+
 				e.ScreenData[pixel][currentScanline][0] = red
 				e.ScreenData[pixel][currentScanline][1] = green
 				e.ScreenData[pixel][currentScanline][2] = blue
