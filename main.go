@@ -7,6 +7,7 @@ import (
 
 	"github.com/Ruenzuo/nana/emulator"
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/audio"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
@@ -17,10 +18,47 @@ const (
 )
 
 var (
-	e *emulator.Emulator
+	e            *emulator.Emulator
+	player       *audio.Player
+	audioContext *audio.Context
 )
 
+type stream struct {
+	position int64
+}
+
+func (s *stream) Read(data []byte) (int, error) {
+	var x int16
+	l := len(data)
+	if len(e.SoundBuffer) < l {
+		l = len(e.SoundBuffer)
+	}
+	if len(e.SoundBuffer) == 0 {
+		return 0, nil
+	}
+	for i := 0; i < l/4; i++ {
+		x, e.SoundBuffer = e.SoundBuffer[0], e.SoundBuffer[1:]
+		data[4*i] = byte(x)
+		data[4*i+1] = byte(x >> 8)
+		data[4*i+2] = byte(x)
+		data[4*i+3] = byte(x >> 8)
+	}
+	return len(data), nil
+}
+
+func (s *stream) Close() error {
+	return nil
+}
+
 func update(screen *ebiten.Image) error {
+	if player == nil && len(e.SoundBuffer) > emulator.SampleRate {
+		var err error
+		player, err = audio.NewPlayer(audioContext, &stream{})
+		if err != nil {
+			return err
+		}
+		player.Play()
+	}
 
 	if ebiten.IsKeyPressed(ebiten.KeyA) {
 		e.PressKey(4)
@@ -97,7 +135,12 @@ func main() {
 	}
 	e = emulator.NewEmulator(okDebug, okLCDState, okEnableTestPanics, maxCycles)
 	e.LoadCartridge(gameArg)
-	if err := ebiten.Run(update, width, height, scale, fmt.Sprintf("ナナ - %s", gameArg)); err != nil {
+	var err error
+	audioContext, err = audio.NewContext(emulator.SampleRate)
+	if err != nil {
+		panic(err)
+	}
+	if err = ebiten.Run(update, width, height, scale, fmt.Sprintf("ナナ - %s", gameArg)); err != nil {
 		panic(err)
 	}
 }
