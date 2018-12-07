@@ -29,6 +29,8 @@ nana
 nana.log
 *-dump.txt
 *.gb
+tools/wave.txt
+tools/wave.wav
 
 # Coverage report file
 coverage.txt

@@ -26,6 +26,18 @@ type Emulator struct {
 	DE Register16Bit
 	HL Register16Bit
 
+	SquareOne          SquareChannel
+	SquareTwo          SquareChannel
+	Wave               WaveChannel
+	Noise              NoiseChannel
+	RightVolume        uint8
+	LeftVolume         uint8
+	RightChannelEnable [4]bool
+	LeftChannelEnable  [4]bool
+	SoundEnabled       bool
+	SoundSampleCounter int
+	SoundBuffer        []int16
+
 	CartridgeMemory          [0x200000]uint8
 	ROM                      [0x10000]uint8
 	RAM                      [0x8000]uint8
@@ -120,6 +132,7 @@ func NewEmulator(enableDebug bool, enableLCDStateDebug bool, enableTestPanics bo
 	e.ROM[0xFF4A] = 0x00
 	e.ROM[0xFF4B] = 0x00
 	e.ROM[0xFFFF] = 0x00
+	e.SoundSampleCounter = MaxCyclesPerSample
 	return e
 }
 
@@ -158,6 +171,7 @@ func (e *Emulator) EmulateFrame() {
 		e.UpdateTimers(cycles)
 		e.UpdateScreen(cycles)
 		e.ExecuteInterrupts()
+		e.UpdateSound(cycles)
 		if e.MaxCycles != 0 {
 			e.TotalCycles += cycles
 			e.LogMessage(fmt.Sprintf("Total number of cycles: %d", e.TotalCycles))
