@@ -23,6 +23,15 @@ Linux dependencies are listed [here](./Dockerfile).
 $ go get github.com/Ruenzuo/nana
 ```
 
+### Cross-compiling
+
+See [xgo](https://github.com/karalabe/xgo)
+
+```
+$ make build-windows
+$ make build-darwin
+```
+
 ### Usage
 
 ```
