@@ -32,6 +32,10 @@ $ make build-windows
 $ make build-darwin
 ```
 
+### Pre-compiled binaries
+
+See [Releases](https://github.com/Ruenzuo/nana/releases)
+
 ### Usage
 
 ```
