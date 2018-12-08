@@ -60,24 +60,28 @@ type Emulator struct {
 
 	JoypadState uint8
 
-	EnableDebug         bool
-	EnableLCDStateDebug bool
-	EnableTestPanics    bool
-	LogBuffer           bytes.Buffer
-	MaxCycles           int
-	TotalCycles         int
-	InstructionCounter  map[uint8]int
+	EnableFPSOverlay        bool
+	EnableDebug             bool
+	EnableLCDStateDebug     bool
+	EnableMemoryAccessDebug bool
+	EnableTestPanics        bool
+	LogBuffer               bytes.Buffer
+	MaxCycles               int
+	TotalCycles             int
+	InstructionCounter      map[uint8]int
 
 	CartridgeType CartridgeType
 }
 
-func NewEmulator(enableDebug bool, enableLCDStateDebug bool, enableTestPanics bool, maxCycles int) *Emulator {
+func NewEmulator(enableFPSOverlay bool, enableDebug bool, enableLCDStateDebug bool, enableMemoryAccessDebug bool, enableTestPanics bool, maxCycles int) *Emulator {
 	e := new(Emulator)
+	e.EnableFPSOverlay = enableFPSOverlay
 	if enableDebug {
 		e.SetupLogFile()
 	}
 	e.EnableDebug = enableDebug
 	e.EnableLCDStateDebug = enableLCDStateDebug
+	e.EnableMemoryAccessDebug = enableMemoryAccessDebug
 	e.EnableTestPanics = enableTestPanics
 	e.MaxCycles = maxCycles
 	e.InstructionCounter = make(map[uint8]int)
@@ -160,7 +164,10 @@ func (e *Emulator) LoadCartridge(filename string) {
 	case 6:
 		e.CartridgeType = CartridgeTypeMBC2
 	}
-	e.LogMessage(fmt.Sprintf("Cartridge type: %d", cartridgeTypeDefinition))
+
+	if e.EnableDebug {
+		e.LogMessage(fmt.Sprintf("Cartridge type: %d", cartridgeTypeDefinition))
+	}
 }
 
 func (e *Emulator) EmulateFrame() {
@@ -192,8 +199,10 @@ func (e *Emulator) executeNextOpcode() int {
 	} else {
 		e.ProgramCounter.Increment()
 		cycles = e.ExecuteOpCode(opCode)
-		e.LogMessage(fmt.Sprintf("OP: %#02x, Cycles: %02d, Program Counter: %#04x, Flags: %s", opCode, cycles, e.ProgramCounter.Value()-1, e.DebugFlags()))
-		e.LogMessage(fmt.Sprintf("AF: %#04x, BC: %#04x, DE: %#04x, HL: %#04x", e.AF.Value(), e.BC.Value(), e.DE.Value(), e.HL.Value()))
+		if e.EnableDebug {
+			e.LogMessage(fmt.Sprintf("OP: %#02x, Cycles: %02d, Program Counter: %#04x, Flags: %s", opCode, cycles, e.ProgramCounter.Value()-1, e.DebugFlags()))
+			e.LogMessage(fmt.Sprintf("AF: %#04x, BC: %#04x, DE: %#04x, HL: %#04x", e.AF.Value(), e.BC.Value(), e.DE.Value(), e.HL.Value()))
+		}
 	}
 	// 0xF3: disable interrupts but only after next instruction, so
 	// no immediatly after we return from 0xF3

@@ -1,8 +1,6 @@
 package emulator
 
-import (
-	"fmt"
-)
+import "fmt"
 
 const lcdControllerAddress = 0xFF40
 const lcdStatusRegisterAddress = 0xFF41

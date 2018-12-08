@@ -1,15 +1,15 @@
 package emulator
 
-import (
-	"fmt"
-)
+import "fmt"
 
 const ROMBankSize = 0x4000
 const RAMBankSize = 0x2000
 const DMATransferAddress = 0xFF46
 
 func (e *Emulator) WriteMemory(address uint16, data uint8) {
-	e.LogMessage(fmt.Sprintf("Write: %#04x, Value: %#02x", address, data))
+	if e.EnableMemoryAccessDebug {
+		e.LogMessage(fmt.Sprintf("Write: %#04x, Value: %#02x", address, data))
+	}
 	// Memory map:
 	// 0000-7FFF ROM
 	// E000-FDFF Same as C000-DDFF (ECHO) (typically not used)
@@ -60,12 +60,16 @@ func (e *Emulator) ReadMemory8Bit(address uint16) uint8 {
 		bankAddress := uint32(address)
 		bankAddress += (uint32(e.CurrentROMBank) - 1) * ROMBankSize
 		value := e.CartridgeMemory[bankAddress]
-		e.LogMessage(fmt.Sprintf("Reading %#04x (%#04x) from ROM at bank %d: %#02x", address, bankAddress, e.CurrentROMBank, value))
+		if e.EnableMemoryAccessDebug {
+			e.LogMessage(fmt.Sprintf("Reading %#04x (%#04x) from ROM at bank %d: %#02x", address, bankAddress, e.CurrentROMBank, value))
+		}
 		return value
 	} else if address >= 0xA000 && address <= 0xBFFF {
 		bankAddress := address - 0xA000
 		value := e.RAM[bankAddress+e.CurrentRAMBank*RAMBankSize]
-		e.LogMessage(fmt.Sprintf("Reading %#04x from RAM at bank %d: %#02x", address, e.CurrentRAMBank, value))
+		if e.EnableMemoryAccessDebug {
+			e.LogMessage(fmt.Sprintf("Reading %#04x from RAM at bank %d: %#02x", address, e.CurrentRAMBank, value))
+		}
 		return value
 	} else if address == joypadRegister {
 		value := e.GetJoypadState()
@@ -73,7 +77,9 @@ func (e *Emulator) ReadMemory8Bit(address uint16) uint8 {
 	}
 
 	value := e.ROM[address]
-	// e.LogMessage(fmt.Sprintf("Reading %#04x from ROM: %#02x", address, value))
+	if e.EnableMemoryAccessDebug {
+		e.LogMessage(fmt.Sprintf("Reading %#04x from ROM: %#02x", address, value))
+	}
 	return value
 }
 
@@ -124,7 +130,9 @@ func (e *Emulator) EnableRAMBanking(address uint16, data uint8) {
 
 func (e *Emulator) ChangeRAMBank(data uint8) {
 	e.CurrentRAMBank = uint16(data & 0x3)
-	e.LogMessage(fmt.Sprintf("Current RAM bank: %d", e.CurrentRAMBank))
+	if e.EnableMemoryAccessDebug {
+		e.LogMessage(fmt.Sprintf("Current RAM bank: %d", e.CurrentRAMBank))
+	}
 }
 
 func (e *Emulator) ChangeLowROMBank(data uint8) {
@@ -141,7 +149,9 @@ func (e *Emulator) ChangeLowROMBank(data uint8) {
 			e.CurrentROMBank++
 		}
 	}
-	e.LogMessage(fmt.Sprintf("Current ROM bank: %d", e.CurrentROMBank))
+	if e.EnableMemoryAccessDebug {
+		e.LogMessage(fmt.Sprintf("Current ROM bank: %d", e.CurrentROMBank))
+	}
 }
 
 func (e *Emulator) ChangeHighROMBank(data uint8) {
@@ -151,7 +161,9 @@ func (e *Emulator) ChangeHighROMBank(data uint8) {
 	if e.CurrentROMBank == 0 {
 		e.CurrentROMBank++
 	}
-	e.LogMessage(fmt.Sprintf("Current ROM bank: %d", e.CurrentROMBank))
+	if e.EnableMemoryAccessDebug {
+		e.LogMessage(fmt.Sprintf("Current ROM bank: %d", e.CurrentROMBank))
+	}
 }
 
 func (e *Emulator) SelectMemoryBankingMode(data uint8) {
@@ -168,5 +180,7 @@ func (e *Emulator) SelectMemoryBankingMode(data uint8) {
 		state = "enabled"
 	}
 
-	e.LogMessage(fmt.Sprintf("ROM bank enabled: %s", state))
+	if e.EnableMemoryAccessDebug {
+		e.LogMessage(fmt.Sprintf("ROM bank enabled: %s", state))
+	}
 }

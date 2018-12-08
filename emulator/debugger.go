@@ -23,9 +23,7 @@ func (e *Emulator) SetupLogFile() {
 }
 
 func (e *Emulator) LogMessage(message string) {
-	if e.EnableDebug {
-		e.LogBuffer.WriteString(fmt.Sprintf("%s\n", message))
-	}
+	e.LogBuffer.WriteString(fmt.Sprintf("%s\n", message))
 	if e.LogBuffer.Len() > 8192 {
 		f, err := os.OpenFile("nana.log", os.O_WRONLY|os.O_APPEND, 0600)
 		if err != nil {

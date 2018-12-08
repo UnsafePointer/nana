@@ -113,7 +113,7 @@ func update(screen *ebiten.Image) error {
 		}
 	}
 	screen.ReplacePixels(pixels)
-	if e.EnableDebug {
+	if e.EnableFPSOverlay {
 		ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %f", ebiten.CurrentFPS()))
 	}
 	return nil
@@ -121,10 +121,12 @@ func update(screen *ebiten.Image) error {
 
 func main() {
 	gameArg := os.Args[1]
-	_, okDebug := os.LookupEnv("DEBUG")
-	_, okLCDState := os.LookupEnv("ENABLE_LCD_STATE_DEBUG")
-	_, okEnableTestPanics := os.LookupEnv("ENABLE_TEST_PANICS")
-	maxCyclesEnv, okMaxCycles := os.LookupEnv("MAX_CYCLES")
+	_, okFPSCounter := os.LookupEnv("NANA_FPS_COUNTER")
+	_, okDebug := os.LookupEnv("NANA_DEBUG")
+	_, okLCDState := os.LookupEnv("NANA_LCD_STATE_DEBUG")
+	_, okMemoryAccess := os.LookupEnv("NANA_MEMORY_ACCESS_DEBUG")
+	_, okEnableTestPanics := os.LookupEnv("NANA_ENABLE_TEST_PANICS")
+	maxCyclesEnv, okMaxCycles := os.LookupEnv("NANA_MAX_CYCLES")
 	maxCycles := 0
 	if okMaxCycles {
 		maxCyclesInt, err := strconv.Atoi(maxCyclesEnv)
@@ -133,7 +135,7 @@ func main() {
 		}
 		maxCycles = maxCyclesInt
 	}
-	e = emulator.NewEmulator(okDebug, okLCDState, okEnableTestPanics, maxCycles)
+	e = emulator.NewEmulator(okFPSCounter, okDebug, okLCDState, okMemoryAccess, okEnableTestPanics, maxCycles)
 	e.LoadCartridge(gameArg)
 	var err error
 	audioContext, err = audio.NewContext(emulator.SampleRate)

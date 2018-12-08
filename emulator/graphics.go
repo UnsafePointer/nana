@@ -1,8 +1,6 @@
 package emulator
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // Viewing area/ Background map:
 // 0xFF42: The Y Position of the BACKGROUND where to start drawing the viewing area from
@@ -95,7 +93,9 @@ func (e *Emulator) RenderTiles() {
 		address2 := tileLocation + uint16(line) + 1
 		data2 := e.ReadMemory8Bit(address2)
 
-		e.LogMessage(fmt.Sprintf("Background pixel: %d, data1: %#02x (%#04x), data2: %#02x (%#04x)", pixel, data1, address1, data2, address2))
+		if e.EnableLCDStateDebug {
+			e.LogMessage(fmt.Sprintf("Background pixel: %d, data1: %#02x (%#04x), data2: %#02x (%#04x)", pixel, data1, address1, data2, address2))
+		}
 
 		colorBit := int(positionX) % 8
 		colorBit -= 7

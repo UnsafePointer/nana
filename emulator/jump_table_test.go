@@ -13,7 +13,7 @@ var _ = Describe("Emulator", func() {
 	)
 
 	BeforeEach(func() {
-		emulator = *NewEmulator(false, false, false, 0)
+		emulator = *NewEmulator(false, false, false, false, false, 0)
 	})
 
 	Describe("verifying operation codes work", func() {
