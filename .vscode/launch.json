@@ -8,7 +8,6 @@
             "mode": "debug",
             "program": "${workspaceRoot}",
             "env": {
-                // "NANA_FPS_COUNTER": "TRUE",
                 // "NANA_DEBUG": "TRUE",
                 // "NANA_LCD_STATE_DEBUG": "TRUE",
                 // "NANA_MEMORY_ACCESS_DEBUG": "TRUE",
