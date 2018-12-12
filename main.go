@@ -167,7 +167,6 @@ func AudioCallback(userdata unsafe.Pointer, stream *C.Uint8, length C.int) {
 
 func main() {
 	gameArg := os.Args[1]
-	_, okFPSCounter := os.LookupEnv("NANA_FPS_COUNTER")
 	_, okDebug := os.LookupEnv("NANA_DEBUG")
 	_, okLCDState := os.LookupEnv("NANA_LCD_STATE_DEBUG")
 	_, okMemoryAccess := os.LookupEnv("NANA_MEMORY_ACCESS_DEBUG")
@@ -181,7 +180,7 @@ func main() {
 		}
 		maxCycles = maxCyclesInt
 	}
-	e = emulator.NewEmulator(okFPSCounter, okDebug, okLCDState, okMemoryAccess, okEnableTestPanics, maxCycles)
+	e = emulator.NewEmulator(okDebug, okLCDState, okMemoryAccess, okEnableTestPanics, maxCycles)
 	e.LoadCartridge(gameArg)
 
 	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {

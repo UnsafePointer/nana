@@ -58,9 +58,7 @@ type Emulator struct {
 	ScanlineRenderCyclesCounter int
 	ScreenData                  [160][144][3]uint8
 
-	JoypadState uint8
-
-	EnableFPSOverlay        bool
+	JoypadState             uint8
 	EnableDebug             bool
 	EnableLCDStateDebug     bool
 	EnableMemoryAccessDebug bool
@@ -73,9 +71,8 @@ type Emulator struct {
 	CartridgeType CartridgeType
 }
 
-func NewEmulator(enableFPSOverlay bool, enableDebug bool, enableLCDStateDebug bool, enableMemoryAccessDebug bool, enableTestPanics bool, maxCycles int) *Emulator {
+func NewEmulator(enableDebug bool, enableLCDStateDebug bool, enableMemoryAccessDebug bool, enableTestPanics bool, maxCycles int) *Emulator {
 	e := new(Emulator)
-	e.EnableFPSOverlay = enableFPSOverlay
 	if enableDebug {
 		e.SetupLogFile()
 	}
