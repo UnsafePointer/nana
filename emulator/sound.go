@@ -83,7 +83,7 @@ func (e *Emulator) UpdateSound(cycles int) {
 			}
 			leftVolue := float32(e.LeftVolume) / float32(7)
 			volume = uint8(float32(volume) * leftVolue)
-			e.SoundBuffer = append(e.SoundBuffer, PCM16Bit(volume))
+			e.SoundBuffer = append(e.SoundBuffer, volume)
 
 			volume = uint8(0)
 			if e.RightChannelEnable[0] {
@@ -100,13 +100,9 @@ func (e *Emulator) UpdateSound(cycles int) {
 			}
 			rightVolume := float32(e.RightVolume) / float32(7)
 			volume = uint8(float32(volume) * rightVolume)
-			e.SoundBuffer = append(e.SoundBuffer, PCM16Bit(volume))
+			e.SoundBuffer = append(e.SoundBuffer, volume)
 		}
 	}
-}
-
-func PCM16Bit(data uint8) int16 {
-	return (int16(data) - 0x80) << 8
 }
 
 // Credits for this go to Viktor T. Toth

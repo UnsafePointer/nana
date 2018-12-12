@@ -36,7 +36,7 @@ type Emulator struct {
 	LeftChannelEnable  [4]bool
 	SoundEnabled       bool
 	SoundSampleCounter int
-	SoundBuffer        []int16
+	SoundBuffer        []uint8
 
 	CartridgeMemory          [0x200000]uint8
 	ROM                      [0x10000]uint8
