@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/Ruenzuo/nana/emulator"
-	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/audio"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
+	"github.com/veandco/go-sdl2/sdl"
 )
 
 const (
@@ -18,91 +17,13 @@ const (
 )
 
 var (
-	e            *emulator.Emulator
-	player       *audio.Player
-	audioContext *audio.Context
+	e *emulator.Emulator
 )
 
-type stream struct {
-	position int64
-}
-
-func (s *stream) Read(data []byte) (int, error) {
-	var x int16
-	l := len(data)
-	if len(e.SoundBuffer) < l {
-		l = len(e.SoundBuffer)
-	}
-	if len(e.SoundBuffer) == 0 {
-		return 0, nil
-	}
-	for i := 0; i < l/4; i++ {
-		x, e.SoundBuffer = e.SoundBuffer[0], e.SoundBuffer[1:]
-		data[4*i] = byte(x)
-		data[4*i+1] = byte(x >> 8)
-		data[4*i+2] = byte(x)
-		data[4*i+3] = byte(x >> 8)
-	}
-	return len(data), nil
-}
-
-func (s *stream) Close() error {
-	return nil
-}
-
-func update(screen *ebiten.Image) error {
-	if player == nil && len(e.SoundBuffer) > emulator.SampleRate {
-		var err error
-		player, err = audio.NewPlayer(audioContext, &stream{})
-		if err != nil {
-			return err
-		}
-		player.Play()
-	}
-
-	if ebiten.IsKeyPressed(ebiten.KeyA) {
-		e.PressKey(4)
-	} else {
-		e.ReleaseKey(4)
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyS) {
-		e.PressKey(5)
-	} else {
-		e.ReleaseKey(5)
-	}
-	if ebiten.IsKeyPressed(ebiten.KeySpace) {
-		e.PressKey(6)
-	} else {
-		e.ReleaseKey(6)
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyEnter) {
-		e.PressKey(7)
-	} else {
-		e.ReleaseKey(7)
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
-		e.PressKey(1)
-	} else {
-		e.ReleaseKey(1)
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyRight) {
-		e.PressKey(0)
-	} else {
-		e.ReleaseKey(0)
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyUp) {
-		e.PressKey(2)
-	} else {
-		e.ReleaseKey(2)
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyDown) {
-		e.PressKey(3)
-	} else {
-		e.ReleaseKey(3)
-	}
-
+func update(r *sdl.Renderer, t *sdl.Texture) error {
 	e.EmulateFrame()
-	pixels := make([]byte, width*height*4)
+
+	pixels, _, _ := t.Lock(nil)
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
 			position := y*width + x
@@ -112,10 +33,11 @@ func update(screen *ebiten.Image) error {
 			pixels[(position*4 + 3)] = 255
 		}
 	}
-	screen.ReplacePixels(pixels)
-	if e.EnableFPSOverlay {
-		ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %f", ebiten.CurrentFPS()))
-	}
+	t.Unlock()
+
+	r.Clear()
+	r.Copy(t, nil, nil)
+	r.Present()
 	return nil
 }
 
@@ -137,12 +59,35 @@ func main() {
 	}
 	e = emulator.NewEmulator(okFPSCounter, okDebug, okLCDState, okMemoryAccess, okEnableTestPanics, maxCycles)
 	e.LoadCartridge(gameArg)
-	var err error
-	audioContext, err = audio.NewContext(emulator.SampleRate)
+
+	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
+		panic(err)
+	}
+	defer sdl.Quit()
+
+	window, err := sdl.CreateWindow(fmt.Sprintf("ナナ - %s", gameArg), sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, width*scale, height*scale, sdl.WINDOW_OPENGL)
 	if err != nil {
 		panic(err)
 	}
-	if err = ebiten.Run(update, width, height, scale, fmt.Sprintf("ナナ - %s", gameArg)); err != nil {
+	defer window.Destroy()
+
+	renderer, err := sdl.CreateRenderer(window, -1, 0)
+	if err != nil {
 		panic(err)
+	}
+	defer renderer.Destroy()
+
+	renderer.SetScale(scale, scale)
+
+	texture, err := renderer.CreateTexture(sdl.PIXELFORMAT_ABGR8888, sdl.TEXTUREACCESS_STREAMING, width, height)
+	if err != nil {
+		panic(err)
+	}
+	defer texture.Destroy()
+
+	ticker := time.NewTicker(1000 * time.Millisecond / 60)
+
+	for range ticker.C {
+		update(renderer, texture)
 	}
 }
