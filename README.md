@@ -25,11 +25,10 @@ $ go get github.com/Ruenzuo/nana
 
 ### Cross-compiling
 
-See [xgo](https://github.com/karalabe/xgo)
+See [libsdl.org/extras/win32/cross/README.txt](https://www.libsdl.org/extras/win32/cross/README.txt) for information on how to build SDL for 64 bit mingw cross-compiler
 
 ```
 $ make build-windows
-$ make build-darwin
 ```
 
 ### Pre-compiled binaries

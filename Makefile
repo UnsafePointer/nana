@@ -4,7 +4,6 @@ GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 PLATFORM=linux
 PLATFORM_WINDOWS=windows-8.1
-PLATFORM_DARWIN=darwin-10.11
 ARCH=amd64
 BINARY_NAME_PREFIX=nana-
 BINARY_NAME=$(BINARY_NAME_PREFIX)$(PLATFORM)-$(ARCH)
@@ -21,7 +20,5 @@ clean:
 # Cross-compiling
 
 build-windows:
-	xgo --targets=$(PLATFORM_WINDOWS)/$(ARCH) github.com/Ruenzuo/nana
-build-darwin:
-	xgo --targets=$(PLATFORM_DARWIN)/$(ARCH) github.com/Ruenzuo/nana
+	CGO_ENABLED=1 CXX=x86_64-w64-mingw32-g++ CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME_PREFIX)$(PLATFORM_WINDOWS)-$(ARCH).exe
 
