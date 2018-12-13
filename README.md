@@ -43,7 +43,6 @@ $ nana path/to/rom.gb
 
 ### Environment variables
 
-* `NANA_FPS_COUNTER`: enables frames per second counter overlay
 * `NANA_DEBUG`: enables buffered debug output to nana.log
 * `NANA_LCD_STATE_DEBUG`: includes the LCD state in debug output
 * `NANA_MEMORY_ACCESS_DEBUG`: includes the LCD state in debug output
