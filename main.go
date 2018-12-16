@@ -1,16 +1,10 @@
 package main
 
-// typedef unsigned char Uint8;
-// void AudioCallback(void *userdata, Uint8 *stream, int len);
-import "C"
-
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"strconv"
 	"time"
-	"unsafe"
 
 	"github.com/Ruenzuo/nana/emulator"
 	"github.com/veandco/go-sdl2/sdl"
@@ -29,12 +23,6 @@ var (
 )
 
 func update(r *sdl.Renderer, t *sdl.Texture) error {
-	if sdl.GetAudioStatus() == sdl.AUDIO_PAUSED {
-		if len(e.SoundBuffer) >= emulator.SampleRate {
-			sdl.PauseAudio(false)
-		}
-	}
-
 	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 		switch event.(type) {
 		case *sdl.QuitEvent:
@@ -148,23 +136,6 @@ func update(r *sdl.Renderer, t *sdl.Texture) error {
 	return nil
 }
 
-//export AudioCallback
-func AudioCallback(userdata unsafe.Pointer, stream *C.Uint8, length C.int) {
-	n := int(length)
-	if len(e.SoundBuffer) < n/2 {
-		return
-	}
-	hdr := reflect.SliceHeader{Data: uintptr(unsafe.Pointer(stream)), Len: n, Cap: n}
-	buf := *(*[]C.Uint8)(unsafe.Pointer(&hdr))
-
-	var x uint8
-	for i := 0; i < n; i += 2 {
-		x, e.SoundBuffer = e.SoundBuffer[0], e.SoundBuffer[1:]
-		buf[i] = C.Uint8(x)
-		buf[i+1] = C.Uint8(x)
-	}
-}
-
 func main() {
 	gameArg := os.Args[1]
 	_, okDebug := os.LookupEnv("NANA_DEBUG")
@@ -212,12 +183,12 @@ func main() {
 		Freq:     emulator.SampleRate,
 		Format:   sdl.AUDIO_U8,
 		Channels: 2,
-		Samples:  emulator.SampleRate,
-		Callback: sdl.AudioCallback(C.AudioCallback),
+		Samples:  emulator.SoundBufferSize,
 	}
 	if err := sdl.OpenAudio(spec, nil); err != nil {
 		panic(err)
 	}
+	sdl.PauseAudio(false)
 
 	done = make(chan struct{})
 	ticker = time.NewTicker(1000 * time.Millisecond / 60)

@@ -1,7 +1,12 @@
 package emulator
 
+import (
+	"github.com/veandco/go-sdl2/sdl"
+)
+
 const SampleRate = 44100
 const MaxCyclesPerSample = MaxCyclesPerSecond / SampleRate
+const SoundBufferSize = 4096
 
 // Control/Status
 // NR50 FF24 ALLL BRRR Vin L enable, Left vol, Vin R enable, Right vol
@@ -101,6 +106,14 @@ func (e *Emulator) UpdateSound(cycles int) {
 			rightVolume := float32(e.RightVolume) / float32(7)
 			volume = uint8(float32(volume) * rightVolume)
 			e.SoundBuffer = append(e.SoundBuffer, volume)
+		}
+
+		if len(e.SoundBuffer) >= SoundBufferSize {
+			for sdl.GetQueuedAudioSize(1) > SoundBufferSize {
+				sdl.Delay(1)
+			}
+			sdl.QueueAudio(1, e.SoundBuffer)
+			e.SoundBuffer = e.SoundBuffer[:0]
 		}
 	}
 }
