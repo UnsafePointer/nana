@@ -7,6 +7,7 @@ PLATFORM_WINDOWS=windows-8.1
 ARCH=amd64
 BINARY_NAME_PREFIX=nana-
 BINARY_NAME=$(BINARY_NAME_PREFIX)$(PLATFORM)-$(ARCH)
+NANAVM_BINARY_NAME=nanavm.so
 
 all: build test
 build:
@@ -16,6 +17,9 @@ test:
 clean:
 	$(GOCLEAN)
 	rm -rf $(BINARY_NAME_PREFIX)*
+	rm -rf $(NANAVM_BINARY_NAME)
+$(NANAVM_BINARY_NAME):
+	$(GOBUILD) -buildmode=c-shared -o $(NANAVM_BINARY_NAME) nanavm/main.go
 
 # Cross-compiling
 

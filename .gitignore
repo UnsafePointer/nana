@@ -35,3 +35,6 @@ tools/wave.wav
 
 # Coverage report file
 coverage.txt
+
+# nanavm
+*/nanavm.h
