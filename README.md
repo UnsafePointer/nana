@@ -47,6 +47,7 @@ $ nana path/to/rom.gb
 * `NANA_LCD_STATE_DEBUG`: includes the LCD state in debug output
 * `NANA_MEMORY_ACCESS_DEBUG`: includes the LCD state in debug output
 * `NANA_ENABLE_TEST_PANICS`: panic on undefined behaviour
+* `NANA_ENABLE_REWIND`: hold F10 to rewind the emulation
 * `NANA_MAX_CYCLES`: enables automatic shut down to specific cycle threshold
 
 ### Building your own emulator

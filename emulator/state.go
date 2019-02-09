@@ -78,6 +78,39 @@ func NewState(e *Emulator) *State {
 	return s
 }
 
+func (e *Emulator) CopyState(s *State) {
+	e.AF = s.AF
+	e.BC = s.BC
+	e.DE = s.DE
+	e.HL = s.HL
+	e.SquareOne = s.SquareOne
+	e.SquareTwo = s.SquareTwo
+	e.Wave = s.Wave
+	e.Noise = s.Noise
+	e.RightVolume = s.RightVolume
+	e.LeftVolume = s.LeftVolume
+	e.RightChannelEnable = s.RightChannelEnable
+	e.LeftChannelEnable = s.LeftChannelEnable
+	e.SoundEnabled = s.SoundEnabled
+	e.SoundSampleCounter = s.SoundSampleCounter
+	e.SoundBuffer = s.SoundBuffer
+	e.ROM = s.ROM
+	e.RAM = s.RAM
+	e.ProgramCounter = s.ProgramCounter
+	e.StackPointer = s.StackPointer
+	e.CurrentROMBank = s.CurrentROMBank
+	e.CurrentRAMBank = s.CurrentRAMBank
+	e.EnableRAMBank = s.EnableRAMBank
+	e.EnableROMBank = s.EnableROMBank
+	e.Halted = s.Halted
+	e.DisableInterrupts = s.DisableInterrupts
+	e.PendingDisableInterrupts = s.PendingDisableInterrupts
+	e.PendingEnableInterrupts = s.PendingEnableInterrupts
+	e.DividerRegisterCyclesCounter = s.DividerRegisterCyclesCounter
+	e.TimerCyclesCounter = s.TimerCyclesCounter
+	e.ScanlineRenderCyclesCounter = s.ScanlineRenderCyclesCounter
+}
+
 func (e *Emulator) SaveState() {
 	s := NewState(e)
 	if _, err := os.Stat("./save.sav"); err == nil {
@@ -110,34 +143,5 @@ func (e *Emulator) LoadState() {
 	if err != nil {
 		panic(err)
 	}
-	e.AF = s.AF
-	e.BC = s.BC
-	e.DE = s.DE
-	e.HL = s.HL
-	e.SquareOne = s.SquareOne
-	e.SquareTwo = s.SquareTwo
-	e.Wave = s.Wave
-	e.Noise = s.Noise
-	e.RightVolume = s.RightVolume
-	e.LeftVolume = s.LeftVolume
-	e.RightChannelEnable = s.RightChannelEnable
-	e.LeftChannelEnable = s.LeftChannelEnable
-	e.SoundEnabled = s.SoundEnabled
-	e.SoundSampleCounter = s.SoundSampleCounter
-	e.SoundBuffer = s.SoundBuffer
-	e.ROM = s.ROM
-	e.RAM = s.RAM
-	e.ProgramCounter = s.ProgramCounter
-	e.StackPointer = s.StackPointer
-	e.CurrentROMBank = s.CurrentROMBank
-	e.CurrentRAMBank = s.CurrentRAMBank
-	e.EnableRAMBank = s.EnableRAMBank
-	e.EnableROMBank = s.EnableROMBank
-	e.Halted = s.Halted
-	e.DisableInterrupts = s.DisableInterrupts
-	e.PendingDisableInterrupts = s.PendingDisableInterrupts
-	e.PendingEnableInterrupts = s.PendingEnableInterrupts
-	e.DividerRegisterCyclesCounter = s.DividerRegisterCyclesCounter
-	e.TimerCyclesCounter = s.TimerCyclesCounter
-	e.ScanlineRenderCyclesCounter = s.ScanlineRenderCyclesCounter
+	e.CopyState(s)
 }

@@ -60,6 +60,7 @@ func main() {
 	_, okLCDState := os.LookupEnv("NANA_LCD_STATE_DEBUG")
 	_, okMemoryAccess := os.LookupEnv("NANA_MEMORY_ACCESS_DEBUG")
 	_, okEnableTestPanics := os.LookupEnv("NANA_ENABLE_TEST_PANICS")
+	_, okEnableRewind := os.LookupEnv("NANA_ENABLE_REWIND")
 	maxCyclesEnv, okMaxCycles := os.LookupEnv("NANA_MAX_CYCLES")
 	maxCycles := 0
 	if okMaxCycles {
@@ -69,7 +70,7 @@ func main() {
 		}
 		maxCycles = maxCyclesInt
 	}
-	e = emulator.NewEmulator(okDebug, okLCDState, okMemoryAccess, okEnableTestPanics, maxCycles)
+	e = emulator.NewEmulator(okDebug, okLCDState, okMemoryAccess, okEnableTestPanics, okEnableRewind, maxCycles)
 	e.LoadCartridge(gameArg)
 	e.LoadState()
 
