@@ -1,7 +1,7 @@
 package emulator
 
 type Register8Bit struct {
-	bits uint8
+	Bits uint8
 }
 
 type Register16Bit struct {
@@ -10,11 +10,11 @@ type Register16Bit struct {
 }
 
 func (r Register8Bit) Value() uint8 {
-	return r.bits
+	return r.Bits
 }
 
 func (r *Register8Bit) SetValue(value uint8) {
-	r.bits = value
+	r.Bits = value
 }
 
 func (r *Register16Bit) SetLow(value uint8) {
@@ -26,9 +26,9 @@ func (r *Register16Bit) SetHigh(value uint8) {
 }
 
 func (r Register16Bit) Value() uint16 {
-	low := uint16(r.Low.bits)
+	low := uint16(r.Low.Bits)
 	low <<= 0
-	high := uint16(r.High.bits)
+	high := uint16(r.High.Bits)
 	high <<= 8
 	return low | high
 }
