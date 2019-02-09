@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+
+	"github.com/veandco/go-sdl2/sdl"
 )
 
 const MaxCyclesPerSecond = 4194304
@@ -58,7 +60,9 @@ type Emulator struct {
 	ScanlineRenderCyclesCounter int
 	ScreenData                  [160][144][3]uint8
 
-	JoypadState             uint8
+	JoypadState uint8
+	KeyMap      map[sdl.Keycode]uint
+
 	EnableDebug             bool
 	EnableLCDStateDebug     bool
 	EnableMemoryAccessDebug bool
@@ -100,6 +104,15 @@ func NewEmulator(enableDebug bool, enableLCDStateDebug bool, enableMemoryAccessD
 	e.TimerCyclesCounter = 0
 	e.ScanlineRenderCyclesCounter = 456
 	e.JoypadState = 0xFF
+	e.KeyMap = make(map[sdl.Keycode]uint)
+	e.KeyMap[sdl.K_RIGHT] = 0
+	e.KeyMap[sdl.K_LEFT] = 1
+	e.KeyMap[sdl.K_UP] = 2
+	e.KeyMap[sdl.K_DOWN] = 3
+	e.KeyMap[sdl.K_a] = 4
+	e.KeyMap[sdl.K_s] = 5
+	e.KeyMap[sdl.K_SPACE] = 6
+	e.KeyMap[sdl.K_RETURN] = 7
 	e.CartridgeType = CartridgeTypeROMOnly
 	e.ROM[0xFF00] = 0xFF
 	e.ROM[0xFF05] = 0x00

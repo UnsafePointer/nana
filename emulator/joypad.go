@@ -1,5 +1,7 @@
 package emulator
 
+import "github.com/veandco/go-sdl2/sdl"
+
 // Taken from documentation
 // Bit 7 - Not used
 // Bit 6 - Not used
@@ -48,6 +50,17 @@ func (e *Emulator) PressKey(key uint) {
 
 func (e *Emulator) ReleaseKey(key uint) {
 	e.JoypadState = setBit(e.JoypadState, key)
+}
+
+func (e *Emulator) HandleKeyboardEvent(keyboardEvent *sdl.KeyboardEvent) {
+	switch keyboardEvent.State {
+	case sdl.PRESSED:
+		e.PressKey(e.KeyMap[keyboardEvent.Keysym.Sym])
+		break
+	case sdl.RELEASED:
+		e.ReleaseKey(e.KeyMap[keyboardEvent.Keysym.Sym])
+		break
+	}
 }
 
 func (e *Emulator) GetJoypadState() uint8 {

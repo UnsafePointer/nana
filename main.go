@@ -31,88 +31,7 @@ func update(r *sdl.Renderer, t *sdl.Texture) error {
 			break
 		case *sdl.KeyboardEvent:
 			event := event.(*sdl.KeyboardEvent)
-			switch event.Keysym.Sym {
-			case 'a':
-				switch event.State {
-				case sdl.PRESSED:
-					e.PressKey(4)
-					break
-				case sdl.RELEASED:
-					e.ReleaseKey(4)
-					break
-				}
-				break
-			case 's':
-				switch event.State {
-				case sdl.PRESSED:
-					e.PressKey(5)
-					break
-				case sdl.RELEASED:
-					e.ReleaseKey(5)
-					break
-				}
-				break
-			case sdl.K_UP:
-				switch event.State {
-				case sdl.PRESSED:
-					e.PressKey(2)
-					break
-				case sdl.RELEASED:
-					e.ReleaseKey(2)
-					break
-				}
-				break
-			case sdl.K_DOWN:
-				switch event.State {
-				case sdl.PRESSED:
-					e.PressKey(3)
-					break
-				case sdl.RELEASED:
-					e.ReleaseKey(3)
-					break
-				}
-				break
-			case sdl.K_LEFT:
-				switch event.State {
-				case sdl.PRESSED:
-					e.PressKey(1)
-					break
-				case sdl.RELEASED:
-					e.ReleaseKey(1)
-					break
-				}
-				break
-			case sdl.K_RIGHT:
-				switch event.State {
-				case sdl.PRESSED:
-					e.PressKey(0)
-					break
-				case sdl.RELEASED:
-					e.ReleaseKey(0)
-					break
-				}
-				break
-			case sdl.K_RETURN:
-				switch event.State {
-				case sdl.PRESSED:
-					e.PressKey(7)
-					break
-				case sdl.RELEASED:
-					e.ReleaseKey(7)
-					break
-				}
-				break
-			case sdl.K_SPACE:
-				switch event.State {
-				case sdl.PRESSED:
-					e.PressKey(6)
-					break
-				case sdl.RELEASED:
-					e.ReleaseKey(6)
-					break
-				}
-				break
-			}
+			e.HandleKeyboardEvent(event)
 		}
 	}
 
@@ -129,7 +48,6 @@ func update(r *sdl.Renderer, t *sdl.Texture) error {
 		}
 	}
 	t.Unlock()
-
 	r.Clear()
 	r.Copy(t, nil, nil)
 	r.Present()
