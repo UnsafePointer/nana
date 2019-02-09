@@ -55,8 +55,17 @@ func (e *Emulator) ReleaseKey(key uint) {
 func (e *Emulator) HandleKeyboardEvent(keyboardEvent *sdl.KeyboardEvent) {
 	switch keyboardEvent.State {
 	case sdl.PRESSED:
-		e.PressKey(e.KeyMap[keyboardEvent.Keysym.Sym])
-		break
+		switch keyboardEvent.Keysym.Sym {
+		case sdl.K_F11:
+			e.SaveState()
+			break
+		case sdl.K_F12:
+			e.LoadState()
+			break
+		default:
+			e.PressKey(e.KeyMap[keyboardEvent.Keysym.Sym])
+			break
+		}
 	case sdl.RELEASED:
 		e.ReleaseKey(e.KeyMap[keyboardEvent.Keysym.Sym])
 		break

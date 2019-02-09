@@ -71,6 +71,7 @@ func main() {
 	}
 	e = emulator.NewEmulator(okDebug, okLCDState, okMemoryAccess, okEnableTestPanics, maxCycles)
 	e.LoadCartridge(gameArg)
+	e.LoadState()
 
 	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
 		panic(err)

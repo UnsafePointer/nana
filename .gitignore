@@ -30,6 +30,7 @@ nana-*
 nana.log
 *-dump.txt
 *.gb
+*.sav
 tools/wave.txt
 tools/wave.wav
 
