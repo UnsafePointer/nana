@@ -56,6 +56,9 @@ func (e *Emulator) HandleKeyboardEvent(keyboardEvent *sdl.KeyboardEvent) {
 	switch keyboardEvent.State {
 	case sdl.PRESSED:
 		switch keyboardEvent.Keysym.Sym {
+		case sdl.K_F10:
+			e.Rewinding = true
+			break
 		case sdl.K_F11:
 			e.SaveState()
 			break
@@ -67,8 +70,14 @@ func (e *Emulator) HandleKeyboardEvent(keyboardEvent *sdl.KeyboardEvent) {
 			break
 		}
 	case sdl.RELEASED:
-		e.ReleaseKey(e.KeyMap[keyboardEvent.Keysym.Sym])
-		break
+		switch keyboardEvent.Keysym.Sym {
+		case sdl.K_F10:
+			e.Rewinding = false
+			break
+		default:
+			e.ReleaseKey(e.KeyMap[keyboardEvent.Keysym.Sym])
+			break
+		}
 	}
 }
 

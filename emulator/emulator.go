@@ -67,15 +67,19 @@ type Emulator struct {
 	EnableLCDStateDebug     bool
 	EnableMemoryAccessDebug bool
 	EnableTestPanics        bool
+	EnableRewind            bool
 	LogBuffer               bytes.Buffer
 	MaxCycles               int
 	TotalCycles             int
 	InstructionCounter      map[uint8]int
 
 	CartridgeType CartridgeType
+
+	RewindBuffer []*State
+	Rewinding    bool
 }
 
-func NewEmulator(enableDebug bool, enableLCDStateDebug bool, enableMemoryAccessDebug bool, enableTestPanics bool, maxCycles int) *Emulator {
+func NewEmulator(enableDebug bool, enableLCDStateDebug bool, enableMemoryAccessDebug bool, enableTestPanics bool, enableRewind bool, maxCycles int) *Emulator {
 	e := new(Emulator)
 	if enableDebug {
 		e.SetupLogFile()
@@ -84,6 +88,7 @@ func NewEmulator(enableDebug bool, enableLCDStateDebug bool, enableMemoryAccessD
 	e.EnableLCDStateDebug = enableLCDStateDebug
 	e.EnableMemoryAccessDebug = enableMemoryAccessDebug
 	e.EnableTestPanics = enableTestPanics
+	e.EnableRewind = enableRewind
 	e.MaxCycles = maxCycles
 	e.InstructionCounter = make(map[uint8]int)
 	e.ProgramCounter.SetValue(0x100)
@@ -147,6 +152,7 @@ func NewEmulator(enableDebug bool, enableLCDStateDebug bool, enableMemoryAccessD
 	e.ROM[0xFF4B] = 0x00
 	e.ROM[0xFFFF] = 0x00
 	e.SoundSampleCounter = MaxCyclesPerSample
+	e.Rewinding = false
 	return e
 }
 
@@ -182,6 +188,14 @@ func (e *Emulator) LoadCartridge(filename string) {
 
 func (e *Emulator) EmulateFrame() {
 	cyclesThisUpdate := 0
+	if e.Rewinding && e.EnableRewind {
+		var state *State
+		state, e.RewindBuffer = e.RewindBuffer[len(e.RewindBuffer)-1], e.RewindBuffer[:len(e.RewindBuffer)-1]
+		e.CopyState(state)
+		if len(e.RewindBuffer) <= 0 {
+			e.Rewinding = false
+		}
+	}
 	for cyclesThisUpdate < MaxCyclesPerEmulationCycle {
 		cycles := e.executeNextOpcode()
 		cyclesThisUpdate += cycles
@@ -196,6 +210,12 @@ func (e *Emulator) EmulateFrame() {
 				os.Exit(0)
 			}
 		}
+	}
+	if !e.Rewinding && e.EnableRewind {
+		if len(e.RewindBuffer) > 60*120 { // 800 MB!
+			e.RewindBuffer = e.RewindBuffer[1:]
+		}
+		e.RewindBuffer = append(e.RewindBuffer, NewState(e))
 	}
 }
 
